@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\xuxemonController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +18,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('register');
 });
+
+//RegisterController
+Route::post('/users', [RegisterController::class, 'store'])->name('users.store');//formulario register
+Route::get('/index', [RegisterController::class, 'index'])->name('users.index');//redigiri a la pagina login
+Route::post('/logiin', [LoginController::class, 'login'])->name('login');//redigiri a la pagina login
+
+Route::get('/xuxemons', [xuxemonController::class, 'index'])->name('xuxemons.index');
+
+
+Route::resource('xuxemons', xuxemonController::class);
+
+
+Route::get('/xuxemons/random', [xuxemonController::class, 'randomXuxemon'])->name('xuxemons.random');
