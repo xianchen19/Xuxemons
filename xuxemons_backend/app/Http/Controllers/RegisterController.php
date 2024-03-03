@@ -28,10 +28,10 @@ class RegisterController extends Controller
             $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
-                'password' => bcrypt($validatedData['password']), // Encriptar la contraseña
+                'password' => $validatedData['password'], 
             ]);
 
-            return redirect()->route('users.index')->with('success', '¡Has accedido correctamente!');
+            return response()->json(['message' => 'Registro exitoso', 200]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Usuario no insertado'], 404);
         }
