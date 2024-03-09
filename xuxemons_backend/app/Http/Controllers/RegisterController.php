@@ -16,23 +16,27 @@ class RegisterController extends Controller
         return view('login');
     }
 
-    public function store(Request $request)
+public function store(Request $request)
     {
-        try{
-        $validatedData = $request->validate([
+        // Validar los datos del formulario
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users,email',
             'password' => 'required|string|min:8',
         ]);
 
-            $user = User::create([
-                'name' => $validatedData['name'],
-                'email' => $validatedData['email'],
-                'password' => $validatedData['password'], 
-            ]);
-
+        try {
+            // Crear un nuevo usuario
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = $request->password;
+            $user->save();
+    
+            // Redirigir al login con mensaje exitoso
             return response()->json(['message' => 'Registro exitoso', 200]);
         } catch (\Exception $e) {
+            // Manejar cualquier excepción
             return response()->json(['error' => 'Usuario no insertado'], 404);
         }
     }

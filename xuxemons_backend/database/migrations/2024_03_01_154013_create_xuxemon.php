@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('tipo');
-            $table->integer('tamaño');
+            $table->integer('tamano');
             $table->integer('vida')->default(100);
             $table->string('archivo')->nullable();;
             $table->timestamps();

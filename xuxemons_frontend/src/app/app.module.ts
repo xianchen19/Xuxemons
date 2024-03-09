@@ -8,6 +8,11 @@ import { LandscapeComponent } from './landscape/landscape.component';
 import { ErrorComponent } from './error/error.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { EditXuxemonComponent } from './admin-dashboard/edit-xuxemon/edit-xuxemon.component';
+import { CreateXuxemonComponent } from './admin-dashboard/create-xuxemon/create-xuxemon.component';
 
 @NgModule({
   declarations: [
@@ -16,12 +21,17 @@ import { ReactiveFormsModule } from '@angular/forms';
     RegisterComponent,
     LandscapeComponent,
     ErrorComponent,
-    NavbarComponent
+    NavbarComponent,
+    DashboardComponent,
+    AdminDashboardComponent,
+    EditXuxemonComponent,
+    CreateXuxemonComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

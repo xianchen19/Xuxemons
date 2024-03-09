@@ -15,21 +15,29 @@ use App\Http\Controllers\xuxemonController;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+*/Route::middleware(['cors'])->group(function () {
+    // Crear usuario
+    Route::post('/userRegister', [RegisterController::class, 'store']);
 
-Route::get('/', function () {
-    return view('register');
+    // Login
+    Route::post('/userLogin', [LoginController::class, 'login']);
+
+    // Gestionar xuxemons
+    // Rutas para xuxemons
+    //Route::middleware(['role:administrador'])->group(function () {
+        Route::get('/xuxemons', [xuxemonController::class, 'index']);
+        Route::post('/xuxemons', [xuxemonController::class, 'store']);
+        Route::get('/xuxemons/{id}', [xuxemonController::class, 'show']);
+        Route::put('/xuxemons/{id}', [xuxemonController::class, 'update']);
+        Route::delete('/xuxemons/{id}', [xuxemonController::class, 'destroy']);
+
+        // Ruta para editar xuxemons
+        Route::get('/xuxemons/{id}/edit', [xuxemonController::class, 'edit']);
+
+        // Ruta para crear xuxemons
+        Route::get('/xuxemons/create', [xuxemonController::class, 'create']);
+
+        // Ruta para generar xuxemon aleatorio
+        Route::get('/generar-xuxemon-aleatorio', [xuxemonController::class, 'randomXuxemon']);
+   // });
 });
-
-//RegisterController
-Route::post('/users', [RegisterController::class, 'store'])->name('users.store');//formulario register
-Route::get('/index', [RegisterController::class, 'index'])->name('users.index');//redigiri a la pagina login
-Route::post('/logiin', [LoginController::class, 'login'])->name('login');//redigiri a la pagina login
-
-Route::get('/xuxemons', [xuxemonController::class, 'index'])->name('xuxemons.index');
-
-
-Route::resource('xuxemons', xuxemonController::class);
-
-
-Route::get('/xuxemons/random', [xuxemonController::class, 'randomXuxemon'])->name('xuxemons.random');

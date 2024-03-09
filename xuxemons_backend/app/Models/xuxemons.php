@@ -9,6 +9,6 @@ class xuxemons extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['imagen', 'nombre', 'tipo', 'tamaño', 'vida', 'archivo'];
+    protected $fillable = ['nombre', 'tipo', 'tamano', 'vida', 'archivo'];
 
 }

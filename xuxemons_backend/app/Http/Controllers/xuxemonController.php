@@ -11,7 +11,8 @@ class xuxemonController extends Controller
    public function index()
     {
         $xuxemons = xuxemons::all(); //coger todos los productos del modelo
-        return response()->json([$xuxemons,'message' => 'Xuxemon Index', 200]);   
+        //dd($xuxemons);
+        return response()->json([$xuxemons, 200]);   
     }
 
     public function create()
@@ -24,21 +25,19 @@ class xuxemonController extends Controller
 {
     // Validar los datos del formulario
     $request->validate([
-        'imagen' => 'required|string',
         'nombre' => 'required|string',
         'tipo' => 'required|string',
-        'tamaño' => 'required|integer',
-        'vida' => 'r    equired|integer',
+        'tamano' => 'required|integer',
+        'vida' => 'required|integer',
         'archivo' => 'required|string',
     ]);
 
     try {
         // Crear el xuxemon en la base de datos
         $xuxemon = new xuxemons();
-        $xuxemon->imagen = $request->imagen;
         $xuxemon->nombre = $request->nombre;
         $xuxemon->tipo = $request->tipo;
-        $xuxemon->tamaño = $request->tamaño;
+        $xuxemon->tamano = $request->tamano;
         $xuxemon->vida = $request->vida;
         $xuxemon->archivo = $request->archivo;
         $xuxemon->save();
@@ -51,7 +50,7 @@ class xuxemonController extends Controller
     public function show($id)
     {
         $xuxemon = xuxemons::findOrFail($id); // buscar el id de ese producto en especifico
-        return response()->json(['message' => 'Mostrando xuxemons', 200]);
+        return response()->json(['message' => $xuxemon, 200]);
     }
 
     public function edit($id)
@@ -66,10 +65,9 @@ class xuxemonController extends Controller
         try {
             // Validar los datos del formulario
             $request->validate([
-                'imagen' => 'required|string',
                 'nombre' => 'required|string',
                 'tipo' => 'required|string',
-                'tamaño' => 'required|integer',
+                'tamano' => 'required|integer',
                 'vida' => 'required|integer',
                 'archivo' => 'required|string',
             ]);
@@ -79,10 +77,9 @@ class xuxemonController extends Controller
     
             // Actualizar en la base de datos
             $xuxemon->update([
-                'imagen' => $request->imagen,
                 'nombre' => $request->nombre,
                 'tipo' => $request->tipo,
-                'tamaño' => $request->tamaño,
+                'tamano' => $request->tamano,
                 'vida' => $request->vida,
                 'archivo' => $request->archivo,
             ]);
@@ -100,7 +97,7 @@ class xuxemonController extends Controller
             $xuxemon = xuxemons::findOrFail($id);
             $xuxemon->delete();
     
-            return response()->json(['message' => 'Usuario eliminado correctamente', 200]);
+            return response()->json(['message' => 'Xuxemon eliminado correctamente', 200]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'A ocurrido un error al eliminar'], 404);
         }
@@ -117,14 +114,14 @@ class xuxemonController extends Controller
         $tipoAleatorio = $tipos[array_rand($tipos)];
 
         // Generar otros valores aleatorios para los campos
-        $tamaño = rand(1, 100); // Tamaño aleatorio entre 1 y 100
+        $tamano = rand(1, 100); // Tamaño aleatorio entre 1 y 100
         $vida = rand(1, 100); // Vida aleatoria entre 1 y 100
 
         // Crear el xuxemon en la base de datos
         $xuxemon = new xuxemons();
         $xuxemon->nombre = $nombreAleatorio;
         $xuxemon->tipo = $tipoAleatorio;
-        $xuxemon->tamaño = $tamaño;
+        $xuxemon->tamano = $tamano;
         $xuxemon->vida = $vida;
 
         $xuxemon->save();
