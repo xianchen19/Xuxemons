@@ -1,1 +1,23 @@
-<app-navbar> </app-navbar>
+<app-navbar></app-navbar>
+
+<div class="container">
+  <h2>Xuxemons</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Tamaño</th>
+        <th>Archivo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let xuxemon of xuxemons">
+        <td>{{ xuxemon.nombre }}</td>
+        <td>{{ xuxemon.tipo }}</td>
+        <td>{{ xuxemon.tamano }}</td>
+        <td><img src="{{ xuxemon.archivo }}" alt="{{ xuxemon.nombre }}" width="50"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

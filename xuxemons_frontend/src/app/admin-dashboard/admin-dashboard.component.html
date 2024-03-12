@@ -28,9 +28,17 @@
       </ng-container>
       <ng-template #formEditXuxemon>
         <td colspan="6">
-          <app-edit-xuxemon [xuxemon]="xuxemonEditando" (cancelar)="cancelarEdicion()"></app-edit-xuxemon>
+          <app-edit-xuxemon [xuxemon]="xuxemonEditando" (cancelar)="cancelarEdicion()" (cambiosGuardados)="guardarCambiosEditXuxemon()"></app-edit-xuxemon>
+
         </td>
       </ng-template>
     </tr>
   </tbody>
 </table>
+
+<br>
+
+<button (click)="mostrarCreacionXuxemon()">Crear Xuxemon</button>
+<button (click)="xuxemonDebug()">Xuxemon (debug)</button>
+
+<app-create-xuxemon *ngIf="xuxemonCreacion == true" (xuxemonCreado)="xuxemonCreado()" (cancelarCreacion)="ocultarCreacionXuxemon()"></app-create-xuxemon>

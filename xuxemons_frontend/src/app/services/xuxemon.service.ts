@@ -13,7 +13,7 @@ export class XuxemonService {
 
   constructor(private http: HttpClient) { }
 
-  getListaXuxemons(): Observable<Xuxemon[]> { // Usa el tipo Xuxemon[] en lugar de any[]
+  getListaXuxemons(): Observable<Xuxemon[]> {
     return this.http.get<Xuxemon[]>(`${this.apiUrl}/xuxemons`);
   }
 
@@ -21,10 +21,16 @@ export class XuxemonService {
     return this.http.delete<Xuxemon>(`${this.apiUrl}/xuxemons/${id}`);
   }
 
-  editarXuxemon(xuxemon: Xuxemon): Observable<any> {
+  editarXuxemon(id: number, xuxemon: Xuxemon): Observable<Xuxemon> {
+    return this.http.put<Xuxemon>(`${this.apiUrl}/xuxemons/${id}`, xuxemon);
+  }
 
-    return this.http.put<Xuxemon>(`${this.apiUrl}/xuxemons/${xuxemon.id}`, xuxemon);
-
+  xuxemonAleatorio () {
+    return this.http.get<Xuxemon>(`${this.apiUrl}/random_xuxemon`);
+  }
+  
+  crearXuxemon (xuxemon: Xuxemon) {
+    return this.http.post<Xuxemon>(`${this.apiUrl}/xuxemons`, xuxemon)
   }
   
 }

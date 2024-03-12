@@ -12,6 +12,8 @@ export class AdminDashboardComponent implements OnInit {
 
   xuxemons: Xuxemon[] = [];
   xuxemonEditando: Xuxemon | null = null;
+  xuxemonCreacion: boolean = false;
+
 
   constructor(private xuxemonService: XuxemonService) { }
 
@@ -34,11 +36,13 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   eliminarXuxemon(id: number): void {
-    this.xuxemonService.deleteXuxemon(id).subscribe(() => {
-      this.xuxemons = this.xuxemons.filter(xuxemon => xuxemon.id !== id);
-    });
+    if (window.confirm('¿Estás seguro de que deseas eliminar este Xuxemon?')) {
+      this.xuxemonService.deleteXuxemon(id).subscribe(() => {
+        this.xuxemons = this.xuxemons.filter(xuxemon => xuxemon.id !== id);
+      });
+    }
   }
-
+  
   editarXuxemon(xuxemon: Xuxemon) {
     this.xuxemonEditando = xuxemon;
   }
@@ -46,5 +50,35 @@ export class AdminDashboardComponent implements OnInit {
   cancelarEdicion() {
     this.xuxemonEditando = null;
   }
+
+  guardarCambiosEditXuxemon() {
+    this.xuxemonEditando = null;
+  }
+
+  mostrarCreacionXuxemon() {
+    this.xuxemonCreacion = true;
+  }
+  
+  ocultarCreacionXuxemon() {
+    this.xuxemonCreacion = false;
+  }
+  
+  xuxemonCreado() {
+    this.xuxemonCreacion = false;
+    this.obtenerXuxemons();
+  }
+
+  xuxemonDebug() {
+    this.xuxemonService.xuxemonAleatorio().subscribe(
+      (xuxemon: Xuxemon) => {
+        this.xuxemons.push(xuxemon);
+        this.obtenerXuxemons();
+      },
+      error => {
+        console.error('Error al obtener Xuxemons aleatorios:', error);
+      }
+    );
+  }
+  
 
 }
