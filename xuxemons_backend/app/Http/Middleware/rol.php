@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Http\Middleware;
-
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,14 +13,15 @@ class rol
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Registra en la consola el usuario actual
+        \Log::info('Usuario actual: ' . $request->user());
 
-        // Verificar si el usuario está autenticado y tiene el rol de administrador
-        if ($request->user() && $request->user()->role !== 'usuario') {
+        // Verifica si el usuario está autenticado y tiene el rol de administrador
+        if ($request->user() && $request->user()->role === 'administrador') {
             return $next($request);
         }
 
-        // Si el usuario no tiene el rol de administrador, redirigir o responder con un error
+        // Si el usuario no tiene el rol de administrador, responde con un error
         return response()->json(['error' => 'No tienes permiso para acceder a esta ruta'], 403);
-    
     }
 }

@@ -37,7 +37,7 @@ public function store(Request $request)
             return response()->json(['message' => 'Registro exitoso', 200]);
         } catch (\Exception $e) {
             // Manejar cualquier excepción
-            return response()->json(['error' => 'Usuario no insertado'], 404);
+            return response()->json(['error' => 'Usuario no insertado: ' . $e->getMessage()], 404);
         }
     }
 }

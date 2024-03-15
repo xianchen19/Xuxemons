@@ -39,8 +39,7 @@ export class EditXuxemonComponent {
 
   guardarCambios() {
     if (this.xuxemon) {
-      const xuxemonEditado: Xuxemon = this.xuxemonForm.value;
-      xuxemonEditado.id = this.xuxemon.id;
+      const xuxemonEditado: Xuxemon = { ...this.xuxemonForm.value, id: this.xuxemon.id };
       this.xuxemonService.editarXuxemon(xuxemonEditado.id, xuxemonEditado).subscribe(() => {
         this.cambiosGuardados.emit();
       }, error => {
@@ -48,7 +47,7 @@ export class EditXuxemonComponent {
       });
     }
   }
-
+  
   cancelarEdicion() {
     this.cancelar.emit();
   }

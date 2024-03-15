@@ -19,6 +19,7 @@ class LoginController extends Controller
 
             // Intentar autenticar al usuario
             if (Auth::attempt($credentials)) {
+                $user = Auth::user();
                 // Autenticación exitosa
                 return response()->json(['message' => 'Inicio de sesión exitoso'], 200);
             } else {
@@ -27,7 +28,7 @@ class LoginController extends Controller
             }
         } catch (\Exception $e) {
             // Manejar cualquier excepción
-            return response()->json(['error' => 'Ha ocurrido un error al intentar iniciar sesión'], 500);
+            return response()->json(['error' => 'Error al iniciar sesion ' . $e->getMessage()], 404);
         }
     }
    /* {
