@@ -11,8 +11,11 @@ export class AuthService {
 
   constructor(private usuarioService: UsuarioService, private router: Router) {}
 
-  login(rememberMe: boolean) {
+  login(rememberMe: boolean, email: string) {
     this.isLoggedIn = true;
+
+    sessionStorage.setItem('email', email);
+
     if (rememberMe) {
       localStorage.setItem('isLoggedIn', 'true');
     } else {
@@ -24,6 +27,7 @@ export class AuthService {
     this.isLoggedIn = false;
     localStorage.removeItem('isLoggedIn');
     sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('email');
   }
 
   checkLoggedIn(): boolean {

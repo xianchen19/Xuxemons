@@ -101,30 +101,26 @@ class inventarioController extends Controller
             return response()->json(['error' => 'A ocurrido un error al eliminar'], 404);
         }
     }
+*/
+public function randomChuche()
+{
+    // Array de nombres y tipos
+    $nombres = ['Chocolate', 'Piruleta']; // Agrega aquí tus nombres
+    $tipos = ['chuches']; // Agrega aquí tus tipos
 
-    public function randomXuxemon()
-    {
-            // Array de nombres y tipos
-        $nombres = ['Blastoise', 'Reshiram', 'Zekrom']; // Agrega aquí tus nombres
-        $tipos = ['Agua', 'Tierra', 'Aire']; // Agrega aquí tus tipos
+    // Elegir aleatoriamente un nombre y un tipo
+    $nombreAleatorio = $nombres[array_rand($nombres)];
 
-        // Elegir aleatoriamente un nombre y un tipo
-        $nombreAleatorio = $nombres[array_rand($nombres)];
-        $tipoAleatorio = $tipos[array_rand($tipos)];
 
-        // Generar otros valores aleatorios para los campos
-        $tamano = rand(1, 100); // Tamaño aleatorio entre 1 y 100
-        $vida = rand(1, 100); // Vida aleatoria entre 1 y 100
 
-        // Crear el xuxemon en la base de datos
-        $inventarios = new inventario();
-        $inventarios->nombre = $nombreAleatorio;
-        $inventarios->tipo = $tipoAleatorio;
-        $inventarios->tamano = $tamano;
-        $inventarios->vida = $vida;
+    // Crear el inventario en la base de datos
+    $inventario = new Inventario();
+    $inventario->nombre = $nombreAleatorio;
+    $inventario->tipo = $tipos;
+    $inventario->cantidad =1;
 
-        $inventarios->save();
+    $inventario->save();
 
-        return response()->json(['message' => 'Inventario aleatorio creado correctamente'], 200);
-    }*/
+    return response()->json(['message' => 'Inventario aleatorio creado correctamente'], 200);
+}
 }

@@ -24,7 +24,7 @@ use App\Http\Controllers\xuxemonController;
 
     // Gestionar xuxemons
     // Rutas para xuxemons
-    //Route::middleware(['role:administrador'])->group(function () {
+   Route::middleware(['role'])->group(function () {
         Route::get('/xuxemons', [xuxemonController::class, 'index']);
         Route::post('/xuxemons', [xuxemonController::class, 'store']);
         Route::get('/xuxemons/{id}', [xuxemonController::class, 'show']);
@@ -38,6 +38,6 @@ use App\Http\Controllers\xuxemonController;
         Route::get('/xuxemons/create', [xuxemonController::class, 'create']);
 
         // Ruta para generar xuxemon aleatorio
-        Route::get('/generar-xuxemon-aleatorio', [xuxemonController::class, 'randomXuxemon']);
-   // });
+        Route::get('/random_xuxemon', [xuxemonController::class, 'randomXuxemon']);
+     });
 });

@@ -1,36 +1,50 @@
 // xuxemon.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Xuxemon } from '../models/xuxemon/xuxemon.module'; // Importa el modelo Xuxemon
+import { Xuxemon } from '../models/xuxemon/xuxemon.module';
 
 @Injectable({
   providedIn: 'root'
 })
 export class XuxemonService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  private apiUrl = 'http://127.0.0.1:8000';
 
   constructor(private http: HttpClient) { }
 
   getListaXuxemons(): Observable<Xuxemon[]> {
-    return this.http.get<Xuxemon[]>(`${this.apiUrl}/xuxemons`);
+    // Agregar el correo electrónico como encabezado en la solicitud
+    const headers = this.httpHeaders();
+    return this.http.get<Xuxemon[]>(`${this.apiUrl}/xuxemons`, { headers });
   }
 
   deleteXuxemon(id: number): Observable<Xuxemon> {
-    return this.http.delete<Xuxemon>(`${this.apiUrl}/xuxemons/${id}`);
+    const headers = this.httpHeaders();
+    return this.http.delete<Xuxemon>(`${this.apiUrl}/xuxemons/${id}`, { headers });
   }
 
   editarXuxemon(id: number, xuxemon: Xuxemon): Observable<Xuxemon> {
-    return this.http.put<Xuxemon>(`${this.apiUrl}/xuxemons/${id}`, xuxemon);
+    const headers = this.httpHeaders();
+    return this.http.put<Xuxemon>(`${this.apiUrl}/xuxemons/${id}`, xuxemon, { headers });
   }
 
-  xuxemonAleatorio () {
-    return this.http.get<Xuxemon>(`${this.apiUrl}/random_xuxemon`);
+  xuxemonAleatorio(): Observable<Xuxemon> {
+    const headers = this.httpHeaders();
+    return this.http.get<Xuxemon>(`${this.apiUrl}/random_xuxemon`, { headers });
   }
   
-  crearXuxemon (xuxemon: Xuxemon) {
-    return this.http.post<Xuxemon>(`${this.apiUrl}/xuxemons`, xuxemon)
+  crearXuxemon(xuxemon: Xuxemon): Observable<Xuxemon> {
+    const headers = this.httpHeaders();
+    return this.http.post<Xuxemon>(`${this.apiUrl}/xuxemons`, xuxemon, { headers });
+  }
+
+  httpHeaders(): HttpHeaders {
+    const email = sessionStorage.getItem('email');
+    if (email) {
+      return new HttpHeaders().set('Email', email);
+    }
+    return new HttpHeaders();
   }
   
 }

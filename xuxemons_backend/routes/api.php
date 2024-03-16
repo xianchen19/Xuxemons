@@ -32,7 +32,7 @@ Route::middleware(['cors'])->group(function () {
 
     // Gestionar xuxemons
     // Rutas para xuxemons
-    Route::middleware(['role'])->group(function () {
+   Route::middleware(['role'])->group(function () {
         Route::get('/xuxemons', [xuxemonController::class, 'index']);
         Route::post('/xuxemons', [xuxemonController::class, 'store']);
         Route::get('/xuxemons/{id}', [xuxemonController::class, 'show']);
@@ -47,5 +47,5 @@ Route::middleware(['cors'])->group(function () {
 
         // Ruta para generar xuxemon aleatorio
         Route::get('/random_xuxemon', [xuxemonController::class, 'randomXuxemon']);
-    });
+   });
 });

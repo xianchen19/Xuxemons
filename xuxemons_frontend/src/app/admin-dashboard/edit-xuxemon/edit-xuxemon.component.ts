@@ -19,7 +19,7 @@ export class EditXuxemonComponent {
     this.xuxemonForm = this.fb.group({
       nombre: ['', Validators.required],
       tipo: ['', Validators.required],
-      tamano: [null, Validators.required],
+      tamano: ['', Validators.required],
       vida: [null, Validators.required],
       archivo: ['', Validators.required]
     });

@@ -33,11 +33,12 @@ export class LoginComponent {
       };
       
       const rememberMe = this.formLogin.get('rememberMe')?.value;
+      const email = this.formLogin.get('email')?.value;
 
       this.usuarioService.login(userData).subscribe(
         (response) => {
           console.log('Inicio exitoso:', response);
-          this.authService.login(rememberMe);
+          this.authService.login(rememberMe, email);
           this.router.navigate(['/dashboard']);
         },
         (error) => {
