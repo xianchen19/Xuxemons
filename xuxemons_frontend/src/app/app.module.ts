@@ -13,6 +13,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { EditXuxemonComponent } from './admin-dashboard/edit-xuxemon/edit-xuxemon.component';
 import { CreateXuxemonComponent } from './admin-dashboard/create-xuxemon/create-xuxemon.component';
+import { MatIconModule } from '@angular/material/icon';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -25,16 +27,19 @@ import { CreateXuxemonComponent } from './admin-dashboard/create-xuxemon/create-
     DashboardComponent,
     AdminDashboardComponent,
     EditXuxemonComponent,
-    CreateXuxemonComponent
+    CreateXuxemonComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatIconModule
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
