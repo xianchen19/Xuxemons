@@ -4,6 +4,7 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\xuxemonController;
+use App\Http\Controllers\inventarioController;
 
 
 /*
@@ -39,5 +40,7 @@ use App\Http\Controllers\xuxemonController;
 
         // Ruta para generar xuxemon aleatorio
         Route::get('/random_xuxemon', [xuxemonController::class, 'randomXuxemon']);
+        Route::get('/random_chuche', [inventarioController::class, 'randomChuche']);
+
      });
 });

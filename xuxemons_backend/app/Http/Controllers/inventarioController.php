@@ -111,13 +111,14 @@ public function randomChuche()
     // Elegir aleatoriamente un nombre y un tipo
     $nombreAleatorio = $nombres[array_rand($nombres)];
 
-
+    // Generar cantidad aleatoria entre 1 y 10
+    $cantidadAleatoria = rand(1, 10);
 
     // Crear el inventario en la base de datos
-    $inventario = new Inventario();
+    $inventario = new inventario();
     $inventario->nombre = $nombreAleatorio;
-    $inventario->tipo = $tipos;
-    $inventario->cantidad =1;
+    $inventario->tipo = 'chuches';
+    $inventario->cantidad = $cantidadAleatoria;
 
     $inventario->save();
 

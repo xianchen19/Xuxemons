@@ -1,53 +1,37 @@
 <app-navbar></app-navbar>
 
-<div class="container d-flex justify-content-center align-items-center" style="padding-top: 150px;">
+<div class="container d-flex justify-content-center align-items-center" style="padding-top: 120px;">
   <div class="row">
 
-    <div class="card col-4">
-      <div id="tienda">
-
-      </div>
-      <p>XuxeTienda</p>
+    <div class="card col-4" id="Tienda">
+      <a> <p>XuxeTienda</p> </a>
     </div>
 
     <div class="card col-4" id="Coleccion">
-      <p>Universe</p>
+      <p>Colección</p>
     </div>
 
     <div class="card col-4" id="Hospital">
-      <p>Universe</p>
+      <p>Hospital</p>
     </div>
 
   </div>
-
 </div>
 
-<div class="container d-flex justify-content-center align-items-center" style="padding-top: 100px;">
+<div class="container d-flex justify-content-center align-items-center" style="padding-top: 40px;">
 
 <div class="row">
 
   <div class="card col-4" id="Inventario">
-    <p>Universe</p>
+    <p>Inventario</p>
   </div>
 
-  <div class="card col-4" id="Panel Administrador">
-    <p class="heading">
-      Popular this month 6
-    </p>
-    <p>
-      Powered By
-    </p>
-    <p>Universe</p>
+  <div class="card col-4" id="Admin_panel" (click)="this.router.navigateByUrl('/admin')">
+    <p>Panel administración</p>
   </div>
 
-  <div class="card col-4" id="Configuración">
-    <p class="heading">
-      Popular this month 7
-    </p>
-    <p>
-      Powered By
-    </p>
-    <p>Universe</p>
+  <div class="card col-4" id="Configuracion">
+    <p>Configuración</p>
   </div>
   
 </div>

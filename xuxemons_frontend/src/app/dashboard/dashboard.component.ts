@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import xuxemonsData from '../xuxemons.json';
 
 @Component({
@@ -9,7 +10,7 @@ import xuxemonsData from '../xuxemons.json';
 export class DashboardComponent implements OnInit {
   xuxemons: any[] = xuxemonsData;
 
-  constructor() { }
+  constructor(protected router: Router) {}
 
   ngOnInit(): void {
   }

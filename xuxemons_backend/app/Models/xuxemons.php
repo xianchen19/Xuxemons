@@ -11,4 +11,6 @@ class xuxemons extends Model
 
     protected $fillable = ['nombre', 'tipo', 'tamano', 'vida', 'archivo'];
 
+
+ 
 }
