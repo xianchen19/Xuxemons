@@ -1,0 +1,44 @@
+<app-navbar></app-navbar>
+
+<h1>Lista de Xuxemons</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Tipo</th>
+      <th>Tamaño</th>
+      <th>Vida</th>
+      <th>Archivo</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let xuxemon of xuxemons">
+      <ng-container *ngIf="xuxemonEditando !== xuxemon; else formEditXuxemon">
+        <td>{{ xuxemon.nombre }}</td>
+        <td>{{ xuxemon.tipo }}</td>
+        <td>{{ xuxemon.tamano }}</td>
+        <td>{{ xuxemon.vida }}</td>
+        <td>{{ xuxemon.archivo }}</td>
+        <td>
+          <button (click)="editarXuxemon(xuxemon)">Editar</button>
+          <button (click)="eliminarXuxemon(xuxemon.id)">Borrar</button>
+        </td>
+      </ng-container>
+      <ng-template #formEditXuxemon>
+        <td colspan="6">
+          <app-edit-xuxemon [xuxemon]="xuxemonEditando" (cancelar)="cancelarEdicion()" (cambiosGuardados)="guardarCambiosEditXuxemon()"></app-edit-xuxemon>
+
+        </td>
+      </ng-template>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<button (click)="mostrarCreacionXuxemon()">Crear Xuxemon</button>
+<button (click)="xuxemonDebug()">Xuxemon (debug)</button>
+
+<app-create-xuxemon *ngIf="xuxemonCreacion == true" (xuxemonCreado)="xuxemonCreado()" (cancelarCreacion)="ocultarCreacionXuxemon()"></app-create-xuxemon>

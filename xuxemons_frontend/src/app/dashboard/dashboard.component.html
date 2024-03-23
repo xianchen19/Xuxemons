@@ -1,0 +1,62 @@
+<app-navbar></app-navbar>
+
+<div class="container d-flex justify-content-center align-items-center" style="padding-top: 120px;">
+  <div class="row">
+
+    <div class="card col-4" id="Tienda">
+      <a> <p>XuxeTienda</p> </a>
+    </div>
+
+    <div class="card col-4" id="Coleccion">
+      <p>Colección</p>
+    </div>
+
+    <div class="card col-4" id="Hospital">
+      <p>Hospital</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="container d-flex justify-content-center align-items-center" style="padding-top: 40px;">
+
+<div class="row">
+
+  <div class="card col-4" id="Inventario">
+    <p>Inventario</p>
+  </div>
+
+  <div class="card col-4" id="Admin_panel" (click)="this.router.navigateByUrl('/admin')">
+    <p>Panel administración</p>
+  </div>
+
+  <div class="card col-4" id="Configuracion">
+    <p>Configuración</p>
+  </div>
+  
+</div>
+</div>
+
+
+
+<!--<div class="container">
+  <h2>Xuxemons</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Tamaño</th>
+        <th>Archivo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let xuxemon of xuxemons">
+        <td>{{ xuxemon.nombre }}</td>
+        <td>{{ xuxemon.tipo }}</td>
+        <td>{{ xuxemon.tamano }}</td>
+        <td><img src="{{ xuxemon.archivo }}" alt="{{ xuxemon.nombre }}" width="50"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>-->
