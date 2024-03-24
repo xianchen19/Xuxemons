@@ -21,10 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'monedas',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
+    /**  * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
@@ -42,4 +43,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+       /**
+     * Define the relationship between User and Xuxemons.
+     */
+ 
 }

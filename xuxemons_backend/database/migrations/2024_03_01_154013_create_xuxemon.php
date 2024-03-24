@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('xuxemons', function (Blueprint $table) {
             $table->id();
-            $table->string('imagen')->nullable();;
             $table->string('nombre');
             $table->string('tipo');
-            $table->integer('tamaño');
-            $table->integer('vida');
-            $table->string('archivo')->nullable();;
+            $table->enum('tamano', ['pequeño', 'mediano', 'grande'])->default('pequeño');
+            $table->integer('vida')->default(100);
+            $table->string('archivo')->nullable();
+         
             $table->timestamps();
+    
+          
         });
     }
 
