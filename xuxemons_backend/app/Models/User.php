@@ -47,4 +47,8 @@ class User extends Authenticatable
      * Define the relationship between User and Xuxemons.
      */
  
+     public function xuxemons()
+     {
+         return $this->belongsToMany(xuxemons::class)->withPivot('tamano');
+     }
 }

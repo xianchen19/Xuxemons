@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\evo_config;
 use App\Models\xuxemons;
 use Illuminate\Http\Request;
-
+use App\Models\User;
 
 class xuxemonController extends Controller
 {
-   public function index()
+    public function index($id)
     {
-        $xuxemons = xuxemons::all(); //coger todos los productos del modelo
-        //dd($xuxemons);
-        return response()->json([$xuxemons, 200]);   
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+    
+        $xuxemons = $user->xuxemons;
+        return response()->json($xuxemons, 200);
     }
+    
 
     public function create()
     {  
@@ -21,18 +27,50 @@ class xuxemonController extends Controller
         return response()->json(['message' => 'Xuxemon actualizado correctamente', 200]);
     }
 
-    public function store(Request $request)
+//     public function store(Request $request)
+// {
+//     // Validar los datos del formulario
+//     $request->validate([
+//         'nombre' => 'required|string',
+//         'tipo' => 'required|string',
+//         'tamano' => 'required|integer',
+//         'vida' => 'required|integer',
+//         'archivo' => 'required|string',
+//     ]);
+
+//     try {
+//         // Crear el xuxemon en la base de datos
+//         $xuxemon = new xuxemons();
+//         $xuxemon->nombre = $request->nombre;
+//         $xuxemon->tipo = $request->tipo;
+//         $xuxemon->tamano = $request->tamano;
+//         $xuxemon->vida = $request->vida;
+//         $xuxemon->archivo = $request->archivo;
+//         $xuxemon->save();
+
+//         return response()->json(['message' => 'Xuxemon creado correctamente'], 200);
+//     } catch (\Exception $e) {
+//         return response()->json(['error' => 'Ha ocurrido un error al crear el Xuxemon'], 404);
+//     }
+// }
+public function store(Request $request, $id)
 {
     // Validar los datos del formulario
     $request->validate([
         'nombre' => 'required|string',
         'tipo' => 'required|string',
-        'tamano' => 'required|integer',
+        'tamano' => 'required|string',
         'vida' => 'required|integer',
         'archivo' => 'required|string',
     ]);
 
     try {
+        // Encontrar al usuario
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+
         // Crear el xuxemon en la base de datos
         $xuxemon = new xuxemons();
         $xuxemon->nombre = $request->nombre;
@@ -42,11 +80,15 @@ class xuxemonController extends Controller
         $xuxemon->archivo = $request->archivo;
         $xuxemon->save();
 
-        return response()->json(['message' => 'Xuxemon creado correctamente'], 200);
+        // Asociar el nuevo Xuxemon con el usuario
+        $user->xuxemons()->attach($xuxemon->id);
+
+        return response()->json(['message' => 'Xuxemon creado y asociado al usuario correctamente'], 200);
     } catch (\Exception $e) {
-        return response()->json(['error' => 'Ha ocurrido un error al crear el Xuxemon'], 404);
+        return response()->json(['error' => 'Ha ocurrido un error al crear el Xuxemon'], 500);
     }
 }
+
     public function show($id)
     {
         $xuxemon = xuxemons::findOrFail($id); // buscar el id de ese producto en especifico
@@ -90,13 +132,16 @@ class xuxemonController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy($id, $xuxemonId)
     {
-        try {
-            //buscar el producto que queremos eliminar
-            $xuxemon = xuxemons::findOrFail($id);
-            $xuxemon->delete();
-    
+         try {
+        //     //buscar el producto que queremos eliminar
+        //     $xuxemon = xuxemons::findOrFail($id);
+        //     $xuxemon->delete();
+        $user = User::find($id);
+
+        $user->xuxemons()->detach($xuxemonId);
+
             return response()->json(['message' => 'Xuxemon eliminado correctamente', 200]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'A ocurrido un error al eliminar'], 404);
@@ -124,4 +169,32 @@ class xuxemonController extends Controller
             return response()->json(['error' => 'No se encontró ningún Xuxemon en la base de datos'], 404);
         }
     }
+
+    public function giveCandy($xuxemonId, $candyAmount)
+{
+    $xuxemon = xuxemons::find($xuxemonId);
+    $xuxemon->chuches += $candyAmount; // Aumentar la cantidad de chuches del Xuxemon
+
+    $currentLevel = $xuxemon->nivel;
+    $requiredCandies = evo_config::where('nivel', $currentLevel + 1)->value('required_chuches');
+
+    if ($xuxemon->chuches >= $requiredCandies) {
+        // Actualizar el nivel del Xuxemon y restar los caramelos necesarios
+        $xuxemon->nivel++;
+        $xuxemon->chuches -= $requiredCandies;
+
+        if ($xuxemon->nivel == 2) {
+            $xuxemon->tamano = 'mediano';
+        } elseif ($xuxemon->nivel == 3) {
+            $xuxemon->tamano = 'grande';
+        }
+
+        $xuxemon->save();
+
+        return response()->json(['message' => 'Xuxemon subió de nivel correctamente'], 200);
+    } else {
+        return response()->json(['message' => 'Se han dado chuches al Xuxemon'], 200);
+    }
+}
+
 };

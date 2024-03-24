@@ -12,5 +12,8 @@ class xuxemons extends Model
     protected $fillable = ['nombre', 'tipo', 'tamano', 'vida', 'archivo'];
 
 
- 
+    public function users()
+    {
+        return $this->belongsToMany(User::class)->withPivot('tamano');
+    }
 }
