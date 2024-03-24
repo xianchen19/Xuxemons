@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\inventario;
-
 
 class User extends Authenticatable
 {
@@ -53,13 +51,4 @@ class User extends Authenticatable
      {
          return $this->belongsToMany(xuxemons::class)->withPivot('tamano');
      }
-     public function inventario()
-     {
-         return $this->hasMany(Inventario::class);
-     }
-
-     public function xuxemonsActivos()
-    {
-    return $this->belongsToMany(Xuxemons::class)->withPivot('tamano')->wherePivot('activo', true)->limit(4);
-    }
 }
