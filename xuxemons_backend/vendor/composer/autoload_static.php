@@ -354,8 +354,8 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -534,6 +534,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/LoginController.php',
         'App\\Http\\Controllers\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/RegisterController.php',
+        'App\\Http\\Controllers\\inventarioController' => __DIR__ . '/../..' . '/app/Http/Controllers/inventarioController.php',
         'App\\Http\\Controllers\\xuxemonController' => __DIR__ . '/../..' . '/app/Http/Controllers/xuxemonController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
@@ -545,7 +546,11 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\ValidateSignature' => __DIR__ . '/../..' . '/app/Http/Middleware/ValidateSignature.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Http\\Middleware\\cors' => __DIR__ . '/../..' . '/app/Http/Middleware/cors.php',
+        'App\\Http\\Middleware\\role' => __DIR__ . '/../..' . '/app/Http/Middleware/role.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\evo_config' => __DIR__ . '/../..' . '/app/Models/evo_config.php',
+        'App\\Models\\inventario' => __DIR__ . '/../..' . '/app/Models/inventario.php',
         'App\\Models\\xuxemons' => __DIR__ . '/../..' . '/app/Models/xuxemons.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
@@ -664,6 +669,10 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'Cron\\MonthField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
+        'Database\\Seeders\\evo_config' => __DIR__ . '/../..' . '/database/seeders/evo_config.php',
+        'Database\\Seeders\\inventarioSeeder' => __DIR__ . '/../..' . '/database/seeders/inventarioSeeder.php',
+        'Database\\Seeders\\users' => __DIR__ . '/../..' . '/database/seeders/users.php',
+        'Database\\Seeders\\xuxemonSeeder' => __DIR__ . '/../..' . '/database/seeders/xuxemonSeeder.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
         'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
         'DateInvalidOperationException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateInvalidOperationException.php',
