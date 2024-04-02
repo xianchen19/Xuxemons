@@ -154,7 +154,11 @@ public function store(Request $request, $id)
     $nombres = ['Blastoise', 'Reshiram', 'Zekrom', 'Charizard', 'Pikachu', 'Snorlax', 'Gyarados', 'Mewtwo'];
 
     // Obtener 4 nombres aleatorios de la lista
-    $nombresAleatorios = array_rand($nombres, 4);
+    $nombresAleatorios = array_rand($nombres, 4); // Obtener 4 nombres aleatorios
+    $tipos = ['agua', 'tierra', 'aire'];
+
+    // Elegir un tipo aleatorio
+    $tipoAleatorio = $tipos[array_rand($tipos)];
 
     // Verificar si se encontraron nombres aleatorios
     if (!empty($nombresAleatorios)) {
@@ -164,6 +168,8 @@ public function store(Request $request, $id)
 
             // Actualizar la vida del Xuxemon seleccionado como 100
             $xuxemon->vida = 100;
+
+            $xuxemon->tipo = $tipoAleatorio;
 
             // Actualizar el tamaño del Xuxemon seleccionado con un valor del enum: pequeño, mediano o grande
             $tamanos = ['pequeño', 'mediano', 'grande'];
@@ -178,6 +184,7 @@ public function store(Request $request, $id)
         return response()->json(['error' => 'No se encontraron nombres aleatorios'], 404);
     }
 }
+
 
 
     public function giveCandy($xuxemonId, $candyAmount)
