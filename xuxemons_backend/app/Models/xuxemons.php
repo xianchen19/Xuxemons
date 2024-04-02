@@ -16,8 +16,4 @@ class xuxemons extends Model
     {
         return $this->belongsToMany(User::class)->withPivot('tamano');
     }
-    public static function getTamanoOptions()
-    {
-        return ['pequeño', 'mediano', 'grande'];
-    }
 }
