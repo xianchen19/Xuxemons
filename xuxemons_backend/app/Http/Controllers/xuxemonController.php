@@ -149,26 +149,36 @@ public function store(Request $request, $id)
     }
     
     public function randomXuxemon()
-    {
-        // Obtener un Xuxemon aleatorio de la base de datos
-        $xuxemon = xuxemons::inRandomOrder()->first();
-    
-        // Verificar si se encontró un Xuxemon
-        if ($xuxemon) {
+{
+    // Lista de nombres ficticios de xuxemons
+    $nombres = ['Blastoise', 'Reshiram', 'Zekrom', 'Charizard', 'Pikachu', 'Snorlax', 'Gyarados', 'Mewtwo'];
+
+    // Obtener 4 nombres aleatorios de la lista
+    $nombresAleatorios = array_rand($nombres, 4);
+
+    // Verificar si se encontraron nombres aleatorios
+    if (!empty($nombresAleatorios)) {
+        foreach ($nombresAleatorios as $nombreIndex) {
+            $xuxemon = new xuxemons();
+            $xuxemon->nombre = $nombres[$nombreIndex];
+
             // Actualizar la vida del Xuxemon seleccionado como 100
             $xuxemon->vida = 100;
-    
+
             // Actualizar el tamaño del Xuxemon seleccionado con un valor del enum: pequeño, mediano o grande
-            $xuxemon->tamano = $xuxemon->getTamanoOptions()[array_rand($xuxemon->getTamanoOptions())];
-    
+            $tamanos = ['pequeño', 'mediano', 'grande'];
+            $xuxemon->tamano = $tamanos[array_rand($tamanos)];
+
             $xuxemon->save();
-    
-            return response()->json(['message' => 'Xuxemon aleatorio actualizado correctamente'], 200);
-        } else {
-            // No se encontró ningún Xuxemon en la base de datos
-            return response()->json(['error' => 'No se encontró ningún Xuxemon en la base de datos'], 404);
         }
+        
+        return response()->json(['message' => 'Xuxemons aleatorios creados correctamente'], 200);
+    } else {
+        // No se encontraron nombres aleatorios
+        return response()->json(['error' => 'No se encontraron nombres aleatorios'], 404);
     }
+}
+
 
     public function giveCandy($xuxemonId, $candyAmount)
 {
