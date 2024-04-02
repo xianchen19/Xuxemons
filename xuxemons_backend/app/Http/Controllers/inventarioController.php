@@ -3,16 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\inventario;
+use App\Models\User;
 use Illuminate\Http\Request;
+
 
 
 class inventarioController extends Controller
 {
-   public function index()
-    {
-        $inventarios = inventario::all(); 
-        return response()->json([$inventarios, 200]);   
+    public function index($id)
+{
+    $user = User::find($id);
+    if (!$user) {
+        return response()->json(['error' => 'Usuario no encontrado'], 404);
     }
+
+    // Obtener el inventario del usuario
+    $inventario = $user->inventario;
+    return response()->json($inventario, 200);
+}
 
     /*public function create()
     {  
