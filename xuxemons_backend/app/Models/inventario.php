@@ -11,7 +11,6 @@ class inventario extends Model
     protected $table = 'inventario';
 
     protected $fillable = ['nombre', 'tipo', 'cantidad', 'descripcion', 'imagen'];
-   
     public function user()
     {
         return $this->belongsTo(User::class);
