@@ -104,24 +104,28 @@ class inventarioController extends Controller
 */
 public function randomChuche()
 {
-    // Array de nombres y tipos
-    $nombres = ['Chocolate', 'Piruleta']; // Agrega aquí tus nombres
-    $tipos = ['chuches']; // Agrega aquí tus tipos
+    try {
+        // Array de nombres y tipos
+        $nombres = ['Chocolate', 'Piruleta']; // Agrega aquí tus nombres
+        // Elegir aleatoriamente un nombre y un tipo
+        $nombreAleatorio = $nombres[array_rand($nombres)];
 
-    // Elegir aleatoriamente un nombre y un tipo
-    $nombreAleatorio = $nombres[array_rand($nombres)];
+        // Generar cantidad aleatoria entre 1 y 10
+        $cantidadAleatoria = rand(1, 10);
 
-    // Generar cantidad aleatoria entre 1 y 10
-    $cantidadAleatoria = rand(1, 10);
+        // Crear el inventario en la base de datos
+        $inventario = new inventario();
+        $inventario->nombre = $nombreAleatorio;
+        $inventario->tipo = 'chuches';
+        $inventario->cantidad = $cantidadAleatoria;
 
-    // Crear el inventario en la base de datos
-    $inventario = new inventario();
-    $inventario->nombre = $nombreAleatorio;
-    $inventario->tipo = 'chuches';
-    $inventario->cantidad = $cantidadAleatoria;
+        $inventario->save();
 
-    $inventario->save();
-
-    return response()->json(['message' => 'Inventario aleatorio creado correctamente'], 200);
+        return response()->json(['message' => 'Inventario aleatorio creado correctamente'], 200);
+    } catch (\Exception $e) {
+        // Manejar el error y devolver una respuesta apropiada
+        return response()->json(['error' => 'Error al crear inventario aleatorio: ' . $e->getMessage()], 500);
+    }
 }
+
 }

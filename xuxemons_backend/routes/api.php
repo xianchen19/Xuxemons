@@ -33,9 +33,9 @@ Route::middleware(['cors'])->group(function () {
 
     // Gestionar xuxemons
     // Rutas para xuxemons
-   Route::middleware(['role'])->group(function () {
-        Route::get('/xuxemons', [xuxemonController::class, 'index']);
-        Route::post('/xuxemons', [xuxemonController::class, 'store']);
+   //Route::middleware(['role'])->group(function () {
+        Route::get('/xuxemons/user/{id}', [xuxemonController::class, 'index']);
+        Route::post('/xuxemons/user/{id}', [xuxemonController::class, 'store']);
         Route::get('/xuxemons/{id}', [xuxemonController::class, 'show']);
         Route::put('/xuxemons/{id}', [xuxemonController::class, 'update']);
         Route::delete('/xuxemons/{id}', [xuxemonController::class, 'destroy']);
@@ -49,5 +49,6 @@ Route::middleware(['cors'])->group(function () {
         // Ruta para generar xuxemon aleatorio
         Route::get('/random_xuxemon', [xuxemonController::class, 'randomXuxemon']);
         Route::get('/random_chuche', [inventarioController::class, 'randomChuche']);
-   });
+        Route::get('/give_chuche/{xuxemonId}/{candyAmount}', [xuxemonController::class, 'giveCandy']);
+  // });
 });
