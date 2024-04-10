@@ -9,51 +9,28 @@ use App\Models\User;
 
 class xuxemonController extends Controller
 {
-    public function index($id)
-    {
-        $user = User::find($id);
+    public function index(Request $request)
+{
+    try {
+        // Obtener el email del usuario del encabezado de la solicitud
+        $email = $request->header('email');
+
+        // Buscar al usuario por su email
+        $user = User::where('email', $email)->first();
         if (!$user) {
             return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
-    
+
+        // Obtener los Xuxemons asociados al usuario
         $xuxemons = $user->xuxemons;
+
         return response()->json($xuxemons, 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Ha ocurrido un error al obtener los Xuxemons del usuario'], 500);
     }
-    
+}
 
-    public function create()
-    {  
-        $xuxemons = xuxemons::all(); //coger todas las categorias del modelo
-        return response()->json(['message' => 'Xuxemon actualizado correctamente', 200]);
-    }
-
-//     public function store(Request $request)
-// {
-//     // Validar los datos del formulario
-//     $request->validate([
-//         'nombre' => 'required|string',
-//         'tipo' => 'required|string',
-//         'tamano' => 'required|integer',
-//         'vida' => 'required|integer',
-//         'archivo' => 'required|string',
-//     ]);
-
-//     try {
-//         // Crear el xuxemon en la base de datos
-//         $xuxemon = new xuxemons();
-//         $xuxemon->nombre = $request->nombre;
-//         $xuxemon->tipo = $request->tipo;
-//         $xuxemon->tamano = $request->tamano;
-//         $xuxemon->vida = $request->vida;
-//         $xuxemon->archivo = $request->archivo;
-//         $xuxemon->save();
-
-//         return response()->json(['message' => 'Xuxemon creado correctamente'], 200);
-//     } catch (\Exception $e) {
-//         return response()->json(['error' => 'Ha ocurrido un error al crear el Xuxemon'], 404);
-//     }
-// }
-public function store(Request $request, $id)
+public function store(Request $request)
 {
     // Validar los datos del formulario
     $request->validate([
@@ -65,11 +42,6 @@ public function store(Request $request, $id)
     ]);
 
     try {
-        // Encontrar al usuario
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json(['error' => 'Usuario no encontrado'], 404);
-        }
 
         // Crear el xuxemon en la base de datos
         $xuxemon = new xuxemons();
@@ -80,75 +52,85 @@ public function store(Request $request, $id)
         $xuxemon->archivo = $request->archivo;
         $xuxemon->save();
 
-        // Asociar el nuevo Xuxemon con el usuario
-        $user->xuxemons()->attach($xuxemon->id);
-
-        return response()->json(['message' => 'Xuxemon creado y asociado al usuario correctamente'], 200);
+        return response()->json(['message' => 'Xuxemon creado'], 200);
     } catch (\Exception $e) {
         return response()->json(['error' => 'Ha ocurrido un error al crear el Xuxemon'], 500);
     }
 }
 
-    public function show($id)
-    {
-        $xuxemon = xuxemons::findOrFail($id); // buscar el id de ese producto en especifico
-        return response()->json(['message' => $xuxemon, 200]);
+public function show(Request $request)
+{
+    try {
+        // Obtener el ID del Xuxemon del encabezado de la solicitud
+        $xuxemonId = $request->header('xuxemon_id');
+
+        // Buscar el Xuxemon por su ID
+        $xuxemon = xuxemons::findOrFail($xuxemonId);
+
+        return response()->json(['message' => $xuxemon], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Xuxemon no encontrado'], 404);
     }
+}
 
-    public function edit($id)
-    {
 
-        $xuxemon = xuxemons::findOrFail($id); //coger todas las categorias del modelo
-        return response()->json(['message' => 'Xuxemon actualizado correctamente', 200]);
+public function update(Request $request)
+{
+    try {
+        // Obtener el ID del Xuxemon del encabezado de la solicitud
+        $xuxemonId = $request->header('xuxemon_id');
+
+        // Validar los datos del formulario
+        $request->validate([
+            'nombre' => 'required|string',
+            'tipo' => 'required|string',
+            'tamano' => 'required|integer',
+            'vida' => 'required|integer',
+            'archivo' => 'required|string',
+        ]);
+
+        // Buscar el Xuxemon por su ID
+        $xuxemon = xuxemons::findOrFail($xuxemonId);
+
+        // Actualizar en la base de datos
+        $xuxemon->update([
+            'nombre' => $request->nombre,
+            'tipo' => $request->tipo,
+            'tamano' => $request->tamano,
+            'vida' => $request->vida,
+            'archivo' => $request->archivo,
+        ]);
+
+        return response()->json(['message' => 'Xuxemon actualizado correctamente'], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Ha ocurrido un error al actualizar el Xuxemon'], 404);
     }
+}
 
-    public function update(Request $request, $id)
+
+    public function destroy(Request $request)
     {
         try {
-            // Validar los datos del formulario
-            $request->validate([
-                'nombre' => 'required|string',
-                'tipo' => 'required|string',
-                'tamano' => 'required|integer',
-                'vida' => 'required|integer',
-                'archivo' => 'required|string',
-            ]);
+            // Obtener el ID del Xuxemon del encabezado de la solicitud
+            $xuxemonId = $request->header('xuxemon_id');
     
-            // Buscar el xuxemon
-            $xuxemon = xuxemons::findOrFail($id);
+            // Buscar el Xuxemon por su ID
+            $xuxemon = xuxemons::find($xuxemonId);
+            if (!$xuxemon) {
+                return response()->json(['error' => 'Xuxemon no encontrado'], 404);
+            }
     
-            // Actualizar en la base de datos
-            $xuxemon->update([
-                'nombre' => $request->nombre,
-                'tipo' => $request->tipo,
-                'tamano' => $request->tamano,
-                'vida' => $request->vida,
-                'archivo' => $request->archivo,
-            ]);
+            // Eliminar el Xuxemon
+            $xuxemon->delete();
     
-            return response()->json(['message' => 'Xuxemon actualizado correctamente'], 200);
+            return response()->json(['message' => 'Xuxemon eliminado correctamente'], 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Ha ocurrido un error al actualizar el Xuxemon'], 404);
-        }
-    }
-
-    public function destroy($id, $xuxemonId)
-    {
-         try {
-        //     //buscar el producto que queremos eliminar
-        //     $xuxemon = xuxemons::findOrFail($id);
-        //     $xuxemon->delete();
-        $user = User::find($id);
-
-        $user->xuxemons()->detach($xuxemonId);
-
-            return response()->json(['message' => 'Xuxemon eliminado correctamente', 200]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'A ocurrido un error al eliminar'], 404);
+            return response()->json(['error' => 'Ha ocurrido un error al eliminar el Xuxemon'], 500);
         }
     }
     
-    public function randomXuxemon()
+    
+    public function randomXuxemonAdmin()
 {
     // Lista de nombres ficticios de xuxemons
     $nombres = ['Blastoise', 'Reshiram', 'Zekrom', 'Charizard', 'Pikachu', 'Snorlax', 'Gyarados', 'Mewtwo'];
@@ -184,6 +166,39 @@ public function store(Request $request, $id)
         return response()->json(['error' => 'No se encontraron nombres aleatorios'], 404);
     }
 }
+public function randomXuxemon(Request $request)
+{
+    try {
+        // Obtener el ID del usuario del encabezado de la solicitud
+        $email = $request->header('email');
+
+        // Buscar al usuario por su ID
+        $user = User::where('email', $email)->first();
+        
+        // Lista de nombres ficticios de xuxemons
+        $nombres = ['Blastoise', 'Reshiram', 'Zekrom', 'Charizard', 'Pikachu', 'Snorlax', 'Gyarados', 'Mewtwo'];
+        $tipos = ['Acero', 'Agua', 'Bicho', 'Dragón', 'Eléctrico', 'Fantasma', 'Fuego', 'Hada', 'Hielo', 'Lucha', 'Normal', 'Planta', 'Psíquico', 'Roca', 'Siniestro', 'Tierra', 'Veneno', 'Volador'];
+
+        // Obtener un nombre y tipo aleatorio
+        $nombreAleatorio = $nombres[array_rand($nombres)];
+        $tipoAleatorio = $tipos[array_rand($tipos)];
+
+        // Crear un nuevo Xuxemon
+        $xuxemon = new xuxemons();
+        $xuxemon->nombre = $nombreAleatorio;
+        $xuxemon->tipo = $tipoAleatorio;
+        $xuxemon->vida = 100;
+        $xuxemon->save();
+
+        // Asociar el Xuxemon al usuario
+        $user->xuxemons()->attach($xuxemon->id);
+
+        return response()->json(['message' => 'Xuxemon aleatorio creado y asociado al usuario correctamente'], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Error al crear y asociar el Xuxemon aleatorio: ' . $e->getMessage()], 500);
+    }
+}
+
 
 
 
