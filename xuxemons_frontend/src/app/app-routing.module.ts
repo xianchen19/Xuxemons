@@ -8,6 +8,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { loggedInGuard } from './guards/logged-in.guard';
 import { noLoggedInGuard } from './guards/no-logged-in.guard';
+import { InventarioComponent } from './inventario/inventario.component';
+import { ContactoComponent } from './contacto/contacto.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/landscape', pathMatch: 'full' },
@@ -16,6 +18,8 @@ const routes: Routes = [
   { path: 'landscape', component: LandscapeComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [noLoggedInGuard] }, 
   { path: 'admin', component: AdminDashboardComponent, canActivate: [noLoggedInGuard] },
+  { path: 'contacto', component: ContactoComponent},
+  { path: 'inventario', component: InventarioComponent },
   { path: 'error', component: ErrorComponent },
   { path: '**', redirectTo: '/error'}
 ];

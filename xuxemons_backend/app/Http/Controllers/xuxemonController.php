@@ -152,25 +152,23 @@ public function store(Request $request, $id)
 {
     // Lista de nombres ficticios de xuxemons
     $nombres = ['Blastoise', 'Reshiram', 'Zekrom', 'Charizard', 'Pikachu', 'Snorlax', 'Gyarados', 'Mewtwo'];
+    $tipos = ['Acero', 'Agua', 'Bicho', 'Dragón', 'Eléctrico', 'Fantasma', 'Fuego', 'Hada', 'Hielo', 'Lucha', 'Normal', 'Planta', 'Psíquico', 'Roca', 'Siniestro', 'Tierra', 'Veneno', 'Volador'];
 
     // Obtener 4 nombres aleatorios de la lista
-    $nombresAleatorios = array_rand($nombres, 4);
+    $nombreAleatorios = array_rand($nombres, 1);
+    $tipoAleatorios = array_rand($tipos, 1);
 
     // Verificar si se encontraron nombres aleatorios
-    if (!empty($nombresAleatorios)) {
-        foreach ($nombresAleatorios as $nombreIndex) {
+    if (!empty($nombreAleatorios || $tipoAleatorios)) {
             $xuxemon = new xuxemons();
-            $xuxemon->nombre = $nombres[$nombreIndex];
+            $xuxemon->nombre = $nombres[$nombreAleatorios];
+
+            $xuxemon->tipo = $tipos[$tipoAleatorios];
 
             // Actualizar la vida del Xuxemon seleccionado como 100
             $xuxemon->vida = 100;
 
-            // Actualizar el tamaño del Xuxemon seleccionado con un valor del enum: pequeño, mediano o grande
-            $tamanos = ['pequeño', 'mediano', 'grande'];
-            $xuxemon->tamano = $tamanos[array_rand($tamanos)];
-
             $xuxemon->save();
-        }
         
         return response()->json(['message' => 'Xuxemons aleatorios creados correctamente'], 200);
     } else {
@@ -178,7 +176,6 @@ public function store(Request $request, $id)
         return response()->json(['error' => 'No se encontraron nombres aleatorios'], 404);
     }
 }
-
 
     public function giveCandy($xuxemonId, $candyAmount)
 {
@@ -205,6 +202,11 @@ public function store(Request $request, $id)
     } else {
         return response()->json(['message' => 'Se han dado chuches al Xuxemon'], 200);
     }
+}
+
+public function xuxemonAll(){
+    $xuxemons = xuxemons::all();
+    return response()->json([$xuxemons,'message' => 'Xuxemon Index', 200]);
 }
 
 };

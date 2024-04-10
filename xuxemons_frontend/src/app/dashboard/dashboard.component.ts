@@ -8,6 +8,7 @@ import xuxemonsData from '../xuxemons.json';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  rol = sessionStorage.getItem('rol');
   xuxemons: any[] = xuxemonsData;
 
   constructor(protected router: Router) {}

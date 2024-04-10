@@ -34,11 +34,12 @@ export class LoginComponent {
       
       const rememberMe = this.formLogin.get('rememberMe')?.value;
       const email = this.formLogin.get('email')?.value;
-
+  
       this.usuarioService.login(userData).subscribe(
-        (response) => {
+        (response: any) => {
           console.log('Inicio exitoso:', response);
-          this.authService.login(rememberMe, email);
+          const role = response.role;
+          this.authService.login(rememberMe, email, role);
           this.router.navigate(['/dashboard']);
         },
         (error) => {
@@ -49,5 +50,5 @@ export class LoginComponent {
       console.error('El formulario es inválido');
     }
   }
-
+  
 }

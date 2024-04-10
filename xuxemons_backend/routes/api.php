@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EvoConfigController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
@@ -33,12 +34,13 @@ Route::middleware(['cors'])->group(function () {
 
     // Gestionar xuxemons
     // Rutas para xuxemons
-   //Route::middleware(['role'])->group(function () {
+   Route::middleware(['role'])->group(function () {
         Route::get('/xuxemons/user/{id}', [xuxemonController::class, 'index']);
         Route::post('/xuxemons/user/{id}', [xuxemonController::class, 'store']);
         Route::get('/xuxemons/{id}', [xuxemonController::class, 'show']);
         Route::put('/xuxemons/{id}', [xuxemonController::class, 'update']);
         Route::delete('/xuxemons/{id}', [xuxemonController::class, 'destroy']);
+        Route::get('/xuxemons', [xuxemonController::class, 'xuxemonAll']);
 
         // Ruta para editar xuxemons
         Route::get('/xuxemons/{id}/edit', [xuxemonController::class, 'edit']);
@@ -50,5 +52,8 @@ Route::middleware(['cors'])->group(function () {
         Route::get('/random_xuxemon', [xuxemonController::class, 'randomXuxemon']);
         Route::get('/random_chuche', [inventarioController::class, 'randomChuche']);
         Route::get('/give_chuche/{xuxemonId}/{candyAmount}', [xuxemonController::class, 'giveCandy']);
-  // });
+        Route::get('/configurations', [EvoConfigController::class, 'index']);
+        Route::put('/configurations/{id}', [EvoConfigController::class, 'update']);
+        Route::get('/inventario/{id}', [InventarioController::class, 'index']);
+  });
 });

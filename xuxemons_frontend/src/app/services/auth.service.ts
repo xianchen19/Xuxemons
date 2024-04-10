@@ -11,10 +11,11 @@ export class AuthService {
 
   constructor(private usuarioService: UsuarioService, private router: Router) {}
 
-  login(rememberMe: boolean, email: string) {
+  login(rememberMe: boolean, email: string, role: string) {
     this.isLoggedIn = true;
 
     sessionStorage.setItem('email', email);
+    sessionStorage.setItem('rol', role);
 
     if (rememberMe) {
       localStorage.setItem('isLoggedIn', 'true');

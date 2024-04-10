@@ -12,25 +12,29 @@ class LoginController extends Controller
 
 
     public function login(Request $request)
-        {
-        try {
-            // Validar las credenciales del usuario
-            $credentials = $request->only('email', 'password');
+{
+    try {
+        // Validar las credenciales del usuario
+        $credentials = $request->only('email', 'password');
 
-            // Intentar autenticar al usuario
-            if (Auth::attempt($credentials)) {
-                $user = Auth::user();
-                // Autenticación exitosa
-                return response()->json(['message' => 'Inicio de sesión exitoso'], 200);
-            } else {
-                // Credenciales inválidas
-                return response()->json(['error' => 'Credenciales inválidas'], 401);
-            }
-        } catch (\Exception $e) {
-            // Manejar cualquier excepción
-            return response()->json(['error' => 'Error al iniciar sesion ' . $e->getMessage()], 404);
+        // Intentar autenticar al usuario
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            // Obtener el rol del usuario
+            $role = $user->role; // Suponiendo que el rol del usuario está almacenado en una columna llamada 'role' en la tabla de usuarios
+
+            // Autenticación exitosa
+            return response()->json(['message' => 'Inicio de sesión exitoso', 'role' => $role], 200);
+        } else {
+            // Credenciales inválidas
+            return response()->json(['error' => 'Credenciales inválidas'], 401);
         }
+    } catch (\Exception $e) {
+        // Manejar cualquier excepción
+        return response()->json(['error' => 'Error al iniciar sesión: ' . $e->getMessage()], 500);
     }
+}
+
    /* {
         try {
             $credentials = $request->only('email', 'password');

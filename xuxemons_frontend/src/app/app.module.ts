@@ -11,8 +11,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { ContactoComponent } from './contacto/contacto.component';
 import { EditXuxemonComponent } from './admin-dashboard/edit-xuxemon/edit-xuxemon.component';
 import { CreateXuxemonComponent } from './admin-dashboard/create-xuxemon/create-xuxemon.component';
+import { InventarioComponent } from './inventario/inventario.component';
 import { MatIconModule } from '@angular/material/icon';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
@@ -28,6 +30,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     AdminDashboardComponent,
     EditXuxemonComponent,
     CreateXuxemonComponent,
+    InventarioComponent,
+    ContactoComponent,
   ],
   imports: [
     BrowserModule,

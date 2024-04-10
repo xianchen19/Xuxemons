@@ -14,7 +14,6 @@ export class XuxemonService {
   constructor(private http: HttpClient) { }
 
   getListaXuxemons(): Observable<Xuxemon[]> {
-    // Agregar el correo electrónico como encabezado en la solicitud
     const headers = this.httpHeaders();
     return this.http.get<Xuxemon[]>(`${this.apiUrl}/xuxemons`, { headers });
   }

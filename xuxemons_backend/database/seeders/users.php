@@ -18,7 +18,7 @@ class users extends Seeder
         User::create([
             'name' => 'Usuario normal',
             'email' => 'andy@andy',
-            'password' => 'contraseña', // Recuerda cifrar la contraseña
+            'password' => 'andy1234', // Recuerda cifrar la contraseña
             'role' => 'usuario',
             'monedas' => 100, // Por ejemplo, 100 monedas
         ]);
@@ -27,7 +27,7 @@ class users extends Seeder
         User::create([
             'name' => 'Administrador',
             'email' => 'xian@xian',
-            'password' => 'contraseña',
+            'password' => 'xian1234',
             'role' => 'administrador',
             'monedas' => 0, // Por ejemplo, 0 monedas
         ]);
