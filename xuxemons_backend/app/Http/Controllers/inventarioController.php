@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\inventario;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 
 class inventarioController extends Controller
@@ -127,7 +127,7 @@ public function randomChuche()
         $inventario->tipo = 'chuches';
         $inventario->cantidad = $cantidadAleatoria;
 
-        $inventario->save();
+        Auth::user()->inventario()->save($inventario);
 
         return response()->json(['message' => 'Inventario aleatorio creado correctamente'], 200);
     } catch (\Exception $e) {
