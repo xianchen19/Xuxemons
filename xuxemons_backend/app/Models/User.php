@@ -51,4 +51,8 @@ class User extends Authenticatable
      {
          return $this->belongsToMany(xuxemons::class)->withPivot('tamano');
      }
+     public function inventario()
+    {
+        return $this->hasMany(Inventario::class);
+    }
 }
