@@ -192,36 +192,137 @@ public function randomXuxemon(Request $request)
 }
 
 
-    public function giveCandy($xuxemonId, $candyAmount)
+public function giveCandy(Request $request, $xuxemonId, $candyAmount)
 {
-    $xuxemon = xuxemons::find($xuxemonId);
-    $xuxemon->chuches += $candyAmount; // Aumentar la cantidad de chuches del Xuxemon
+    try {
+        // Obtener el correo electrónico del encabezado
+        $email = $request->header('email');
 
-    $currentLevel = $xuxemon->nivel;
-    $requiredCandies = evo_config::where('nivel', $currentLevel + 1)->value('required_chuches');
+        // Encontrar al usuario basado en el correo electrónico
+        $user = User::where('email', $email)->first();
 
-    if ($xuxemon->chuches >= $requiredCandies) {
-        // Actualizar el nivel del Xuxemon y restar los caramelos necesarios
-        $xuxemon->nivel++;
-        $xuxemon->chuches -= $requiredCandies;
-
-        if ($xuxemon->nivel == 2) {
-            $xuxemon->tamano = 'mediano';
-        } elseif ($xuxemon->nivel == 3) {
-            $xuxemon->tamano = 'grande';
+        // Verificar si se encontró el usuario
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
 
-        $xuxemon->save();
+        // Encontrar al Xuxemon
+        $xuxemon = xuxemons::find($xuxemonId);
+        if (!$xuxemon) {
+            return response()->json(['error' => 'Xuxemon no encontrado'], 404);
+        }
 
-        return response()->json(['message' => 'Xuxemon subió de nivel correctamente'], 200);
-    } else {
-        return response()->json(['message' => 'Se han dado chuches al Xuxemon'], 200);
+        // Verificar si el usuario tiene suficientes chuches en su inventario
+        $inventario = $user->inventario()->where('tipo', 'chuches')->first();
+        if (!$inventario || $inventario->cantidad < $candyAmount) {
+            return response()->json(['error' => 'El usuario no tiene suficientes chuches en su inventario'], 400);
+        }
+
+        // Restar la cantidad de chuches del inventario del usuario
+        $inventario->cantidad -= $candyAmount;
+        $inventario->save();
+
+        // Aumentar la cantidad de chuches del Xuxemon
+        $xuxemon->chuches += $candyAmount;
+
+        // Obtener el nivel actual del Xuxemon y la cantidad de chuches requeridas para subir de nivel
+        $currentLevel = $xuxemon->nivel;
+        $requiredCandies = evo_config::where('nivel', $currentLevel + 1)->value('required_chuches');
+
+        // Verificar si el Xuxemon ha alcanzado la cantidad necesaria de chuches para subir de nivel
+        if ($xuxemon->chuches >= $requiredCandies) {
+            // Actualizar el nivel del Xuxemon y restar los caramelos necesarios
+            $xuxemon->nivel++;
+            $xuxemon->chuches -= $requiredCandies;
+
+            // Actualizar el tamaño del Xuxemon si alcanza cierto nivel
+            if ($xuxemon->nivel == 2) {
+                $xuxemon->tamano = 'mediano';
+            } elseif ($xuxemon->nivel == 3) {
+                $xuxemon->tamano = 'grande';
+            }
+
+            // Guardar los cambios en el Xuxemon
+            $xuxemon->save();
+
+            return response()->json(['message' => 'Xuxemon subió de nivel correctamente'], 200);
+        } else {
+            // Guardar los cambios en el Xuxemon
+            $xuxemon->save();
+
+            return response()->json(['message' => 'Se han dado chuches al Xuxemon'], 200);
+        }
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Ha ocurrido un error al dar chuches al Xuxemon: ' . $e->getMessage()], 500);
     }
 }
+
+
 
 public function xuxemonAll(){
     $xuxemons = xuxemons::all();
     return response()->json([$xuxemons,'message' => 'Xuxemon Index', 200]);
 }
+
+public function activarXuxemon(Request $request, $xuxemonId)
+    {
+        try {
+            // Obtener el correo electrónico del encabezado
+            $email = $request->header('email');
+
+            // Encontrar al usuario basado en el correo electrónico
+            $user = User::where('email', $email)->first();
+
+            // Verificar si el usuario existe
+            if (!$user) {
+                return response()->json(['error' => 'Usuario no encontrado'], 404);
+            }
+
+            // Verificar si el Xuxemon pertenece al usuario
+            if (!$user->xuxemons()->where('xuxemons.id', $xuxemonId)->exists()) {
+                return response()->json(['error' => 'El Xuxemon no pertenece al usuario'], 400);
+            }
+
+            // Verificar si el usuario ya tiene 4 Xuxemons activos
+            if ($user->xuxemonsActivos()->count() >= 4) {
+                return response()->json(['error' => 'No se puede activar más Xuxemons'], 400);
+            }
+
+            // Activar el Xuxemon para el usuario
+            $user->xuxemons()->updateExistingPivot($xuxemonId, ['activo' => true]);
+
+            return response()->json(['message' => 'Xuxemon activado correctamente'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al activar el Xuxemon: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function desactivarXuxemon(Request $request, $xuxemonId)
+    {
+        try {
+            // Obtener el correo electrónico del encabezado
+            $email = $request->header('email');
+
+            // Encontrar al usuario basado en el correo electrónico
+            $user = User::where('email', $email)->first();
+
+            // Verificar si el usuario existe
+            if (!$user) {
+                return response()->json(['error' => 'Usuario no encontrado'], 404);
+            }
+
+            // Verificar si el Xuxemon pertenece al usuario
+            if (!$user->xuxemons()->where('xuxemons.id', $xuxemonId)->exists()) {
+                return response()->json(['error' => 'El Xuxemon no pertenece al usuario'], 400);
+            }
+
+            // Desactivar el Xuxemon para el usuario
+            $user->xuxemons()->updateExistingPivot($xuxemonId, ['activo' => false]);
+
+            return response()->json(['message' => 'Xuxemon desactivado correctamente'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al desactivar el Xuxemon: ' . $e->getMessage()], 500);
+        }
+    }
 
 };
