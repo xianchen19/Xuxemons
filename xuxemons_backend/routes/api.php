@@ -37,6 +37,8 @@ Route::middleware(['cors'])->group(function () {
     Route::get('/xuxemons/verXuxemon', [xuxemonController::class, 'show']); //mostrar ese xuxemon especifico
     Route::get('/random_xuxemon', [xuxemonController::class, 'randomXuxemon']); //random para usuario
     Route::get('/give_chuche/{xuxemonId}/{candyAmount}', [xuxemonController::class, 'giveCandy']); //dar xuxe a xuxemon
+    Route::put('/xuxemons/{xuxemonId}/activate', [xuxemonController::class, 'activarXuxemon']);
+    Route::put('/xuxemons/{xuxemonId}/deactivate', [xuxemonController::class, 'desactivarXuxemon']);
 
 //-----------Gestion Administrador----------------
    Route::middleware(['role'])->group(function () {
@@ -45,11 +47,15 @@ Route::middleware(['cors'])->group(function () {
         Route::delete('/xuxemons/delete', [xuxemonController::class, 'destroy']); //Admin
         Route::get('/xuxemons', [xuxemonController::class, 'xuxemonAll']); //ver todos los xuxemons
 
-     
         Route::get('/randomXuxemonAdmin', [xuxemonController::class, 'randomXuxemonAdmin']); //crear random Administrador
         Route::get('/random_chucheAdmin', [inventarioController::class, 'randomChucheAdmin']);
         Route::get('/configurations', [EvoConfigController::class, 'index']); //ver la configuracion 
         Route::put('/configurations/{id}', [EvoConfigController::class, 'update']); //cambiar configuracion
         Route::get('/inventario', [InventarioController::class, 'index']);
+
+        Route::post('/chuchesDiarias', [EvoConfigController::class, 'addDailyChuches']);
+        Route::put('/configurations/updateChuchesDiarias/{id}', [EvoConfigController::class, 'updateChuchesDiarias']);
+
+
   });
 });
