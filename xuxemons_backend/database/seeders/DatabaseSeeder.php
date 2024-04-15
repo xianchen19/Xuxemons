@@ -12,10 +12,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(evo_config::class);
-        $this->call(inventarioSeeder::class);
         $this->call(users::class);
         $this->call(xuxemonSeeder::class);
+        $this->call(evo_config::class);
+        $this->call(inventarioSeeder::class);
+        $this->call(coleccion::class);
+        
+       
 
 
     }
