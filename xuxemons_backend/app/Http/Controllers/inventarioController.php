@@ -11,9 +11,13 @@ use Illuminate\Support\Facades\Auth;
 
 class inventarioController extends Controller
 {
-    public function index($id)
+    public function index(Request $request)
 {
-    $user = User::find($id);
+    $email = $request->header('email');
+
+    // Encontrar al usuario basado en el correo electrónico
+    $user = User::where('email', $email)->first();
+
     if (!$user) {
         return response()->json(['error' => 'Usuario no encontrado'], 404);
     }
@@ -23,12 +27,12 @@ class inventarioController extends Controller
     return response()->json($inventario, 200);
 }
 
-    /*public function create()
+    public function showInventory()
     {  
         $inventarios = inventario::all(); //coger todas las categorias del modelo
-        return response()->json(['message' => 'inventario actualizado correctamente', 200]);
+        return response()->json($inventarios,['message' => 'inventario actualizado correctamente', 200]);
     }
-
+/*
     public function store(Request $request)
 {
     // Validar los datos del formulario
