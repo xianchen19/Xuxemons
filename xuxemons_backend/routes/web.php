@@ -34,7 +34,10 @@ Route::middleware(['cors'])->group(function () {
     Route::get('/random_xuxemon', [xuxemonController::class, 'randomXuxemon']); //random para usuario
     Route::get('/give_chuche/{xuxemonId}/{candyAmount}', [xuxemonController::class, 'giveCandy']); //dar xuxe a xuxemon
     Route::put('/xuxemons/{xuxemonId}/activate', [xuxemonController::class, 'activarXuxemon']);
+    Route::get('/random_chuche', [inventarioController::class, 'randomChuche']);
     Route::put('/xuxemons/{xuxemonId}/deactivate', [xuxemonController::class, 'desactivarXuxemon']);
+    Route::get('/inventario', [InventarioController::class, 'index']);
+
 
 //-----------Gestion Administrador----------------
    Route::middleware(['role'])->group(function () {
