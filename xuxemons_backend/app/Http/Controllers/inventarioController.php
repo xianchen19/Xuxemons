@@ -30,7 +30,7 @@ class inventarioController extends Controller
     public function showInventory()
     {  
         $inventarios = inventario::all(); //coger todas las categorias del modelo
-        return response()->json($inventarios,['message' => 'inventario actualizado correctamente', 200]);
+        return response()->json($inventarios, 200);
     }
 /*
     public function store(Request $request)
