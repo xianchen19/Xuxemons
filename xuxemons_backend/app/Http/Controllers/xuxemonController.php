@@ -73,6 +73,32 @@ public function show(Request $request)
     }
 }
 
+public function coleccion(Request $request)
+{
+    try {
+        // Obtener el email del usuario del encabezado de la solicitud
+        $email = $request->header('email');
+
+        // Buscar el usuario por su email
+        $user = User::where('email', $email)->first();
+
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+
+        // Obtener los xuxemons del usuario
+        $xuxemons = $user->xuxemons;
+
+        if ($xuxemons->isEmpty()) {
+            return response()->json(['message' => 'El usuario no tiene xuxemons'], 200);
+        }
+
+        return response()->json(['xuxemons' => $xuxemons], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Ha ocurrido un error al obtener los xuxemons del usuario'], 500);
+    }
+}
+
 
 public function update(Request $request)
 {
