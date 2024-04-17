@@ -17,7 +17,7 @@ class role
     public function handle($request, Closure $next)
     {
         // Obtener el correo electrónico de la solicitud
-        $email = $request->header('Email');
+        $email = $request->header('email');
 
         // Buscar el usuario con el correo electrónico proporcionado
         $user = User::where('email', $email)->first(); // Añade first() para obtener el primer usuario que coincida
@@ -27,7 +27,6 @@ class role
             // Continuar con la solicitud si el usuario tiene el rol de administrador
             return $next($request);
         } else {
-
         // Responder con un error si el usuario no tiene el rol de administrador o si no se encontró un usuario
         return response()->json(['error' => 'No tienes permiso para acceder a esta ruta'], 403);
 

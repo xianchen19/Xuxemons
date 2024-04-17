@@ -22,6 +22,7 @@ class inventarioSeeder extends Seeder
                 'cantidad' => 10,
                 'descripcion' => 'Una deliciosa chuche de sabor a fresa.',
                 'imagen' => 'chuche1.jpg',
+                'user_id'=>'1',
             ],
             [
                 'nombre' => 'Objeto 1',
@@ -29,7 +30,7 @@ class inventarioSeeder extends Seeder
                 'cantidad' => 5,
                 'descripcion' => 'Un objeto misterioso que brilla en la oscuridad.',
                 'imagen' => 'objeto1.jpg',
-            // Añade más datos si lo deseas
+                'user_id'=> '1',
             ],
         ];
 

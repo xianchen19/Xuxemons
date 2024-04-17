@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\inventario;
+use App\Models\Inventario;
+
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 
 class inventarioController extends Controller
 {
-    public function index($id)
+    public function index(Request $request)
 {
-    $user = User::find($id);
+    $email = $request->header('email');
+
+    // Encontrar al usuario basado en el correo electrónico
+    $user = User::where('email', $email)->first();
+
     if (!$user) {
         return response()->json(['error' => 'Usuario no encontrado'], 404);
     }
@@ -22,12 +27,12 @@ class inventarioController extends Controller
     return response()->json($inventario, 200);
 }
 
-    /*public function create()
+    public function showInventory()
     {  
         $inventarios = inventario::all(); //coger todas las categorias del modelo
-        return response()->json(['message' => 'inventario actualizado correctamente', 200]);
+        return response()->json($inventarios, 200);
     }
-
+/*
     public function store(Request $request)
 {
     // Validar los datos del formulario
@@ -110,10 +115,21 @@ class inventarioController extends Controller
         }
     }
 */
-public function randomChuche()
+public function randomChuche(Request $request)
 {
     try {
-        // Array de nombres y tipos
+        // Obtener el correo electrónico del encabezado
+        $email = $request->header('email');
+
+        // Encontrar al usuario basado en el correo electrónico
+        $user = User::where('email', $email)->first();
+
+        // Verificar si se encontró el usuario
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+
+        // Array de nombres y tipos de chuches
         $nombres = ['Chocolate', 'Piruleta']; // Agrega aquí tus nombres
         // Elegir aleatoriamente un nombre y un tipo
         $nombreAleatorio = $nombres[array_rand($nombres)];
@@ -121,12 +137,39 @@ public function randomChuche()
         // Generar cantidad aleatoria entre 1 y 10
         $cantidadAleatoria = rand(1, 10);
 
-        // Crear el inventario en la base de datos
-        $inventario = new inventario();
+        // Crear el inventario en la base de datos asociado al usuario actual
+        $inventario = new Inventario();
         $inventario->nombre = $nombreAleatorio;
         $inventario->tipo = 'chuches';
         $inventario->cantidad = $cantidadAleatoria;
 
+        // Asociar el inventario al usuario actual
+        $user->inventario()->save($inventario);
+
+        return response()->json(['message' => 'Inventario aleatorio creado correctamente'], 200);
+    } catch (\Exception $e) {
+        // Manejar el error y devolver una respuesta apropiada
+        return response()->json(['error' => 'Error al crear inventario aleatorio: ' . $e->getMessage()], 500);
+    }
+}
+public function randomChucheAdmin()
+{
+    try {
+        // Array de nombres y tipos de chuches
+        $nombres = ['Chocolate', 'Piruleta']; // Agrega aquí tus nombres
+        // Elegir aleatoriamente un nombre y un tipo
+        $nombreAleatorio = $nombres[array_rand($nombres)];
+
+        // Generar cantidad aleatoria entre 1 y 10
+        $cantidadAleatoria = rand(1, 10);
+
+        // Crear el inventario en la base de datos sin asociarlo a ningún usuario
+        $inventario = new Inventario();
+        $inventario->nombre = $nombreAleatorio;
+        $inventario->tipo = 'chuches';
+        $inventario->cantidad = $cantidadAleatoria;
+
+        // Guardar el inventario en la base de datos
         $inventario->save();
 
         return response()->json(['message' => 'Inventario aleatorio creado correctamente'], 200);
@@ -135,5 +178,6 @@ public function randomChuche()
         return response()->json(['error' => 'Error al crear inventario aleatorio: ' . $e->getMessage()], 500);
     }
 }
+
 
 }

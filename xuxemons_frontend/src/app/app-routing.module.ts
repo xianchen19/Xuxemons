@@ -10,6 +10,7 @@ import { loggedInGuard } from './guards/logged-in.guard';
 import { noLoggedInGuard } from './guards/no-logged-in.guard';
 import { InventarioComponent } from './inventario/inventario.component';
 import { ContactoComponent } from './contacto/contacto.component';
+import { ColeccionComponent } from './coleccion/coleccion.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/landscape', pathMatch: 'full' },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [noLoggedInGuard] }, 
   { path: 'admin', component: AdminDashboardComponent, canActivate: [noLoggedInGuard] },
   { path: 'contacto', component: ContactoComponent},
+  { path: 'coleccion', component: ColeccionComponent},
   { path: 'inventario', component: InventarioComponent },
   { path: 'error', component: ErrorComponent },
   { path: '**', redirectTo: '/error'}

@@ -1,0 +1,45 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <div class="titulo">
+    <h1>Lista de Xuxemons en tu Colección</h1>
+  </div>
+
+  <div class="tabla">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Tamaño</th>
+          <th>Vida</th>
+          <th>Archivo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let xuxemon of xuxemons">
+          <td>{{ xuxemon.nombre }}</td>
+          <td>{{ xuxemon.tipo }}</td>
+          <td>{{ xuxemon.tamano }}</td>
+          <td>{{ xuxemon.vida }}</td>
+          <td>{{ xuxemon.archivo }}</td>
+          <td>
+            <button (click)="giveChuche(xuxemon.id, 1)">Dar de Comer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+  </div>
+
+  <div class="botones">
+
+    <button (click)="randomXuxemon()">Generar Xuxemon</button>
+    
+  </div>
+
+</div>
+
+
+

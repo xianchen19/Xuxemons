@@ -6,7 +6,7 @@
       <div class="card col-3" id="Tienda">
         <a><p>XuxeTienda</p></a>
       </div>
-      <div class="card col-3" id="Coleccion">
+      <div class="card col-3" id="Coleccion" (click)="this.router.navigateByUrl('/coleccion')">
         <p>Colección</p>
       </div>
       <div class="card col-3" id="Hospital">
@@ -39,7 +39,7 @@
       <div class="card col-4" id="Tienda">
         <a><p>XuxeTienda</p></a>
       </div>
-      <div class="card col-4" id="Coleccion">
+      <div class="card col-4" id="Coleccion" (click)="this.router.navigateByUrl('/coleccion')">
         <p>Colección</p>
       </div>
       <div class="card col-4" id="Hospital">
@@ -50,14 +50,11 @@
   
   <div class="container d-flex justify-content-center align-items-center" style="padding-top: 40px;">
     <div class="row">
-      <div class="card col-4" id="Inventario" (click)="this.router.navigateByUrl('/inventario')">
+      <div class="card col-8" id="Inventario" (click)="this.router.navigateByUrl('/inventario')">
         <p>Inventario</p>
       </div>
-      <div class="card col-4" id="Contacto" (click)="this.router.navigateByUrl('/contacto')">
+      <div class="card col-8" id="Contacto" (click)="this.router.navigateByUrl('/contacto')">
         <p>Contacto</p>
-      </div>
-      <div class="card col-4" id="Configuracion">
-        <p>Configuración</p>
       </div>
     </div>
   </div>
