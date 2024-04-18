@@ -253,7 +253,7 @@ public function giveCandy(Request $request, $xuxemonId, $candyAmount)
 
         // Obtener el nivel actual del Xuxemon y la cantidad de chuches requeridas para subir de nivel
         $currentLevel = $xuxemon->nivel;
-        $requiredCandies = evo_config::where('nivel', $currentLevel + 1)->value('required_chuches');
+        $requiredCandies = evo_config::where('nivel', $currentLevel)->value('required_chuches');
 
         // Verificar si el Xuxemon ha alcanzado la cantidad necesaria de chuches para subir de nivel
         if ($xuxemon->chuches >= $requiredCandies) {
