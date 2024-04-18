@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('evo_config', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('nivel'); // Nivel del Xuxemon
-            $table->unsignedInteger('required_chuches'); // Caramelos necesarios para subir de nivel
+            $table->unsignedInteger('required_chuches')->default(3); // Caramelos necesarios para subir de nivel
             $table->timestamps();
         });
         
