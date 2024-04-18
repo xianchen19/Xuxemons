@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\enfermedad;
 use App\Models\evo_config;
 use App\Models\xuxemons;
 use Illuminate\Http\Request;
@@ -251,37 +252,45 @@ public function giveCandy(Request $request, $xuxemonId, $candyAmount)
         // Aumentar la cantidad de chuches del Xuxemon
         $xuxemon->chuches += $candyAmount;
 
-        // Obtener el nivel actual del Xuxemon y la cantidad de chuches requeridas para subir de nivel
-        $currentLevel = $xuxemon->nivel;
-        $requiredCandies = evo_config::where('nivel', $currentLevel)->value('required_chuches');
+        // Obtener configuración de enfermedades
+        $enfermedadesConfig = enfermedad::first();
 
-        // Verificar si el Xuxemon ha alcanzado la cantidad necesaria de chuches para subir de nivel
-        if ($xuxemon->chuches >= $requiredCandies) {
-            // Actualizar el nivel del Xuxemon y restar los caramelos necesarios
-            $xuxemon->nivel++;
-            $xuxemon->chuches -= $requiredCandies;
-
-            // Actualizar el tamaño del Xuxemon si alcanza cierto nivel
-            if ($xuxemon->nivel == 2) {
-                $xuxemon->tamano = 'mediano';
-            } elseif ($xuxemon->nivel == 3) {
-                $xuxemon->tamano = 'grande';
-            }
-
-            // Guardar los cambios en el Xuxemon
-            $xuxemon->save();
-
-            return response()->json(['message' => 'Xuxemon subió de nivel correctamente'], 200);
-        } else {
-            // Guardar los cambios en el Xuxemon
-            $xuxemon->save();
-
-            return response()->json(['message' => 'Se han dado chuches al Xuxemon'], 200);
+        // Verificar si se obtuvo la configuración de enfermedades
+        if (!$enfermedadesConfig) {
+            return response()->json(['error' => 'Configuración de enfermedades no encontrada'], 500);
         }
+
+        // Probabilidad de infección aleatoria
+        $infeccionAleatoria = rand(1, 100);
+
+        // Definir porcentajes de infección para cada enfermedad
+        $porcentajeBajonAzucar = $enfermedadesConfig->porcentaje_bajon_azucar;
+        $porcentajeSobredosisAzucar = $enfermedadesConfig->porcentaje_sobredosis_azucar;
+        $porcentajeAtracon = $enfermedadesConfig->porcentaje_atracon;
+
+        // Verificar si el Xuxemon se infecta
+        if ($infeccionAleatoria <= $porcentajeBajonAzucar) {
+            $xuxemon->bajon_azucar = true;
+            $mensajeInfeccion = 'El Xuxemon se ha infectado con Bajón de azúcar';
+        } elseif ($infeccionAleatoria <= ($porcentajeBajonAzucar + $porcentajeSobredosisAzucar)) {
+            $xuxemon->sobredosis_azucar = true;
+            $mensajeInfeccion = 'El Xuxemon se ha infectado con Sobredosis de azúcar';
+        } elseif ($infeccionAleatoria <= ($porcentajeBajonAzucar + $porcentajeSobredosisAzucar + $porcentajeAtracon)) {
+            $xuxemon->atracon = true;
+            $mensajeInfeccion = 'El Xuxemon se ha infectado con Atracón';
+        } else {
+            $mensajeInfeccion = 'El Xuxemon no se ha infectado';
+        }
+
+        // Guardar los cambios en el Xuxemon
+        $xuxemon->save();
+
+        return response()->json(['message' => 'Se han dado chuches al Xuxemon', 'infeccion' => $mensajeInfeccion], 200);
     } catch (\Exception $e) {
         return response()->json(['error' => 'Ha ocurrido un error al dar chuches al Xuxemon: ' . $e->getMessage()], 500);
     }
 }
+
 
 
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\enfermedadesController;
 use App\Http\Controllers\EvoConfigController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,7 +51,9 @@ Route::middleware(['cors'])->group(function () {
         Route::get('/configurations', [EvoConfigController::class, 'index']);
         Route::put('/configurations/{id}', [EvoConfigController::class, 'update']);
         Route::get('/inventarioAdmin', [InventarioController::class, 'showInventory']);
-        Route::post('/chuchesDiarias', [EvoConfigController::class, 'addDailyChuches']);
-        Route::put('/configurations/updateChuchesDiarias/{id}', [EvoConfigController::class, 'updateChuchesDiarias']);
+        Route::post('/add-daily-chuches', [EvoConfigController::class, 'addDailyChuches']);
+        Route::put('/enfermedades/configuracion', [enfermedadesController::class, 'update']);
+
+
     });
 });
