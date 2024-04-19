@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\inventario;
+
 
 class User extends Authenticatable
 {
@@ -21,10 +23,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'monedas',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
+    /**  * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
@@ -42,4 +45,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+       /**
+     * Define the relationship between User and Xuxemons.
+     */
+ 
+     public function xuxemons()
+     {
+         return $this->belongsToMany(xuxemons::class)->withPivot('tamano');
+     }
+     public function inventario()
+     {
+         return $this->hasMany(Inventario::class);
+     }
+
+     public function xuxemonsActivos()
+    {
+    return $this->belongsToMany(Xuxemons::class)->withPivot('tamano')->wherePivot('activo', true)->limit(4);
+    }
 }
