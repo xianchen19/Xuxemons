@@ -252,7 +252,6 @@ public function giveCandy(Request $request, $xuxemonId, $candyAmount)
         // Aumentar la cantidad de chuches del Xuxemon
         $xuxemon->chuches += $candyAmount;
 
-<<<<<<< HEAD
         // Obtener configuración de enfermedades
         $enfermedadesConfig = enfermedad::first();
 
@@ -287,35 +286,6 @@ public function giveCandy(Request $request, $xuxemonId, $candyAmount)
         $xuxemon->save();
 
         return response()->json(['message' => 'Se han dado chuches al Xuxemon', 'infeccion' => $mensajeInfeccion], 200);
-=======
-        // Obtener el nivel actual del Xuxemon y la cantidad de chuches requeridas para subir de nivel
-        $currentLevel = $xuxemon->nivel;
-        $requiredCandies = evo_config::where('nivel', $currentLevel)->value('required_chuches');
-
-        // Verificar si el Xuxemon ha alcanzado la cantidad necesaria de chuches para subir de nivel
-        if ($xuxemon->chuches >= $requiredCandies) {
-            // Actualizar el nivel del Xuxemon y restar los caramelos necesarios
-            $xuxemon->nivel++;
-            $xuxemon->chuches -= $requiredCandies;
-
-            // Actualizar el tamaño del Xuxemon si alcanza cierto nivel
-            if ($xuxemon->nivel == 2) {
-                $xuxemon->tamano = 'mediano';
-            } elseif ($xuxemon->nivel == 3) {
-                $xuxemon->tamano = 'grande';
-            }
-
-            // Guardar los cambios en el Xuxemon
-            $xuxemon->save();
-
-            return response()->json(['message' => 'Xuxemon subió de nivel correctamente'], 200);
-        } else {
-            // Guardar los cambios en el Xuxemon
-            $xuxemon->save();
-
-            return response()->json(['message' => 'Se han dado chuches al Xuxemon'], 200);
-        }
->>>>>>> 36c47a0f9bea999d24e080a78e1e1e0bb8a2cbfb
     } catch (\Exception $e) {
         return response()->json(['error' => 'Ha ocurrido un error al dar chuches al Xuxemon: ' . $e->getMessage()], 500);
     }
@@ -323,10 +293,6 @@ public function giveCandy(Request $request, $xuxemonId, $candyAmount)
 
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 36c47a0f9bea999d24e080a78e1e1e0bb8a2cbfb
 public function xuxemonAll(){
     $xuxemons = xuxemons::all();
     return response()->json([$xuxemons,'message' => 'Xuxemon Index', 200]);
