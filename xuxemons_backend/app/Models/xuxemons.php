@@ -9,11 +9,17 @@ class xuxemons extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre', 'tipo', 'tamano', 'vida', 'archivo'];
+    protected $fillable = ['nombre', 'tipo', 'tamano', 'vida', 'archivo', 'enfermedades'];
 
-
+    // Relación con usuarios
     public function users()
     {
         return $this->belongsToMany(User::class)->withPivot('tamano');
+    }
+
+    // Alcance para filtrar xuxemons con una enfermedad específica
+    public function scopeWithEnfermedad($query, $enfermedad)
+    {
+        return $query->where('enfermedades', $enfermedad);
     }
 }
