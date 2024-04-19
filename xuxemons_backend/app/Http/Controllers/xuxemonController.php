@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
 use App\Models\enfermedad;
-=======
->>>>>>> 36c47a0f9bea999d24e080a78e1e1e0bb8a2cbfb
 use App\Models\evo_config;
 use App\Models\xuxemons;
 use Illuminate\Http\Request;

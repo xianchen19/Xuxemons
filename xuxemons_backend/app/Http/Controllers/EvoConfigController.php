@@ -16,8 +16,6 @@ class EvoConfigController extends Controller
         return response()->json($configurations, 200);
     }
 
-
-<<<<<<< HEAD
     public function update(Request $request)
 {
     // Obtener la configuración actual
@@ -108,7 +106,6 @@ class EvoConfigController extends Controller
     }
 }
 
-=======
     public function update(Request $request, $id)
     {
         $configuration = evo_config::findOrFail($id);
@@ -184,6 +181,5 @@ class EvoConfigController extends Controller
             return response()->json(['error' => 'Error al añadir chuches diarias: ' . $e->getMessage()], 500);
         }
     }
->>>>>>> 36c47a0f9bea999d24e080a78e1e1e0bb8a2cbfb
 
 }
