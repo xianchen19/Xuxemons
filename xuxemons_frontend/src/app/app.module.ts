@@ -16,6 +16,8 @@ import { EditXuxemonComponent } from './admin-dashboard/edit-xuxemon/edit-xuxemo
 import { CreateXuxemonComponent } from './admin-dashboard/create-xuxemon/create-xuxemon.component';
 import { InventarioComponent } from './inventario/inventario.component';
 import { ColeccionComponent } from './coleccion/coleccion.component';
+import { XuxedexComponent } from './xuxedex/xuxedex.component';
+import { ConfiguracionComponent } from './configuracion/configuracion.component';
 import { MatIconModule } from '@angular/material/icon';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
@@ -34,6 +36,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     InventarioComponent,
     ContactoComponent,
     ColeccionComponent,
+    ConfiguracionComponent,
+    XuxedexComponent
   ],
   imports: [
     BrowserModule,

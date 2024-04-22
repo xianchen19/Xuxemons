@@ -16,11 +16,15 @@ class evo_config extends Seeder
         EvolutionConfig::create([
             'nivel' => 1,
             'required_chuches' => 3,
+
+            'chuches_diarias'=>10,
         ]);
 
         EvolutionConfig::create([
             'nivel' => 2,
             'required_chuches' => 5,
+
+            'chuches_diarias'=>10,
         ]);
     }
 

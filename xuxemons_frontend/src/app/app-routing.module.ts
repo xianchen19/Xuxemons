@@ -11,6 +11,8 @@ import { noLoggedInGuard } from './guards/no-logged-in.guard';
 import { InventarioComponent } from './inventario/inventario.component';
 import { ContactoComponent } from './contacto/contacto.component';
 import { ColeccionComponent } from './coleccion/coleccion.component';
+import { ConfiguracionComponent } from './configuracion/configuracion.component';
+import { XuxedexComponent } from './xuxedex/xuxedex.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/landscape', pathMatch: 'full' },
@@ -21,7 +23,9 @@ const routes: Routes = [
   { path: 'admin', component: AdminDashboardComponent, canActivate: [noLoggedInGuard] },
   { path: 'contacto', component: ContactoComponent},
   { path: 'coleccion', component: ColeccionComponent},
+  { path: 'configuracion', component: ConfiguracionComponent},
   { path: 'inventario', component: InventarioComponent },
+  { path: 'xuxedex', component: XuxedexComponent},
   { path: 'error', component: ErrorComponent },
   { path: '**', redirectTo: '/error'}
 ];

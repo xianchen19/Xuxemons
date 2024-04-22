@@ -17,14 +17,19 @@ export class InventarioService {
     return this.http.get<Inventario>(`${this.apiUrl}/randomChuche`, { headers });
   }
 
-  getInventarioUser(): Observable<any> {
+  getInventarioUser(): Observable<Inventario[]> {
     const headers = this.httpHeaders();
-    return this.http.get<Inventario>(`${this.apiUrl}/inventario`, { headers });
+    return this.http.get<Inventario[]>(`${this.apiUrl}/inventario`, { headers });
   }
 
-  getInventarioAdmin(): Observable<any> {
+  getInventarioAdmin(): Observable<Inventario[]> {
     const headers = this.httpHeaders();
-    return this.http.get<Inventario>(`${this.apiUrl}/inventarioAdmin`, { headers });
+    return this.http.get<Inventario[]>(`${this.apiUrl}/inventarioAdmin`, { headers });
+  }
+
+  addDailyChuches(): Observable<Inventario> {
+    const headers = this.httpHeaders();
+    return this.http.post<Inventario>(`${this.apiUrl}/add-daily-chuches`, {}, { headers });
   }
 
   httpHeaders(): HttpHeaders {
@@ -34,5 +39,4 @@ export class InventarioService {
     }
     return new HttpHeaders();
   }
-  
 }

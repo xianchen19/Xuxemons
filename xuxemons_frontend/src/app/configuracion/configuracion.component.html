@@ -1,0 +1,22 @@
+<app-navbar></app-navbar>
+
+<div class="container"> 
+<form [formGroup]="configuracionForm" (ngSubmit)="changeConfig"> 
+
+  <label for="nivel"> Nivel: </label>
+  <select name="nivel" id="nivel" formControlName="nivel" required> 
+    <option value="1"> 1 </option>
+    <option value="2"> 2 </option>
+  </select>
+
+  <br>
+
+  <label for="chuches"> Chuches: </label>
+  <input type="number" name="chuches" id="chuches" formControlName="chuches" required>
+
+  <br>
+
+  <button type="submit"> Cambiar configuración </button>
+
+</form>
+</div>

@@ -9,7 +9,7 @@ class xuxemonSeeder extends Seeder
     public function run()
     {
         $xuxemons = [
-['nombre' => 'Apleki', 'tipo' => 'Tierra', 'tamano' => 'pequeño', 'archivo' => 'apleki.png', 'nivel' => 1],
+['nombre' => 'Apleki', 'tipo' => 'Tierra', 'tamano' => 'pequeño','archivo' => 'apleki.png', 'nivel' => 1],
 ['nombre' => 'Avecrem', 'tipo' => 'Aire', 'tamano' => 'pequeño', 'archivo' => 'avecrem.png', 'nivel' => 1],
 ['nombre' => 'Bambino', 'tipo' => 'Tierra', 'tamano' => 'pequeño', 'archivo' => 'bambino.png', 'nivel' => 1],
 ['nombre' => 'Beeboo', 'tipo' => 'Aire', 'tamano' => 'pequeño', 'archivo' => 'beeboo.png', 'nivel' => 1],

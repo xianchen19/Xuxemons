@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\enfermedad;
 use App\Models\evo_config;
 use App\Models\xuxemons;
 use Illuminate\Http\Request;
@@ -21,10 +22,11 @@ class xuxemonController extends Controller
             return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
 
-        // Obtener los Xuxemons asociados al usuario
-        $xuxemons = $user->xuxemons;
+        $xuxemons = $user->xuxemons->map(function ($xuxemon) {
+            return array_merge($xuxemon->toArray(), ['activo' => $xuxemon->pivot->activo]);
+        });
 
-        return response()->json([$xuxemons,'message' => 'Xuxemon Index', 200]);
+        return response()->json($xuxemons, 200);
     } catch (\Exception $e) {
         return response()->json(['error' => 'Ha ocurrido un error al obtener los Xuxemons del usuario'], 500);
     }
@@ -70,6 +72,32 @@ public function show(Request $request)
         return response()->json(['message' => $xuxemon], 200);
     } catch (\Exception $e) {
         return response()->json(['error' => 'Xuxemon no encontrado'], 404);
+    }
+}
+
+public function coleccion(Request $request)
+{
+    try {
+        // Obtener el email del usuario del encabezado de la solicitud
+        $email = $request->header('email');
+
+        // Buscar el usuario por su email
+        $user = User::where('email', $email)->first();
+
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+
+        // Obtener los xuxemons del usuario
+        $xuxemons = $user->xuxemons;
+
+        if ($xuxemons->isEmpty()) {
+            return response()->json(['message' => 'El usuario no tiene xuxemons'], 200);
+        }
+
+        return response()->json(['xuxemons' => $xuxemons], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Ha ocurrido un error al obtener los xuxemons del usuario'], 500);
     }
 }
 
@@ -213,79 +241,52 @@ public function giveCandy(Request $request, $xuxemonId, $candyAmount)
         }
 
         // Verificar si el usuario tiene suficientes chuches en su inventario
-        $inventario = $user->inventario()->where('tipo', 'chuches')->where('cantidad', '<>', 0)->first();
+        $inventario = $user->inventario()->where('tipo', 'chuches')->first();
         if (!$inventario || $inventario->cantidad < $candyAmount) {
             return response()->json(['error' => 'El usuario no tiene suficientes chuches en su inventario'], 400);
         }
 
-        // Obtener el nivel actual del Xuxemon y la cantidad de chuches requeridas para subir de nivel
-        $currentLevel = $xuxemon->nivel;
-        $requiredCandies = evo_config::where('nivel', $currentLevel)->value('required_chuches');
-
-        if ($xuxemon->nivel == 3) {
-
-        $requiredCandies = null;
+        // Restar la cantidad de chuches del inventario del usuario
+        $inventario->cantidad -= $candyAmount;
+        $inventario->save();
 
         // Aumentar la cantidad de chuches del Xuxemon
         $xuxemon->chuches += $candyAmount;
 
-        // Restar la cantidad de chuches del inventario del usuario
-        $inventario->cantidad -= $candyAmount;
-        $inventario->save();
+        // Obtener configuración de enfermedades
+        $enfermedadesConfig = enfermedad::first();
 
-        } else if ($xuxemon->nivel == 2) {
+        // Verificar si se obtuvo la configuración de enfermedades
+        if (!$enfermedadesConfig) {
+            return response()->json(['error' => 'Configuración de enfermedades no encontrada'], 500);
+        }
 
-            // Aumentar la cantidad de chuches del Xuxemon
-        $xuxemon->chuches += $candyAmount;
+        // Probabilidad de infección aleatoria
+        $infeccionAleatoria = rand(1, 100);
 
-        // Restar la cantidad de chuches del inventario del usuario
-        $inventario->cantidad -= $candyAmount;
-        $inventario->save();
+        // Definir porcentajes de infección para cada enfermedad
+        $porcentajeBajonAzucar = $enfermedadesConfig->porcentaje_bajon_azucar;
+        $porcentajeSobredosisAzucar = $enfermedadesConfig->porcentaje_sobredosis_azucar;
+        $porcentajeAtracon = $enfermedadesConfig->porcentaje_atracon;
 
-        if ($xuxemon->chuches == $requiredCandies) {
-
-            $xuxemon->nivel = 3;
-            $xuxemon->tamano = 'grande';
-            $xuxemon->chuches = 0;
-
-            $xuxemon->save();
-
-            return response()->json(['message' => 'Xuxemon subió de nivel correctamente'], 200);
-
+        // Verificar si el Xuxemon se infecta
+        if ($infeccionAleatoria <= $porcentajeBajonAzucar) {
+            $xuxemon->bajon_azucar = true;
+            $mensajeInfeccion = 'El Xuxemon se ha infectado con Bajón de azúcar';
+        } elseif ($infeccionAleatoria <= ($porcentajeBajonAzucar + $porcentajeSobredosisAzucar)) {
+            $xuxemon->sobredosis_azucar = true;
+            $mensajeInfeccion = 'El Xuxemon se ha infectado con Sobredosis de azúcar';
+        } elseif ($infeccionAleatoria <= ($porcentajeBajonAzucar + $porcentajeSobredosisAzucar + $porcentajeAtracon)) {
+            $xuxemon->atracon = true;
+            $mensajeInfeccion = 'El Xuxemon se ha infectado con Atracón';
         } else {
-            // Guardar los cambios en el Xuxemon
-            $xuxemon->save();
-
-            return response()->json(['message' => 'Se han dado chuches al Xuxemon'], 200);
+            $mensajeInfeccion = 'El Xuxemon no se ha infectado';
         }
 
-        } else if ($xuxemon->nivel == 1) {
+        // Guardar los cambios en el Xuxemon
+        $xuxemon->save();
 
-            // Aumentar la cantidad de chuches del Xuxemon
-        $xuxemon->chuches += $candyAmount;
-
-        // Restar la cantidad de chuches del inventario del usuario
-        $inventario->cantidad -= $candyAmount;
-        $inventario->save();
-
-        if ($xuxemon->chuches == $requiredCandies) {
-
-            $xuxemon->nivel = 2;
-            $xuxemon->tamano = 'mediano';
-            $xuxemon->chuches = 0;
-
-            $xuxemon->save();
-
-            return response()->json(['message' => 'Xuxemon subió de nivel correctamente'], 200);
-
-        } else {
-            // Guardar los cambios en el Xuxemon
-            $xuxemon->save();
-
-            return response()->json(['message' => 'Se han dado chuches al Xuxemon'], 200);
-        }
-
-        }
+        return response()->json(['message' => 'Se han dado chuches al Xuxemon', 'infeccion' => $mensajeInfeccion], 200);
     } catch (\Exception $e) {
         return response()->json(['error' => 'Ha ocurrido un error al dar chuches al Xuxemon: ' . $e->getMessage()], 500);
     }

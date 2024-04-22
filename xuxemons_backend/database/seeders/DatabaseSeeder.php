@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call(evo_config::class);
         $this->call(inventarioSeeder::class);
         $this->call(coleccion::class);
+
+        $this->call(enfermedades::class);
         
        
 

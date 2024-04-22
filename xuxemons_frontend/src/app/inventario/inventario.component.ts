@@ -10,6 +10,8 @@ import { Inventario } from '../models/inventario/inventario.module';
 export class InventarioComponent implements OnInit {
 
   inventario: Inventario[] = [];
+  rol  = sessionStorage.getItem('rol');
+  diaChuchesDiarias: string | null = sessionStorage.getItem('diaChuchesDiarias');
 
   constructor(private inventarioService: InventarioService) { }
 
@@ -50,6 +52,24 @@ export class InventarioComponent implements OnInit {
         console.error('Error al generar la chuche:', error);
       }
     );
+  }
+
+  chuchesDiarias(): void {
+    const diaSistema = new Date().toLocaleDateString();
+    if (this.diaChuchesDiarias !== diaSistema) {
+      this.inventarioService.addDailyChuches().subscribe(
+        (response: any) => {
+          this.diaChuchesDiarias = diaSistema;
+          sessionStorage.setItem('diaChuchesDiarias', this.diaChuchesDiarias);
+          this.obtenerInventario();
+        },
+        error => {
+          console.error('Error al añadir chuches diarias:', error);
+        }
+      );
+    } else {
+      console.log('Ya se han recogido las chuches diarias hoy.');
+    }
   }
 
 }
