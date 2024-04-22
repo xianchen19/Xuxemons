@@ -51,6 +51,10 @@ class User extends Authenticatable
  
      public function xuxemons()
      {
+         return $this->belongsToMany(xuxemons::class)->withPivot('activo');
+     }
+     public function xuxemonss()
+     {
          return $this->belongsToMany(xuxemons::class)->withPivot('tamano');
      }
      public function inventario()
@@ -60,6 +64,6 @@ class User extends Authenticatable
 
      public function xuxemonsActivos()
     {
-    return $this->belongsToMany(Xuxemons::class)->withPivot('tamano')->wherePivot('activo', true)->limit(4);
+    return $this->belongsToMany(Xuxemons::class)->where('activo')->limit(4);
     }
 }

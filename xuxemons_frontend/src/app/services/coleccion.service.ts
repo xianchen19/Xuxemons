@@ -31,9 +31,20 @@ export class ColeccionService {
     const headers = this.httpHeaders();
     return this.http.get<any>(`${this.apiUrl}/give_chuche/${xuxemonId}/${candyAmount}`, { headers });
   }
+
+  activarXuxemon(xuxemonId: number): Observable<any> {
+    const headers = this.httpHeaders();
+    return this.http.put<Xuxemon>(`${this.apiUrl}/xuxemons/${xuxemonId}/activate`, { headers });
+  }
+
+  desactivarXuxemon(xuxemonId: number): Observable<any> {
+    const headers = this.httpHeaders();
+    return this.http.put<Xuxemon>(`${this.apiUrl}/xuxemons/${xuxemonId}/deactivate`, { headers });
+  }
   
   httpHeaders(): HttpHeaders {
     const email = sessionStorage.getItem('email');
+    
     if (email) {
       return new HttpHeaders().set('Email', email);
     }

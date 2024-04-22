@@ -14,6 +14,12 @@ export class Xuxemon {
   tamano: number;
   vida: number;
   archivo: string;
+  activo: number;
+  bajon_azucar: number;
+  sobredosis_azucar: number;
+  atracon: number;
+
+
 
   constructor() {
     this.id = 0;
@@ -22,5 +28,9 @@ export class Xuxemon {
     this.tamano = 0;
     this.vida = 0;
     this.archivo = '';
+    this.activo = 0;
+    this.bajon_azucar = 0;
+    this.sobredosis_azucar = 0;
+    this. atracon = 0;
   }
 }

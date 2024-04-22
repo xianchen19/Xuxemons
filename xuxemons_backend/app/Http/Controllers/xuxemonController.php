@@ -32,6 +32,7 @@ class xuxemonController extends Controller
     }
 }
 
+
 public function store(Request $request)
 {
     // Validar los datos del formulario
@@ -291,6 +292,7 @@ public function giveCandy(Request $request, $xuxemonId, $candyAmount)
         return response()->json(['error' => 'Ha ocurrido un error al dar chuches al Xuxemon: ' . $e->getMessage()], 500);
     }
 }
+
 
 
 
