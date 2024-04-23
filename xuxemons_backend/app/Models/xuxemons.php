@@ -12,9 +12,14 @@ class xuxemons extends Model
     protected $fillable = ['nombre', 'tipo', 'tamano', 'vida', 'archivo', 'enfermedades'];
 
     // Relación con usuarios
+    /*
     public function users()
     {
         return $this->belongsToMany(User::class)->withPivot('tamano');
+    }*/
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_xuxemons', 'xuxemons_id', 'user_id')->withPivot('tamano');
     }
 
     // Alcance para filtrar xuxemons con una enfermedad específica

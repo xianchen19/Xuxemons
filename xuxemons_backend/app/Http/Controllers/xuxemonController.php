@@ -194,30 +194,34 @@ public function randomXuxemon(Request $request)
         // Buscar al usuario por su ID
         $user = User::where('email', $email)->first();
         
+        // Verificar si se encontró un usuario
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+        
         // Lista de nombres ficticios de xuxemons
         $nombres = ['Blastoise', 'Reshiram', 'Zekrom', 'Charizard', 'Pikachu', 'Snorlax', 'Gyarados', 'Mewtwo'];
         $tipos = ['Acero', 'Agua', 'Bicho', 'Dragón', 'Eléctrico', 'Fantasma', 'Fuego', 'Hada', 'Hielo', 'Lucha', 'Normal', 'Planta', 'Psíquico', 'Roca', 'Siniestro', 'Tierra', 'Veneno', 'Volador'];
-
+        $tamanos = ['pequeño', 'mediano', 'grande'];
+        
         // Obtener un nombre y tipo aleatorio
         $nombreAleatorio = $nombres[array_rand($nombres)];
         $tipoAleatorio = $tipos[array_rand($tipos)];
-
-        // Crear un nuevo Xuxemon
-        $xuxemon = new xuxemons();
-        $xuxemon->nombre = $nombreAleatorio;
-        $xuxemon->tipo = $tipoAleatorio;
-        $xuxemon->vida = 100;
-        $xuxemon->save();
-
-        // Asociar el Xuxemon al usuario
-        $user->xuxemons()->attach($xuxemon->id);
+        $tamano = $tamanos[array_rand($tamanos)];
+        
+        // Crear un nuevo Xuxemon y asociarlo al usuario
+        $xuxemon = $user->xuxemons()->create([
+            'nombre' => $nombreAleatorio,
+            'tipo' => $tipoAleatorio,
+            'tamano' => $tamano,
+            'vida' => 100,
+        ]);
 
         return response()->json(['message' => 'Xuxemon aleatorio creado y asociado al usuario correctamente'], 200);
     } catch (\Exception $e) {
         return response()->json(['error' => 'Error al crear y asociar el Xuxemon aleatorio: ' . $e->getMessage()], 500);
     }
 }
-
 
 public function giveCandy(Request $request, $xuxemonId, $candyAmount)
 {
@@ -254,10 +258,12 @@ public function giveCandy(Request $request, $xuxemonId, $candyAmount)
 
         // Obtener configuración de enfermedades
         $enfermedadesConfig = enfermedad::first();
+        // Obtener configuración de evolución
+        $evoConfig = evo_config::first();
 
         // Verificar si se obtuvo la configuración de enfermedades
-        if (!$enfermedadesConfig) {
-            return response()->json(['error' => 'Configuración de enfermedades no encontrada'], 500);
+        if (!$enfermedadesConfig || !$evoConfig) {
+            return response()->json(['error' => 'Configuración no encontrada'], 500);
         }
 
         // Probabilidad de infección aleatoria
@@ -272,6 +278,8 @@ public function giveCandy(Request $request, $xuxemonId, $candyAmount)
         if ($infeccionAleatoria <= $porcentajeBajonAzucar) {
             $xuxemon->bajon_azucar = true;
             $mensajeInfeccion = 'El Xuxemon se ha infectado con Bajón de azúcar';
+            // Ajustar requisitos de crecimiento si se ha infectado
+            $xuxemon->requisitos_crecimiento = 2;
         } elseif ($infeccionAleatoria <= ($porcentajeBajonAzucar + $porcentajeSobredosisAzucar)) {
             $xuxemon->sobredosis_azucar = true;
             $mensajeInfeccion = 'El Xuxemon se ha infectado con Sobredosis de azúcar';
@@ -285,7 +293,49 @@ public function giveCandy(Request $request, $xuxemonId, $candyAmount)
         // Guardar los cambios en el Xuxemon
         $xuxemon->save();
 
-        return response()->json(['message' => 'Se han dado chuches al Xuxemon', 'infeccion' => $mensajeInfeccion], 200);
+ // Verificar si el Xuxemon ha alcanzado los requisitos para subir de nivel
+if ($xuxemon->chuches >= $evoConfig->required_chuches) {
+    // Verificar si ya es de tamaño grande o si el tamaño es mediano y está evolucionando
+    if ($xuxemon->tamano == 'pequeño') {
+        // Buscar la configuración de evolución de pequeño a mediano
+        $evoConfigPequeñoMediano = Evo_Config::find(1);
+
+        // Verificar si se encontró la configuración
+        if ($evoConfigPequeñoMediano) {
+            $xuxemon->tamano = 'mediano';
+            $mensajeEvolucion = '¡El Xuxemon ha evolucionado a Mediano!';
+
+        } else {
+            $mensajeEvolucion = 'Error: No se encontró la configuración de evolución de pequeño a mediano';
+        }
+    } elseif ($xuxemon->tamano == 'mediano') {
+        // Buscar la configuración de evolución de mediano a grande
+        $evoConfigMedianoGrande = Evo_Config::find(2);
+
+        // Verificar si se encontró la configuración
+        if ($evoConfigMedianoGrande) {
+            $xuxemon->tamano = 'grande';
+            $mensajeEvolucion = '¡El Xuxemon ha evolucionado a Grande!';
+
+        } else {
+            $mensajeEvolucion = 'Error: No se encontró la configuración de evolución de mediano a grande';
+        }
+    } else {
+        $mensajeEvolucion = '';
+    }
+} else {
+    $mensajeEvolucion = '';
+}
+
+
+        // Guardar los cambios en el Xuxemon
+        $xuxemon->save();
+
+        return response()->json([
+            'message' => 'Se han dado chuches al Xuxemon',
+            'infeccion' => $mensajeInfeccion,
+            'evolucion' => $mensajeEvolucion
+        ], 200);
     } catch (\Exception $e) {
         return response()->json(['error' => 'Ha ocurrido un error al dar chuches al Xuxemon: ' . $e->getMessage()], 500);
     }

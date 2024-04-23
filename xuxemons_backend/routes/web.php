@@ -1,9 +1,8 @@
 <?php
 
+use App\Http\Controllers\DailyChuches;
 use App\Http\Controllers\enfermedadesController;
-
 use App\Http\Controllers\EvoConfigController;
-
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
@@ -36,6 +35,8 @@ Route::middleware(['cors'])->group(function () {
     Route::get('/random_chuche', [inventarioController::class, 'randomChuche']);
     Route::put('/xuxemons/{xuxemonId}/deactivate', [xuxemonController::class, 'desactivarXuxemon']);
     Route::get('/inventario', [InventarioController::class, 'index']);
+    Route::post('/addDaily', [DailyChuches::class, 'addDailyChuches']);
+
 
     // Rutas para el administrador
     Route::middleware(['role'])->group(function () {

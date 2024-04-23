@@ -65,7 +65,7 @@ class EvoConfigController extends Controller
     }
 
     
-    public function addDailyChuches()
+   /* public function addDailyChuches()
 {
     try {
         // Obtener la cantidad de chuches diarias de la base de datos
@@ -104,7 +104,8 @@ class EvoConfigController extends Controller
     } catch (\Exception $e) {
         return response()->json(['error' => 'Error al añadir chuches diarias: ' . $e->getMessage()], 500);
     }
-}
+}*/
+
 
    
 }
