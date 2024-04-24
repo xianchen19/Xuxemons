@@ -30,7 +30,7 @@ Route::middleware(['cors'])->group(function () {
     Route::get('/xuxemons/verXuxemon', [xuxemonController::class, 'show']);
     Route::get('/users/coleccion', [xuxemonController::class, 'coleccion']);
     Route::get('/random_xuxemon', [xuxemonController::class, 'randomXuxemon']);
-    Route::get('/give_chuche/{xuxemonId}/{candyAmount}', [xuxemonController::class, 'giveCandy']);
+    Route::get('/give_chuche/{xuxemonId}/{candyAmount}', [enfermedadesController::class, 'giveCandy']);
     Route::put('/xuxemons/{xuxemonId}/activate', [xuxemonController::class, 'activarXuxemon']);
     Route::get('/random_chuche', [inventarioController::class, 'randomChuche']);
     Route::put('/xuxemons/{xuxemonId}/deactivate', [xuxemonController::class, 'desactivarXuxemon']);
@@ -49,12 +49,13 @@ Route::middleware(['cors'])->group(function () {
         Route::get('/configurations', [EvoConfigController::class, 'index']);
         Route::put('/configurations/{id}', [EvoConfigController::class, 'update']);
         Route::get('/inventarioAdmin', [InventarioController::class, 'showInventory']);
-
         Route::post('/add-daily-chuches', [EvoConfigController::class, 'addDailyChuches']);
+        Route::put('/configurations/chuches-diarias', [EvoConfigController::class, 'updateDailyChuches']);
         Route::put('/enfermedades/configuracion', [enfermedadesController::class, 'update']);
+        Route::put('/enfermedades/confBajon', [enfermedadesController::class, 'updateXuxesBajon']);
 
 
-        Route::post('/chuchesDiarias', [EvoConfigController::class, 'addDailyChuches']);
-        Route::put('/configurations/updateChuchesDiarias/{id}', [EvoConfigController::class, 'updateChuchesDiarias']);
+
+
     });
 });
