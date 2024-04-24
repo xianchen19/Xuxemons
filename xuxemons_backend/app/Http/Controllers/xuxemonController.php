@@ -226,41 +226,26 @@ public function randomXuxemon(Request $request)
 public function giveCandy(Request $request, $xuxemonId, $candyAmount)
 {
     try {
-        // Obtener el correo electrónico del encabezado
         $email = $request->header('email');
-
-        // Encontrar al usuario basado en el correo electrónico
         $user = User::where('email', $email)->first();
-
-        // Verificar si se encontró el usuario
-        if (!$user) {
-            return response()->json(['error' => 'Usuario no encontrado'], 404);
-        }
-
-        // Encontrar al Xuxemon
         $xuxemon = xuxemons::find($xuxemonId);
-        if (!$xuxemon) {
-            return response()->json(['error' => 'Xuxemon no encontrado'], 404);
+
+        if (!$user || !$xuxemon) {
+            return response()->json(['error' => 'Usuario o Xuxemon no encontrado'], 404);
         }
 
-        // Verificar si el usuario tiene suficientes chuches en su inventario
         $inventario = $user->inventario()->where('tipo', 'chuches')->first();
+
         if (!$inventario || $inventario->cantidad < $candyAmount) {
             return response()->json(['error' => 'El usuario no tiene suficientes chuches en su inventario'], 400);
         }
 
-        // Restar la cantidad de chuches del inventario del usuario
         $inventario->cantidad -= $candyAmount;
         $inventario->save();
 
-        // Aumentar la cantidad de chuches del Xuxemon
         $xuxemon->chuches += $candyAmount;
-
-        // Aplicar infección y evolución
         $mensajeInfeccion = $this->aplicarInfeccion($xuxemon);
         $mensajeEvolucion = $this->aplicarEvolucion($xuxemon);
-
-        // Guardar los cambios en el Xuxemon
         $xuxemon->save();
 
         return response()->json([
@@ -275,23 +260,17 @@ public function giveCandy(Request $request, $xuxemonId, $candyAmount)
 
 private function aplicarInfeccion($xuxemon)
 {
-    // Obtener configuración de enfermedades
     $enfermedadesConfig = enfermedad::first();
 
-    // Verificar si se obtuvo la configuración de enfermedades
     if (!$enfermedadesConfig) {
         return 'Configuración de enfermedades no encontrada';
     }
 
-    // Probabilidad de infección aleatoria
     $infeccionAleatoria = rand(1, 100);
-
-    // Definir porcentajes de infección para cada enfermedad
     $porcentajeBajonAzucar = $enfermedadesConfig->porcentaje_bajon_azucar;
     $porcentajeSobredosisAzucar = $enfermedadesConfig->porcentaje_sobredosis_azucar;
     $porcentajeAtracon = $enfermedadesConfig->porcentaje_atracon;
 
-    // Verificar si el Xuxemon se infecta
     if ($infeccionAleatoria <= $porcentajeBajonAzucar) {
         $xuxemon->bajon_azucar = true;
         return 'El Xuxemon se ha infectado con Bajón de azúcar';
@@ -308,17 +287,13 @@ private function aplicarInfeccion($xuxemon)
 
 private function aplicarEvolucion($xuxemon)
 {
-    // Obtener el nivel actual del Xuxemon y la cantidad de chuches requeridas para subir de nivel
     $currentLevel = $xuxemon->nivel;
     $requiredCandies = evo_config::where('nivel', $currentLevel)->value('required_chuches');
 
-    // Verificar si el Xuxemon ha alcanzado la cantidad necesaria de chuches para subir de nivel
     if ($xuxemon->chuches >= $requiredCandies) {
-        // Actualizar el nivel del Xuxemon y restar los caramelos necesarios
         $xuxemon->nivel++;
         $xuxemon->chuches -= $requiredCandies;
 
-        // Actualizar el tamaño del Xuxemon si alcanza cierto nivel
         if ($xuxemon->nivel == 2) {
             $xuxemon->tamano = 'mediano';
             return 'Ha evolucionado a mediano';
