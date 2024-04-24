@@ -290,8 +290,6 @@ public function giveCandy(Request $request, $xuxemonId, $candyAmount)
             $mensajeInfeccion = 'El Xuxemon no se ha infectado';
         }
 
-        // Guardar los cambios en el Xuxemon
-        $xuxemon->save();
 
  // Verificar si el Xuxemon ha alcanzado los requisitos para subir de nivel
 if ($xuxemon->chuches >= $evoConfig->required_chuches) {
@@ -312,14 +310,16 @@ if ($xuxemon->chuches >= $evoConfig->required_chuches) {
         // Buscar la configuración de evolución de mediano a grande
         $evoConfigMedianoGrande = Evo_Config::find(2);
 
-        // Verificar si se encontró la configuración
-        if ($evoConfigMedianoGrande) {
+                // Verificar si se encontró la configuración
+            // Verificar si el Xuxemon tiene suficientes chuches para evolucionar a grande
+        if ($xuxemon->chuches >= $evoConfigMedianoGrande->chuches_para_subir_de_nivel) {
+            // Actualizar el tamaño del Xuxemon a grande
             $xuxemon->tamano = 'grande';
             $mensajeEvolucion = '¡El Xuxemon ha evolucionado a Grande!';
-
         } else {
-            $mensajeEvolucion = 'Error: No se encontró la configuración de evolución de mediano a grande';
+            $mensajeEvolucion = 'El Xuxemon no tiene suficientes chuches para evolucionar a Grande';
         }
+
     } else {
         $mensajeEvolucion = '';
     }
@@ -327,7 +327,33 @@ if ($xuxemon->chuches >= $evoConfig->required_chuches) {
     $mensajeEvolucion = '';
 }
 
+ // Obtener el nivel actual del Xuxemon y la cantidad de chuches requeridas para subir de nivel
+ $currentLevel = $xuxemon->nivel;
+ $requiredCandies = evo_config::where('nivel', $currentLevel)->value('required_chuches');
 
+ // Verificar si el Xuxemon ha alcanzado la cantidad necesaria de chuches para subir de nivel
+ if ($xuxemon->chuches >= $requiredCandies) {
+     // Actualizar el nivel del Xuxemon y restar los caramelos necesarios
+     $xuxemon->nivel++;
+     $xuxemon->chuches -= $requiredCandies;
+
+     // Actualizar el tamaño del Xuxemon si alcanza cierto nivel
+     if ($xuxemon->nivel == 2) {
+         $xuxemon->tamano = 'mediano';
+     } elseif ($xuxemon->nivel == 3) {
+         $xuxemon->tamano = 'grande';
+     }
+
+     // Guardar los cambios en el Xuxemon
+     $xuxemon->save();
+
+     return response()->json(['message' => 'Xuxemon subió de nivel correctamente'], 200);
+ } else {
+     // Guardar los cambios en el Xuxemon
+     $xuxemon->save();
+
+     return response()->json(['message' => 'Se han dado chuches al Xuxemon'], 200);
+ }
         // Guardar los cambios en el Xuxemon
         $xuxemon->save();
 
