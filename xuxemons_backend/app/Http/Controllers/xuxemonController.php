@@ -256,104 +256,10 @@ public function giveCandy(Request $request, $xuxemonId, $candyAmount)
         // Aumentar la cantidad de chuches del Xuxemon
         $xuxemon->chuches += $candyAmount;
 
-        // Obtener configuración de enfermedades
-        $enfermedadesConfig = enfermedad::first();
-        // Obtener configuración de evolución
-        $evoConfig = evo_config::first();
+        // Aplicar infección y evolución
+        $mensajeInfeccion = $this->aplicarInfeccion($xuxemon);
+        $mensajeEvolucion = $this->aplicarEvolucion($xuxemon);
 
-        // Verificar si se obtuvo la configuración de enfermedades
-        if (!$enfermedadesConfig || !$evoConfig) {
-            return response()->json(['error' => 'Configuración no encontrada'], 500);
-        }
-
-        // Probabilidad de infección aleatoria
-        $infeccionAleatoria = rand(1, 100);
-
-        // Definir porcentajes de infección para cada enfermedad
-        $porcentajeBajonAzucar = $enfermedadesConfig->porcentaje_bajon_azucar;
-        $porcentajeSobredosisAzucar = $enfermedadesConfig->porcentaje_sobredosis_azucar;
-        $porcentajeAtracon = $enfermedadesConfig->porcentaje_atracon;
-
-        // Verificar si el Xuxemon se infecta
-        if ($infeccionAleatoria <= $porcentajeBajonAzucar) {
-            $xuxemon->bajon_azucar = true;
-            $mensajeInfeccion = 'El Xuxemon se ha infectado con Bajón de azúcar';
-            // Ajustar requisitos de crecimiento si se ha infectado
-            $xuxemon->requisitos_crecimiento = 2;
-        } elseif ($infeccionAleatoria <= ($porcentajeBajonAzucar + $porcentajeSobredosisAzucar)) {
-            $xuxemon->sobredosis_azucar = true;
-            $mensajeInfeccion = 'El Xuxemon se ha infectado con Sobredosis de azúcar';
-        } elseif ($infeccionAleatoria <= ($porcentajeBajonAzucar + $porcentajeSobredosisAzucar + $porcentajeAtracon)) {
-            $xuxemon->atracon = true;
-            $mensajeInfeccion = 'El Xuxemon se ha infectado con Atracón';
-        } else {
-            $mensajeInfeccion = 'El Xuxemon no se ha infectado';
-        }
-
-
- // Verificar si el Xuxemon ha alcanzado los requisitos para subir de nivel
-if ($xuxemon->chuches >= $evoConfig->required_chuches) {
-    // Verificar si ya es de tamaño grande o si el tamaño es mediano y está evolucionando
-    if ($xuxemon->tamano == 'pequeño') {
-        // Buscar la configuración de evolución de pequeño a mediano
-        $evoConfigPequeñoMediano = Evo_Config::find(1);
-
-        // Verificar si se encontró la configuración
-        if ($evoConfigPequeñoMediano) {
-            $xuxemon->tamano = 'mediano';
-            $mensajeEvolucion = '¡El Xuxemon ha evolucionado a Mediano!';
-
-        } else {
-            $mensajeEvolucion = 'Error: No se encontró la configuración de evolución de pequeño a mediano';
-        }
-    } elseif ($xuxemon->tamano == 'mediano') {
-        // Buscar la configuración de evolución de mediano a grande
-        $evoConfigMedianoGrande = Evo_Config::find(2);
-
-                // Verificar si se encontró la configuración
-            // Verificar si el Xuxemon tiene suficientes chuches para evolucionar a grande
-        if ($xuxemon->chuches >= $evoConfigMedianoGrande->chuches_para_subir_de_nivel) {
-            // Actualizar el tamaño del Xuxemon a grande
-            $xuxemon->tamano = 'grande';
-            $mensajeEvolucion = '¡El Xuxemon ha evolucionado a Grande!';
-        } else {
-            $mensajeEvolucion = 'El Xuxemon no tiene suficientes chuches para evolucionar a Grande';
-        }
-
-    } else {
-        $mensajeEvolucion = '';
-    }
-} else {
-    $mensajeEvolucion = '';
-}
-
- // Obtener el nivel actual del Xuxemon y la cantidad de chuches requeridas para subir de nivel
- $currentLevel = $xuxemon->nivel;
- $requiredCandies = evo_config::where('nivel', $currentLevel)->value('required_chuches');
-
- // Verificar si el Xuxemon ha alcanzado la cantidad necesaria de chuches para subir de nivel
- if ($xuxemon->chuches >= $requiredCandies) {
-     // Actualizar el nivel del Xuxemon y restar los caramelos necesarios
-     $xuxemon->nivel++;
-     $xuxemon->chuches -= $requiredCandies;
-
-     // Actualizar el tamaño del Xuxemon si alcanza cierto nivel
-     if ($xuxemon->nivel == 2) {
-         $xuxemon->tamano = 'mediano';
-     } elseif ($xuxemon->nivel == 3) {
-         $xuxemon->tamano = 'grande';
-     }
-
-     // Guardar los cambios en el Xuxemon
-     $xuxemon->save();
-
-     return response()->json(['message' => 'Xuxemon subió de nivel correctamente'], 200);
- } else {
-     // Guardar los cambios en el Xuxemon
-     $xuxemon->save();
-
-     return response()->json(['message' => 'Se han dado chuches al Xuxemon'], 200);
- }
         // Guardar los cambios en el Xuxemon
         $xuxemon->save();
 
@@ -365,6 +271,64 @@ if ($xuxemon->chuches >= $evoConfig->required_chuches) {
     } catch (\Exception $e) {
         return response()->json(['error' => 'Ha ocurrido un error al dar chuches al Xuxemon: ' . $e->getMessage()], 500);
     }
+}
+
+private function aplicarInfeccion($xuxemon)
+{
+    // Obtener configuración de enfermedades
+    $enfermedadesConfig = enfermedad::first();
+
+    // Verificar si se obtuvo la configuración de enfermedades
+    if (!$enfermedadesConfig) {
+        return 'Configuración de enfermedades no encontrada';
+    }
+
+    // Probabilidad de infección aleatoria
+    $infeccionAleatoria = rand(1, 100);
+
+    // Definir porcentajes de infección para cada enfermedad
+    $porcentajeBajonAzucar = $enfermedadesConfig->porcentaje_bajon_azucar;
+    $porcentajeSobredosisAzucar = $enfermedadesConfig->porcentaje_sobredosis_azucar;
+    $porcentajeAtracon = $enfermedadesConfig->porcentaje_atracon;
+
+    // Verificar si el Xuxemon se infecta
+    if ($infeccionAleatoria <= $porcentajeBajonAzucar) {
+        $xuxemon->bajon_azucar = true;
+        return 'El Xuxemon se ha infectado con Bajón de azúcar';
+    } elseif ($infeccionAleatoria <= ($porcentajeBajonAzucar + $porcentajeSobredosisAzucar)) {
+        $xuxemon->sobredosis_azucar = true;
+        return 'El Xuxemon se ha infectado con Sobredosis de azúcar';
+    } elseif ($infeccionAleatoria <= ($porcentajeBajonAzucar + $porcentajeSobredosisAzucar + $porcentajeAtracon)) {
+        $xuxemon->atracon = true;
+        return 'El Xuxemon se ha infectado con Atracón';
+    } else {
+        return 'El Xuxemon no se ha infectado';
+    }
+}
+
+private function aplicarEvolucion($xuxemon)
+{
+    // Obtener el nivel actual del Xuxemon y la cantidad de chuches requeridas para subir de nivel
+    $currentLevel = $xuxemon->nivel;
+    $requiredCandies = evo_config::where('nivel', $currentLevel)->value('required_chuches');
+
+    // Verificar si el Xuxemon ha alcanzado la cantidad necesaria de chuches para subir de nivel
+    if ($xuxemon->chuches >= $requiredCandies) {
+        // Actualizar el nivel del Xuxemon y restar los caramelos necesarios
+        $xuxemon->nivel++;
+        $xuxemon->chuches -= $requiredCandies;
+
+        // Actualizar el tamaño del Xuxemon si alcanza cierto nivel
+        if ($xuxemon->nivel == 2) {
+            $xuxemon->tamano = 'mediano';
+            return 'Ha evolucionado a mediano';
+        } elseif ($xuxemon->nivel == 3) {
+            $xuxemon->tamano = 'grande';
+            return 'Ha evolucionado a grande';
+        }
+    }
+
+    return '';
 }
 
 
