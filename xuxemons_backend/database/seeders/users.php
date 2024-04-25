@@ -20,6 +20,7 @@ class users extends Seeder
             'email' => 'andy@andy',
             'password' => 'andy1234', // Recuerda cifrar la contraseña
             'role' => 'usuario',
+            'tag' => '001',
             'monedas' => 100, // Por ejemplo, 100 monedas
         ]);
 
@@ -29,6 +30,7 @@ class users extends Seeder
             'email' => 'xian@xian',
             'password' => 'xian1234',
             'role' => 'administrador',
+            'tag' => '002',
             'monedas' => 0, // Por ejemplo, 0 monedas
         ]);
     }
