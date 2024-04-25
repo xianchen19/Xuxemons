@@ -1,0 +1,47 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <div class="titulo">
+    <h1> Centro Xuxemon </h1>
+  </div>
+
+  <!-- Sección de Xuxemons Enfermos -->
+  <div *ngIf="xuxemonsEnfermos.length > 0">
+    <h2>Xuxemons Enfermos</h2>
+    <div class="tabla">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Tamaño</th>
+            <th>Archivo</th>
+            <th>Enfermedades</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let xuxemon of xuxemonsEnfermos">
+            <td>{{ xuxemon.nombre }}</td>
+            <td>{{ xuxemon.tipo }}</td>
+            <td>{{ xuxemon.tamano }}</td>
+            <td>{{ xuxemon.archivo }}</td>
+            <td>
+              <ng-container *ngIf="xuxemon.bajon_azucar === 1">Bajón de azúcar<br></ng-container>
+              <ng-container *ngIf="xuxemon.sobredosis_azucar === 1">Sobredosis de azúcar<br></ng-container>
+              <ng-container *ngIf="xuxemon.atracon === 1">Atracón<br></ng-container>
+            </td>
+            <td>
+              <button (click)="curarXuxemon()"> Curar </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Mensaje si no hay Xuxemons Enfermos -->
+  <div *ngIf="xuxemonsEnfermos.length === 0">
+    <p>No tienes Xuxemons enfermos en tu colección.</p>
+  </div>
+</div>

@@ -33,7 +33,7 @@ export class ColeccionComponent implements OnInit {
       this.coleccionService.getListaXuxemonsUser().subscribe(
         (response: Xuxemon[]) => {
           console.log(response);
-          this.xuxemons = response.filter(xuxemon => xuxemon.activo !== 1);
+          this.filtrarXuxemonsInactivos(response);
           this.filtrarXuxemonsActivos(response);
         },
         error => {
@@ -43,10 +43,15 @@ export class ColeccionComponent implements OnInit {
     }
   }
   
-  filtrarXuxemonsActivos(xuxemons: Xuxemon[]): void {
-    this.xuxemonsActivos = xuxemons.filter(xuxemon => xuxemon.activo === 1);
+  filtrarXuxemonsActivos(xuxemons: any[]): void {
+    this.xuxemonsActivos = xuxemons.filter(xuxemon => xuxemon['pivot'].activo === 1);
   }
 
+  filtrarXuxemonsInactivos(xuxemons: any[]): void {
+    this.xuxemons = xuxemons.filter(xuxemon => xuxemon['pivot'].activo === 0);
+  }
+  
+  
   randomXuxemon(): void {
     this.coleccionService.randomXuxemon().subscribe(
       (xuxemon: Xuxemon) => {

@@ -48,15 +48,15 @@ class User extends Authenticatable
        /**
      * Define the relationship between User and Xuxemons.
      */
- 
+ /*
      public function xuxemons()
      {
-         return $this->belongsToMany(xuxemons::class)->withPivot('activo');
-     }
-     public function xuxemonss()
-     {
          return $this->belongsToMany(xuxemons::class)->withPivot('tamano');
-     }
+     }*/
+     public function xuxemons()
+    {
+        return $this->belongsToMany(Xuxemons::class, 'user_xuxemons', 'user_id', 'xuxemons_id')->withPivot('tamano', 'activo');
+    }
      public function inventario()
      {
          return $this->hasMany(Inventario::class);
@@ -64,6 +64,7 @@ class User extends Authenticatable
 
      public function xuxemonsActivos()
     {
-    return $this->belongsToMany(Xuxemons::class)->where('activo')->limit(4);
+    return $this->belongsToMany(Xuxemons::class)->withPivot('tamano')->wherePivot('activo', true)->limit(4);
     }
+    
 }

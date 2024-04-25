@@ -22,16 +22,14 @@ class xuxemonController extends Controller
             return response()->json(['error' => 'Usuario no encontrado'], 404);
         }
 
-        $xuxemons = $user->xuxemons->map(function ($xuxemon) {
-            return array_merge($xuxemon->toArray(), ['activo' => $xuxemon->pivot->activo]);
-        });
+        // Obtener los Xuxemons asociados al usuario
+        $xuxemons = $user->xuxemons;
 
         return response()->json($xuxemons, 200);
     } catch (\Exception $e) {
         return response()->json(['error' => 'Ha ocurrido un error al obtener los Xuxemons del usuario'], 500);
     }
 }
-
 
 public function store(Request $request)
 {
@@ -196,103 +194,34 @@ public function randomXuxemon(Request $request)
         // Buscar al usuario por su ID
         $user = User::where('email', $email)->first();
         
+        // Verificar si se encontró un usuario
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+        
         // Lista de nombres ficticios de xuxemons
         $nombres = ['Blastoise', 'Reshiram', 'Zekrom', 'Charizard', 'Pikachu', 'Snorlax', 'Gyarados', 'Mewtwo'];
         $tipos = ['Acero', 'Agua', 'Bicho', 'Dragón', 'Eléctrico', 'Fantasma', 'Fuego', 'Hada', 'Hielo', 'Lucha', 'Normal', 'Planta', 'Psíquico', 'Roca', 'Siniestro', 'Tierra', 'Veneno', 'Volador'];
-
+        $tamanos = ['pequeño', 'mediano', 'grande'];
+        
         // Obtener un nombre y tipo aleatorio
         $nombreAleatorio = $nombres[array_rand($nombres)];
         $tipoAleatorio = $tipos[array_rand($tipos)];
-
-        // Crear un nuevo Xuxemon
-        $xuxemon = new xuxemons();
-        $xuxemon->nombre = $nombreAleatorio;
-        $xuxemon->tipo = $tipoAleatorio;
-        $xuxemon->vida = 100;
-        $xuxemon->save();
-
-        // Asociar el Xuxemon al usuario
-        $user->xuxemons()->attach($xuxemon->id);
+        $tamano = $tamanos[array_rand($tamanos)];
+        
+        // Crear un nuevo Xuxemon y asociarlo al usuario
+        $xuxemon = $user->xuxemons()->create([
+            'nombre' => $nombreAleatorio,
+            'tipo' => $tipoAleatorio,
+            'tamano' => $tamano,
+            'vida' => 100,
+        ]);
 
         return response()->json(['message' => 'Xuxemon aleatorio creado y asociado al usuario correctamente'], 200);
     } catch (\Exception $e) {
         return response()->json(['error' => 'Error al crear y asociar el Xuxemon aleatorio: ' . $e->getMessage()], 500);
     }
 }
-
-
-public function giveCandy(Request $request, $xuxemonId, $candyAmount)
-{
-    try {
-        // Obtener el correo electrónico del encabezado
-        $email = $request->header('email');
-
-        // Encontrar al usuario basado en el correo electrónico
-        $user = User::where('email', $email)->first();
-
-        // Verificar si se encontró el usuario
-        if (!$user) {
-            return response()->json(['error' => 'Usuario no encontrado'], 404);
-        }
-
-        // Encontrar al Xuxemon
-        $xuxemon = xuxemons::find($xuxemonId);
-        if (!$xuxemon) {
-            return response()->json(['error' => 'Xuxemon no encontrado'], 404);
-        }
-
-        // Verificar si el usuario tiene suficientes chuches en su inventario
-        $inventario = $user->inventario()->where('tipo', 'chuches')->first();
-        if (!$inventario || $inventario->cantidad < $candyAmount) {
-            return response()->json(['error' => 'El usuario no tiene suficientes chuches en su inventario'], 400);
-        }
-
-        // Restar la cantidad de chuches del inventario del usuario
-        $inventario->cantidad -= $candyAmount;
-        $inventario->save();
-
-        // Aumentar la cantidad de chuches del Xuxemon
-        $xuxemon->chuches += $candyAmount;
-
-        // Obtener configuración de enfermedades
-        $enfermedadesConfig = enfermedad::first();
-
-        // Verificar si se obtuvo la configuración de enfermedades
-        if (!$enfermedadesConfig) {
-            return response()->json(['error' => 'Configuración de enfermedades no encontrada'], 500);
-        }
-
-        // Probabilidad de infección aleatoria
-        $infeccionAleatoria = rand(1, 100);
-
-        // Definir porcentajes de infección para cada enfermedad
-        $porcentajeBajonAzucar = $enfermedadesConfig->porcentaje_bajon_azucar;
-        $porcentajeSobredosisAzucar = $enfermedadesConfig->porcentaje_sobredosis_azucar;
-        $porcentajeAtracon = $enfermedadesConfig->porcentaje_atracon;
-
-        // Verificar si el Xuxemon se infecta
-        if ($infeccionAleatoria <= $porcentajeBajonAzucar) {
-            $xuxemon->bajon_azucar = true;
-            $mensajeInfeccion = 'El Xuxemon se ha infectado con Bajón de azúcar';
-        } elseif ($infeccionAleatoria <= ($porcentajeBajonAzucar + $porcentajeSobredosisAzucar)) {
-            $xuxemon->sobredosis_azucar = true;
-            $mensajeInfeccion = 'El Xuxemon se ha infectado con Sobredosis de azúcar';
-        } elseif ($infeccionAleatoria <= ($porcentajeBajonAzucar + $porcentajeSobredosisAzucar + $porcentajeAtracon)) {
-            $xuxemon->atracon = true;
-            $mensajeInfeccion = 'El Xuxemon se ha infectado con Atracón';
-        } else {
-            $mensajeInfeccion = 'El Xuxemon no se ha infectado';
-        }
-
-        // Guardar los cambios en el Xuxemon
-        $xuxemon->save();
-
-        return response()->json(['message' => 'Se han dado chuches al Xuxemon', 'infeccion' => $mensajeInfeccion], 200);
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Ha ocurrido un error al dar chuches al Xuxemon: ' . $e->getMessage()], 500);
-    }
-}
-
 
 
 

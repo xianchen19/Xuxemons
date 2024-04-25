@@ -17,6 +17,7 @@ class users extends Seeder
         // Insertar un usuario normal
         User::create([
             'name' => 'Usuario normal',
+            'tag' => '#0001',
             'email' => 'andy@andy',
             'password' => 'andy1234', // Recuerda cifrar la contraseña
             'role' => 'usuario',
@@ -27,6 +28,7 @@ class users extends Seeder
         User::create([
             'name' => 'Administrador',
             'email' => 'xian@xian',
+            'tag' => '#0002',
             'password' => 'xian1234',
             'role' => 'administrador',
             'monedas' => 0, // Por ejemplo, 0 monedas

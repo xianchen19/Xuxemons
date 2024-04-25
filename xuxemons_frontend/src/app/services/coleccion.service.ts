@@ -32,14 +32,16 @@ export class ColeccionService {
     return this.http.get<any>(`${this.apiUrl}/give_chuche/${xuxemonId}/${candyAmount}`, { headers });
   }
 
+  // Agrega un console log para verificar el email aquí
   activarXuxemon(xuxemonId: number): Observable<any> {
     const headers = this.httpHeaders();
-    return this.http.put<Xuxemon>(`${this.apiUrl}/xuxemons/${xuxemonId}/activate`, { headers });
+    return this.http.put<any>(`${this.apiUrl}/xuxemons/${xuxemonId}/activate`, {}, { headers });
   }
 
+  // Agrega un console log para verificar el email aquí
   desactivarXuxemon(xuxemonId: number): Observable<any> {
     const headers = this.httpHeaders();
-    return this.http.put<Xuxemon>(`${this.apiUrl}/xuxemons/${xuxemonId}/deactivate`, { headers });
+    return this.http.put<any>(`${this.apiUrl}/xuxemons/${xuxemonId}/deactivate`, {}, { headers }); 
   }
   
   httpHeaders(): HttpHeaders {

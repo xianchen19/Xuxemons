@@ -13,6 +13,7 @@ import { ContactoComponent } from './contacto/contacto.component';
 import { ColeccionComponent } from './coleccion/coleccion.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
 import { XuxedexComponent } from './xuxedex/xuxedex.component';
+import { HospitalComponent } from './hospital/hospital.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/landscape', pathMatch: 'full' },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'configuracion', component: ConfiguracionComponent},
   { path: 'inventario', component: InventarioComponent },
   { path: 'xuxedex', component: XuxedexComponent},
+  { path: 'hospital', component: HospitalComponent},
   { path: 'error', component: ErrorComponent },
   { path: '**', redirectTo: '/error'}
 ];

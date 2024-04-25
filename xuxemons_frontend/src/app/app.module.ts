@@ -17,6 +17,7 @@ import { CreateXuxemonComponent } from './admin-dashboard/create-xuxemon/create-
 import { InventarioComponent } from './inventario/inventario.component';
 import { ColeccionComponent } from './coleccion/coleccion.component';
 import { XuxedexComponent } from './xuxedex/xuxedex.component';
+import { HospitalComponent } from './hospital/hospital.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
 import { MatIconModule } from '@angular/material/icon';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -37,7 +38,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     ContactoComponent,
     ColeccionComponent,
     ConfiguracionComponent,
-    XuxedexComponent
+    XuxedexComponent,
+    HospitalComponent
   ],
   imports: [
     BrowserModule,
