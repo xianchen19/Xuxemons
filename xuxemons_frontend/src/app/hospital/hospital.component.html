@@ -32,7 +32,7 @@
               <ng-container *ngIf="xuxemon.atracon === 1">Atracón<br></ng-container>
             </td>
             <td>
-              <button (click)="curarXuxemon()"> Curar </button>
+              <button (click)="seleccionarXuxemon(xuxemon.id)"> Curar </button>
             </td>
           </tr>
         </tbody>
@@ -44,4 +44,28 @@
   <div *ngIf="xuxemonsEnfermos.length === 0">
     <p>No tienes Xuxemons enfermos en tu colección.</p>
   </div>
+</div>
+
+<div class="dialogo" *ngIf="mostrarDialogo">
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Cantidad</th>
+        <th>Descripción</th>
+        <th>Imagen</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let objeto of inventario" (click)="seleccionarObjeto(objeto.nombre)">
+        <td>{{ objeto.nombre }}</td>
+        <td>{{ objeto.tipo }}</td>
+        <td>{{ objeto.cantidad }}</td>
+        <td>{{ objeto.descripcion }}</td>
+        <td>{{ objeto.imagen }}</td>
+      </tr>
+    </tbody>
+    <button (click)="mostrarDialogo = false"> Salir </button>
+  </table>
 </div>

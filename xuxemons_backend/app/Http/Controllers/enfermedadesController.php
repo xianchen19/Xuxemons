@@ -165,63 +165,61 @@ private function aplicarEvolucion($xuxemon)
     return '';
 }
 
-public function usarCura(Request $request, $xuxemonId)
-    {
-        try {
-            // Obtener el usuario y el Xuxemon
-            $email = $request->header('email');
-            $user = User::where('email', $email)->first();
-            $xuxemon = Xuxemons::find($xuxemonId);
+public function usarCura(Request $request, $xuxemonId, $objeto)
+{
+    try {
+        // Obtener el usuario y el Xuxemon
+        $email = $request->header('email');
+        $user = User::where('email', $email)->first();
+        $xuxemon = Xuxemons::find($xuxemonId);
 
-            if (!$user || !$xuxemon) {
-                return response()->json(['error' => 'Usuario o Xuxemon no encontrado'], 404);
-            }
-
-            $objeto = $request->input('objeto');
-
-            if ($objeto === 'Xocolatina') {
-                if ($xuxemon->bajon_azucar) {
-                    $inventario = $user->inventario()->where('nombre', 'Xocolatina')->first();
-                    if (!$inventario) {
-                        return response()->json(['error' => 'El usuario no tiene xocolatinas en su inventario'], 400);
-                    }
-                    $inventario->cantidad--;
-                    $inventario->save();
-                    $xuxemon->bajon_azucar = false;
-                    $xuxemon->save();
-                    return response()->json(['message' => 'Se ha curado el bajón de azúcar del Xuxemon'], 200);
-                }
-            } elseif ($objeto === 'Inxulina') {
-                if ($xuxemon->sobredosis_azucar) {
-                    $inventario = $user->inventario()->where('nombre', 'Inxulina')->first();
-                    if (!$inventario) {
-                        return response()->json(['error' => 'El usuario no tiene inxulina en su inventario'], 400);
-                    }
-                    $inventario->cantidad--;
-                    $inventario->save();
-                    $xuxemon->sobredosis_azucar = false;
-                    $xuxemon->save();
-                    return response()->json(['message' => 'Se ha tratado la sobredosis de azúcar del Xuxemon con inxulina'], 200);
-                }
-            } elseif ($objeto === 'Xal de frutas') {
-                if ($xuxemon->sobredosis_azucar) {
-                    $inventario = $user->inventario()->where('nombre', 'Xal de frutas')->first();
-                    if (!$inventario) {
-                        return response()->json(['error' => 'El usuario no tiene xal de frutas en su inventario'], 400);
-                    }
-                    $inventario->cantidad--;
-                    $inventario->save();
-                    $xuxemon->sobredosis_azucar = false;
-                    $xuxemon->save();
-                    return response()->json(['message' => 'Se ha tratado la sobredosis de azúcar del Xuxemon con xal de frutas'], 200);
-                }
-            }
-
-            return response()->json(['message' => 'No se pudo usar la cura'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Ha ocurrido un error al usar la cura: ' . $e->getMessage()], 500);
+        if (!$user || !$xuxemon) {
+            return response()->json(['error' => 'Usuario o Xuxemon no encontrado'], 404);
         }
+
+        if ($objeto === 'Xocolatina') {
+            if ($xuxemon->bajon_azucar) {
+                $inventario = $user->inventario()->where('nombre', 'Xocolatina')->first();
+                if (!$inventario) {
+                    return response()->json(['error' => 'El usuario no tiene xocolatinas en su inventario'], 400);
+                }
+                $inventario->cantidad--;
+                $inventario->save();
+                $xuxemon->bajon_azucar = false;
+                $xuxemon->save();
+                return response()->json(['message' => 'Se ha curado el bajón de azúcar del Xuxemon'], 200);
+            }
+        } elseif ($objeto === 'Inxulina') {
+            if ($xuxemon->sobredosis_azucar) {
+                $inventario = $user->inventario()->where('nombre', 'Inxulina')->first();
+                if (!$inventario) {
+                    return response()->json(['error' => 'El usuario no tiene inxulina en su inventario'], 400);
+                }
+                $inventario->cantidad--;
+                $inventario->save();
+                $xuxemon->sobredosis_azucar = false;
+                $xuxemon->save();
+                return response()->json(['message' => 'Se ha tratado la sobredosis de azúcar del Xuxemon con inxulina'], 200);
+            }
+        } elseif ($objeto === 'Xal de frutas') {
+            if ($xuxemon->atracon) {
+                $inventario = $user->inventario()->where('nombre', 'Xal de frutas')->first();
+                if (!$inventario) {
+                    return response()->json(['error' => 'El usuario no tiene xal de frutas en su inventario'], 400);
+                }
+                $inventario->cantidad--;
+                $inventario->save();
+                $xuxemon->atracon = false;
+                $xuxemon->save();
+                return response()->json(['message' => 'Se ha tratado el atracon del Xuxemon con xal de frutas'], 200);
+            }
+        }
+        
+        return response()->json(['message' => 'No se pudo usar la cura'], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Ha ocurrido un error al usar la cura: ' . $e->getMessage()], 500);
     }
+}
 
     public function xuxemonsConEnfermedad()
 {

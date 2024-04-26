@@ -40,10 +40,10 @@ Route::middleware(['cors'])->group(function () {
     Route::get('/random_chuche', [inventarioController::class, 'randomChuche']);
     Route::put('/xuxemons/{xuxemonId}/deactivate', [xuxemonController::class, 'desactivarXuxemon']);
     Route::get('/inventario', [InventarioController::class, 'index']);
-    Route::post('/usarCura/{xuxemonId}', [enfermedadesController::class, 'usarCura']);
+    Route::post('/usarCura/{xuxemonId}/{objeto}', [enfermedadesController::class, 'usarCura']);
     Route::get('/hospital', [enfermedadesController::class, 'xuxemonsConEnfermedad']);
     Route::get('/xuxemons', [xuxemonController::class, 'xuxemonAll']);
-    Route::post('//add-daily-chuches', [DailyChuches::class, 'addDailyChuches']);
+    Route::post('/add-daily-chuches', [DailyChuches::class, 'addDailyChuches']);
 
     // Rutas para el administrador
     Route::middleware(['role'])->group(function () {

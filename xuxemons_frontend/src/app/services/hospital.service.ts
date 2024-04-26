@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Xuxemon } from '../models/xuxemon/xuxemon.module';
+import { log } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,11 @@ export class HospitalService {
     return this.http.get<Xuxemon[]>(`${this.apiUrl}/hospital`, { headers });
   }
 
+  curarXuxemon(xuxemonId: any, objetoNombre: any): Observable<any> {
+    const headers = this.httpHeaders();
+    return this.http.post<any>(`${this.apiUrl}/usarCura/${xuxemonId}/${objetoNombre}`, {}, { headers });
+  }
+  
   httpHeaders(): HttpHeaders {
     const email = sessionStorage.getItem('email');
     
