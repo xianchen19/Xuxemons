@@ -41,7 +41,7 @@ class inventarioSeeder extends Seeder
                 'user_id'=> '2',
             ],
             [
-                'nombre' => 'Xal de frutas',
+                'nombre' => 'Xal_frutas',
                 'tipo' => 'objeto',
                 'cantidad' => 10,
                 'descripcion' => 'Objeto que se almacena en la mochila y al usarlo en un Xuxemon quita “Atracón”',

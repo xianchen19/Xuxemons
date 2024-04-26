@@ -41,7 +41,7 @@ Route::middleware(['cors'])->group(function () {
     Route::put('/xuxemons/{xuxemonId}/deactivate', [xuxemonController::class, 'desactivarXuxemon']);
     Route::get('/inventario', [InventarioController::class, 'index']);
     Route::post('/addDaily', [DailyChuches::class, 'addDailyChuches']);
-    Route::post('/usarCura/{xuxemonId}', [enfermedadesController::class, 'usarCura']);
+    Route::post('/usarCura/{xuxemonId}/{objeto}', [enfermedadesController::class, 'usarCura']);
     Route::get('/hospital', [enfermedadesController::class, 'xuxemonsConEnfermedad']);
 
 
