@@ -66,5 +66,11 @@ class User extends Authenticatable
     {
     return $this->belongsToMany(Xuxemons::class)->withPivot('tamano')->wherePivot('activo', true)->limit(4);
     }
-    
+
+    public function amigos()
+    {
+        return $this->belongsToMany(User::class, 'amigos', 'user_tag', 'friend_tag')
+            ->withPivot('status')
+            ->withTimestamps();
+    }
 }

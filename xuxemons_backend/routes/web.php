@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\amigosController;
 use App\Http\Controllers\DailyChuches;
 use App\Http\Controllers\enfermedadesController;
 use App\Http\Controllers\EvoConfigController;
@@ -38,6 +39,11 @@ Route::middleware(['cors'])->group(function () {
     Route::post('/addDaily', [DailyChuches::class, 'addDailyChuches']);
     Route::post('/usarCura/{xuxemonId}/{objeto}', [enfermedadesController::class, 'usarCura']);
     Route::get('/hospital', [enfermedadesController::class, 'xuxemonsConEnfermedad']);
+    Route::get('/amigos', [amigosController::class, 'index']);
+    Route::post('/amigos', [amigosController::class, 'store']);
+    Route::post('/amigos/aceptar/{solicitudId}', [amigosController::class,'aceptarSolicitud']);
+    Route::post('/amigos/rechazar/{solicitudId}', [amigosController::class,'rechazarSolicitud']);
+    Route::get('/buscar-usuarios', [amigosController::class, 'buscarUsuarios']);
 
 
     // Rutas para el administrador
