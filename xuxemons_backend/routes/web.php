@@ -23,6 +23,7 @@ use App\Http\Controllers\inventarioController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::middleware(['cors'])->group(function () {
     // Rutas que no requieren permisos de rol
     Route::post('/userRegister', [RegisterController::class, 'store']);
@@ -41,8 +42,8 @@ Route::middleware(['cors'])->group(function () {
     Route::get('/hospital', [enfermedadesController::class, 'xuxemonsConEnfermedad']);
     Route::get('/amigos', [amigosController::class, 'index']);
     Route::post('/amigos', [amigosController::class, 'store']);
-    Route::post('/amigos/aceptar/{solicitudId}', [amigosController::class,'aceptarSolicitud']);
-    Route::post('/amigos/rechazar/{solicitudId}', [amigosController::class,'rechazarSolicitud']);
+    Route::post('/amigos/aceptar/{solicitudId}', [amigosController::class, 'aceptarSolicitud']);
+    Route::post('/amigos/rechazar/{solicitudId}', [amigosController::class, 'rechazarSolicitud']);
     Route::get('/buscar-usuarios', [amigosController::class, 'buscarUsuarios']);
 
 
@@ -61,9 +62,5 @@ Route::middleware(['cors'])->group(function () {
         Route::put('/configurations/chuches-diarias', [EvoConfigController::class, 'updateDailyChuches']);
         Route::put('/enfermedades/configuracion', [enfermedadesController::class, 'update']);
         Route::put('/enfermedades/confBajon', [enfermedadesController::class, 'updateXuxesBajon']);
-
-
-
-
     });
 });

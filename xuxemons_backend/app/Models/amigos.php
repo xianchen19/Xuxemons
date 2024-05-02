@@ -11,7 +11,7 @@ class amigos extends Model
 
     protected $fillable = ['user_tag', 'friend_tag', 'status'];
 
-   
+
 
     public function users()
     {
