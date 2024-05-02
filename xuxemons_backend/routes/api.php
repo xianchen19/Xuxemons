@@ -49,6 +49,7 @@ Route::middleware(['cors'])->group(function () {
     Route::post('/amigos/aceptar/{solicitudId}', [amigosController::class, 'aceptarSolicitud']);
     Route::post('/amigos/rechazar/{solicitudId}', [amigosController::class, 'rechazarSolicitud']);
     Route::get('/buscar-usuarios', [amigosController::class, 'buscarUsuarios']);
+    Route::get('/amigos/pendientes', [amigosController::class, 'solicitudesPendientes']);
 
     // Rutas para el administrador
     Route::middleware(['role'])->group(function () {

@@ -22,14 +22,15 @@ class amigosController extends Controller
                 return response()->json(['error' => 'Usuario no encontrado'], 404);
             }
 
-            // Obtener la lista de amigos del usuario excluyendo aquellos con estado 'rechazado'
-            $amigos = $user->amigos()->where('status', '!=', 'rechazada')->get();
+            // Obtener la lista de amigos del usuario que han aceptado la solicitud
+            $amigos = $user->amigos()->where('status', 'aceptada')->get();
 
             return response()->json($amigos, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Ha ocurrido un error al obtener los amigos del usuario'], 500);
         }
     }
+
 
 
 
@@ -66,6 +67,28 @@ class amigosController extends Controller
             return response()->json(['error' => 'A ocurrido un error al enviar la solicitud:' . $e->getMessage()], 500);
         }
     }
+
+    public function solicitudesPendientes(Request $request)
+    {
+        try {
+            // Obtener el email del usuario del encabezado de la solicitud
+            $email = $request->header('email');
+
+            // Buscar al usuario por su email
+            $user = User::where('email', $email)->first();
+            if (!$user) {
+                return response()->json(['error' => 'Usuario no encontrado'], 404);
+            }
+
+            // Obtener las solicitudes de amistad pendientes del usuario
+            $solicitudes = $user->solicitudesAmistad()->where('status', 'pendiente')->get();
+
+            return response()->json($solicitudes, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ha ocurrido un error al obtener las solicitudes de amistad pendientes del usuario'], 500);
+        }
+    }
+
 
     public function aceptarSolicitud($solicitudId)
     {
