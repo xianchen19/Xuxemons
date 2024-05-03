@@ -73,4 +73,9 @@ class User extends Authenticatable
             ->withPivot('status')
             ->withTimestamps();
     }
+    public function solicitudesAmistad()
+    {
+        return $this->hasMany(Amigos::class, 'friend_tag', 'user_tag')->where('status', 'pendiente');
+    }
+    
 }
