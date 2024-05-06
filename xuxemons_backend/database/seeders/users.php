@@ -20,7 +20,7 @@ class users extends Seeder
             'email' => 'andy@andy',
             'password' => 'andy1234', // Recuerda cifrar la contraseña
             'role' => 'usuario',
-            'tag' => '#001',
+            'tag' => '001',
             'monedas' => 100, // Por ejemplo, 100 monedas
         ]);
 
@@ -30,7 +30,7 @@ class users extends Seeder
             'email' => 'xian@xian',
             'password' => 'xian1234',
             'role' => 'administrador',
-            'tag' => '#002',
+            'tag' => '002',
             'monedas' => 0, // Por ejemplo, 0 monedas
         ]);
 
@@ -40,7 +40,7 @@ class users extends Seeder
             'email' => 'megas@megas',
             'password' => 'megas1234', // Recuerda cifrar la contraseña
             'role' => 'usuario',
-            'tag' => '#003',
+            'tag' => '003',
             'monedas' => 100, // Por ejemplo, 100 monedas
         ]);
 
@@ -50,7 +50,7 @@ class users extends Seeder
             'email' => 'andy1@andy',
             'password' => 'andy1234', // Recuerda cifrar la contraseña
             'role' => 'usuario',
-            'tag' => '#004',
+            'tag' => '004',
             'monedas' => 100, // Por ejemplo, 100 monedas
         ]);
     }

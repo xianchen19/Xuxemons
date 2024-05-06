@@ -78,6 +78,7 @@ export class AmigosComponent implements OnInit {
       (response: any) => {
         console.log(response.message);
         this.obtenerSolicitudesPendientes();
+        this.obtenerAmigos();
       },
       error => {
         console.error('Error al aceptar solicitud de amistad:', error);

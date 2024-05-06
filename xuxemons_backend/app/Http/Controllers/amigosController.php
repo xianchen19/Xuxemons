@@ -36,7 +36,7 @@ class amigosController extends Controller
     }
 }
 
-    public function store(Request $request)
+public function store(Request $request)
 {
     try {
         // Obtener el email del usuario del encabezado de la solicitud
@@ -51,17 +51,19 @@ class amigosController extends Controller
         // Obtener el tag del amigo al que se enviará la solicitud
         $friendTag = $request->input('friend_tag');
 
-       // Verificar si el amigo ya está en la lista de amigos del usuario
-        $existingFriendship = $sender->amigos()->where('friend_tag', $friendTag)->first();
+        // Buscar si ya existe una solicitud con el mismo friend_tag
+        $existingFriendship = amigos::where('friend_tag', $friendTag)->first();
         if ($existingFriendship) {
             if ($existingFriendship->status === 'aceptada') {
                 return response()->json(['error' => 'El usuario ya es tu amigo'], 400);
+            } elseif ($existingFriendship->status === 'rechazada') {
+                $existingFriendship->update(['status' => 'pendiente']);
+                return response()->json(['message' => 'Solicitud de amistad enviada con éxito'], 201);
             } else {
                 return response()->json(['error' => 'Ya has enviado una solicitud de amistad a este usuario'], 400);
             }
         }
-
-
+        
         // Crear una nueva solicitud de amistad
         $amigo = new amigos([
             'user_tag' => $sender->tag,
@@ -72,7 +74,7 @@ class amigosController extends Controller
 
         return response()->json(['message' => 'Solicitud de amistad enviada con éxito'], 201);
     } catch (\Exception $e) {
-        return response()->json(['error' => 'A ocurrido un error al enviar la solicitud:' . $e->getMessage()], 500);
+        return response()->json(['error' => 'Ha ocurrido un error al enviar la solicitud: ' . $e->getMessage()], 500);
     }
 }
 
