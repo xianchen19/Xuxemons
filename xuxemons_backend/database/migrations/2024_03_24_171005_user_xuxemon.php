@@ -16,11 +16,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('xuxemons_id');
-            $table->string('tamano')->nullable(); // Opcional: tamaño del Xuxemon
-
+            $table->string('tamano')->nullable(); 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('xuxemons_id')->references('id')->on('xuxemons')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

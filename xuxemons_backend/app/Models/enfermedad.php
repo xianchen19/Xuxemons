@@ -15,6 +15,7 @@ class enfermedad extends Model
         'porcentaje_bajon_azucar',
         'porcentaje_sobredosis_azucar',
         'porcentaje_atracon',
+        'xuxesBajon'
     ];
 
 }

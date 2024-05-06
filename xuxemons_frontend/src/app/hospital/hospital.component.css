@@ -1,0 +1,32 @@
+.container, .dialogo {
+    display: flex;
+    flex-direction: column;
+    padding-top: 150px;
+    align-items: center;
+    justify-content: center;
+    color: #ffff;
+    width: 100%;
+    padding-bottom: 50px;
+}
+
+.container .titulo {
+    align-items: center;
+    justify-content: center;
+}
+
+.container .tabla table {
+       width: 100%;
+}
+
+.container .tabla th {
+    width: 150px;
+}
+
+.container .botones {
+    display: flex;
+    align-items: center;
+}
+
+.container .botones button {
+    margin-right: 100px;
+}

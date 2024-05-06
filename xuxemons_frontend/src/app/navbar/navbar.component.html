@@ -1,0 +1,14 @@
+<header> 
+    <h2 class="logo"> <img src="../../assets/logo.png   " height="100px" width="100px"> </h2>
+    <nav class="navigation">
+        <div *ngIf="!isLoggedIn">
+            <a routerLink="/landscape" routerLinkActive="active">Home</a>
+            <button class="btnLogin" routerLink="/login" routerLinkActive="active">Login</button>
+        </div>
+        
+        <div *ngIf="isLoggedIn">
+            <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+            <a routerLink="/landscape" routerLinkActive="active" (click)="logout()">Cerrar sesión</a>
+        </div>
+    </nav>
+</header>

@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\amigosController;
+use App\Http\Controllers\DailyChuches;
 use App\Http\Controllers\enfermedadesController;
-
 use App\Http\Controllers\EvoConfigController;
-
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
@@ -23,6 +23,7 @@ use App\Http\Controllers\inventarioController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::middleware(['cors'])->group(function () {
     // Rutas que no requieren permisos de rol
     Route::post('/userRegister', [RegisterController::class, 'store']);
@@ -31,11 +32,20 @@ Route::middleware(['cors'])->group(function () {
     Route::get('/xuxemons/verXuxemon', [xuxemonController::class, 'show']);
     Route::get('/users/coleccion', [xuxemonController::class, 'coleccion']);
     Route::get('/random_xuxemon', [xuxemonController::class, 'randomXuxemon']);
-    Route::get('/give_chuche/{xuxemonId}/{candyAmount}', [xuxemonController::class, 'giveCandy']);
+    Route::get('/give_chuche/{xuxemonId}/{candyAmount}', [enfermedadesController::class, 'giveCandy']);
     Route::put('/xuxemons/{xuxemonId}/activate', [xuxemonController::class, 'activarXuxemon']);
     Route::get('/random_chuche', [inventarioController::class, 'randomChuche']);
     Route::put('/xuxemons/{xuxemonId}/deactivate', [xuxemonController::class, 'desactivarXuxemon']);
     Route::get('/inventario', [InventarioController::class, 'index']);
+    Route::post('/add-daily-chuches', [DailyChuches::class, 'addDailyChuches']);
+    Route::post('/usarCura/{xuxemonId}/{objeto}', [enfermedadesController::class, 'usarCura']);
+    Route::get('/hospital', [enfermedadesController::class, 'xuxemonsConEnfermedad']);
+    Route::get('/amigos', [amigosController::class, 'index']);
+    Route::post('/amigos', [amigosController::class, 'store']);
+    Route::post('/amigos/aceptar/{solicitudId}', [amigosController::class, 'aceptarSolicitud']);
+    Route::post('/amigos/rechazar/{solicitudId}', [amigosController::class, 'rechazarSolicitud']);
+    Route::get('/buscar-usuarios', [amigosController::class, 'buscarUsuarios']);
+    Route::get('/amigos/pendientes', [amigosController::class, 'solicitudesPendientes']);
 
     // Rutas para el administrador
     Route::middleware(['role'])->group(function () {
@@ -48,12 +58,8 @@ Route::middleware(['cors'])->group(function () {
         Route::get('/configurations', [EvoConfigController::class, 'index']);
         Route::put('/configurations/{id}', [EvoConfigController::class, 'update']);
         Route::get('/inventarioAdmin', [InventarioController::class, 'showInventory']);
-
-        Route::post('/add-daily-chuches', [EvoConfigController::class, 'addDailyChuches']);
+        Route::put('/configurations/chuches-diarias', [EvoConfigController::class, 'updateDailyChuches']);
         Route::put('/enfermedades/configuracion', [enfermedadesController::class, 'update']);
-
-
-        Route::post('/chuchesDiarias', [EvoConfigController::class, 'addDailyChuches']);
-        Route::put('/configurations/updateChuchesDiarias/{id}', [EvoConfigController::class, 'updateChuchesDiarias']);
+        Route::put('/enfermedades/confBajon', [enfermedadesController::class, 'updateXuxesBajon']);
     });
 });

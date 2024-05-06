@@ -10,6 +10,7 @@ import { Xuxemon } from '../models/xuxemon/xuxemon.module';
 export class ColeccionComponent implements OnInit {
 
   xuxemons: Xuxemon[] = [];
+  xuxemonsActivos: Xuxemon[] = [];
 
   constructor(private coleccionService: ColeccionService) { }
 
@@ -18,34 +19,39 @@ export class ColeccionComponent implements OnInit {
   }
 
   obtenerXuxemons(): void {
-    if (sessionStorage.getItem('rol')==='administrador') {
+    if (sessionStorage.getItem('rol') === 'administrador') {
       this.coleccionService.getListaXuxemonsAdmin().subscribe(
-        {
-          next: (response: any[]) => {
-            console.log(response);
-            this.xuxemons = response[0];
-          },
-          error: error =>{
-            console.error('Error:', error);
-          }
+        (response: any[]) => {
+          console.log(response);
+          this.xuxemons = response[0];
+        },
+        error => {
+          console.error('Error:', error);
         }
       );
-    } else if (sessionStorage.getItem('rol')==='usuario') {
+    } else if (sessionStorage.getItem('rol') === 'usuario') {
       this.coleccionService.getListaXuxemonsUser().subscribe(
-        {
-          next: (response: any[]) => {
-            console.log(response);
-            this.xuxemons = response[0];
-          },
-          error: error =>{
-            console.error('Error:', error);
-          }
+        (response: Xuxemon[]) => {
+          console.log(response);
+          this.filtrarXuxemonsInactivos(response);
+          this.filtrarXuxemonsActivos(response);
+        },
+        error => {
+          console.error('Error:', error);
         }
       );
     }
-    
+  }
+  
+  filtrarXuxemonsActivos(xuxemons: any[]): void {
+    this.xuxemonsActivos = xuxemons.filter(xuxemon => xuxemon['pivot'].activo === 1);
   }
 
+  filtrarXuxemonsInactivos(xuxemons: any[]): void {
+    this.xuxemons = xuxemons.filter(xuxemon => xuxemon['pivot'].activo === 0);
+  }
+  
+  
   randomXuxemon(): void {
     this.coleccionService.randomXuxemon().subscribe(
       (xuxemon: Xuxemon) => {
@@ -60,8 +66,11 @@ export class ColeccionComponent implements OnInit {
 
   giveChuche(xuxemonId: number, candyAmount: number): void {
     this.coleccionService.giveChuche(xuxemonId, candyAmount).subscribe(
-      () => {
+      (response: any) => {
         console.log('Chuches entregadas a Xuxemon');
+        if (response.infeccion) {
+          console.log(response.infeccion);
+        }
         this.obtenerXuxemons();
       },
       error => {
@@ -69,4 +78,30 @@ export class ColeccionComponent implements OnInit {
       }
     );
   }
+
+  activarXuxemon(xuxemonId: number): void {
+    this.coleccionService.activarXuxemon(xuxemonId).subscribe(
+      (response: any) => {
+        console.log(response.message);
+        this.obtenerXuxemons();
+      },
+      error => {
+        console.error('Error al activar Xuxemon:', error);
+      }
+    );
+  }
+
+  desactivarXuxemon(xuxemonId: number): void {
+    this.coleccionService.desactivarXuxemon(xuxemonId).subscribe(
+      (response: any) => {
+        console.log(response.message);
+        this.obtenerXuxemons();
+      },
+      error => {
+        console.error('Error al desactivar Xuxemon:', error);
+      }
+    );
+  }
+
 }
+  

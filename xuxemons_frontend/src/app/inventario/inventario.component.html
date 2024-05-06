@@ -1,7 +1,5 @@
 <app-navbar></app-navbar>
 
-<app-navbar></app-navbar>
-
 <div class="container">
 
   <div class="titulo">
@@ -34,7 +32,11 @@
     
   </div>
 
-  <div class="botones">
+  <div class="botones" *ngIf="rol === 'usuario'">
+    <button (click)="chuchesDiarias()">Chuches Diarias</button>
+  </div>
+
+  <div class="botones" *ngIf="rol === 'administrador'">
     <button (click)="generarChuche()">Generar Chuche</button>
   </div>
   
