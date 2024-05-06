@@ -1,0 +1,76 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <div class="titulo">
+    <h1>Lista de Xuxemons en tu Colección</h1>
+  </div>
+
+  <!-- Sección de Xuxemons Activos -->
+  <div *ngIf="xuxemonsActivos.length > 0">
+    <h2>Xuxemons Activos</h2>
+    <div class="tabla">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Tamaño</th>
+            <th>Vida</th>
+            <th>Archivo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let xuxemon of xuxemonsActivos">
+            <td>{{ xuxemon.nombre }}</td>
+            <td>{{ xuxemon.tipo }}</td>
+            <td>{{ xuxemon.tamano }}</td>
+            <td>{{ xuxemon.vida }}</td>
+            <td>{{ xuxemon.archivo }}</td>
+            <td>
+              <button (click)="giveChuche(xuxemon.id, 1)" [disabled]="xuxemon.atracon === 1">Dar de Comer</button>
+              <button (click)="desactivarXuxemon(xuxemon.id)" [disabled]="xuxemon.bajon_azucar === 1 || xuxemon.sobredosis_azucar === 1 || xuxemon.atracon === 1">Desactivar xuxemon</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Sección de Xuxemons Guardados -->
+  <div>
+    <h2>Xuxemons Guardados</h2>
+    <div class="tabla">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Tamaño</th>
+            <th>Vida</th>
+            <th>Archivo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let xuxemon of xuxemons">
+            <td>{{ xuxemon.nombre }}</td>
+            <td>{{ xuxemon.tipo }}</td>
+            <td>{{ xuxemon.tamano }}</td>
+            <td>{{ xuxemon.vida }}</td>
+            <td>{{ xuxemon.archivo }}</td>
+            <td>
+              <button (click)="giveChuche(xuxemon.id, 1)">Dar de Comer</button>
+              <button (click)="activarXuxemon(xuxemon.id)" [disabled]="xuxemonsActivos.length >= 4">Activar xuxemon</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+    </div>
+  </div>
+
+  <div class="botones">
+    <button (click)="randomXuxemon()">Generar Xuxemon</button>
+  </div>
+</div>

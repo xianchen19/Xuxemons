@@ -1,0 +1,38 @@
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --clr-negro: #1c1c1c;
+    --clr-gris: #ececec;
+    --clr-blanco: #f7f7f7;
+
+    --tipo-normal: #A8A878;
+    --tipo-fuego: #F08030;
+    --tipo-agua: #6890F0;
+    --tipo-planta: #78C850;
+    --tipo-electrico: #F8D030;
+    --tipo-hielo: #98D8D8;
+    --tipo-lucha: #C03028;
+    --tipo-veneno: #A040A0;
+    --tipo-tierra: #E0C068;
+    --tipo-aire: #A890F0;
+    --tipo-psiquico: #F85888;
+    --tipo-bicho: #A8B820;
+    --tipo-roca: #B8A038;
+    --tipo-fantasma: #705898;
+    --tipo-siniestro: #705848;
+    --tipo-dragon: #7038F8;
+    --tipo-acero: #B8B8D0;
+    --tipo-hada: #F0B6BC;
+}
+
+
+body {
+    min-height: 100vh;
+    background: url(".//assets/fondo1.jpg")no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
