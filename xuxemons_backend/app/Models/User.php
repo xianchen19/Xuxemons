@@ -55,7 +55,7 @@ class User extends Authenticatable
      }*/
      public function xuxemons()
     {
-        return $this->belongsToMany(Xuxemons::class, 'user_xuxemons', 'user_id', 'xuxemons_id')->withPivot('tamano');
+        return $this->belongsToMany(Xuxemons::class, 'user_xuxemons', 'user_id', 'xuxemons_id')->withPivot('tamano', 'activo');
     }
      public function inventario()
      {
@@ -74,8 +74,10 @@ class User extends Authenticatable
             ->withTimestamps();
     }
     public function solicitudesAmistad()
-    {
-        return $this->hasMany(Amigos::class, 'friend_tag', 'user_tag')->where('status', 'pendiente');
-    }
+{
+    return $this->belongsToMany(User::class, 'amigos', 'friend_tag', 'user_tag')
+        ->withPivot('status')
+        ->wherePivot('status', 'pendiente');
+}
     
 }

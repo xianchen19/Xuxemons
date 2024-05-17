@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,7 +11,19 @@ export class ConfiguracionService {
 
   constructor(private http: HttpClient) { }
 
-  changeConfig(newConfig: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/configuration`, newConfig);
+  changeConfig(nivel: any, chuches: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/configurations/${nivel}`, chuches);
+  }
+
+  changeChuchesDiarias(chuchesDiarias: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/configurations/chuches-diarias`, { chuchesDiarias });
+  }
+
+  changePorcentajeInfeccion(bajonAzucar: number, sobredosisAzucar: number, atraccon: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/enfermedades/configuracion`, { bajonAzucar, sobredosisAzucar, atraccon });
+  }
+
+  changeBajonAzucar(chuches: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/enfermedades/configuracion`, { chuches });
   }
 }

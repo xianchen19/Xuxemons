@@ -228,7 +228,7 @@ class xuxemonController extends Controller
     public function xuxemonAll()
     {
         $xuxemons = xuxemons::all();
-        return response()->json([$xuxemons, 'message' => 'Xuxemon Index', 200]);
+        return response()->json([$xuxemons, 200]);
     }
 
     public function activarXuxemon(Request $request, $xuxemonId)
