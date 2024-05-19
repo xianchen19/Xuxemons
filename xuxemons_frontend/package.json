@@ -24,8 +24,11 @@
     "@angular/router": "^17.2.0",
     "@angular/ssr": "^17.2.0",
     "@ng-icons/ionicons": "^27.2.0",
+    "@types/pusher-js": "^5.1.0",
     "bootstrap": "^5.3.3",
     "express": "^4.18.2",
+    "laravel-echo": "^1.16.1",
+    "pusher-js": "^8.4.0-rc2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

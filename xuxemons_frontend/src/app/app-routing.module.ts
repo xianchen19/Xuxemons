@@ -15,6 +15,7 @@ import { ConfiguracionComponent } from './configuracion/configuracion.component'
 import { XuxedexComponent } from './xuxedex/xuxedex.component';
 import { HospitalComponent } from './hospital/hospital.component';
 import { AmigosComponent } from './amigos/amigos.component';
+import { ChatComponent } from './chat/chat.component'; 
 
 const routes: Routes = [
   { path: '', redirectTo: '/landscape', pathMatch: 'full' },
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'xuxedex', component: XuxedexComponent},
   { path: 'hospital', component: HospitalComponent},
   { path: 'amigos', component: AmigosComponent},
+  { path: 'chat', component: ChatComponent},
   { path: 'error', component: ErrorComponent },
   { path: '**', redirectTo: '/error'}
 ];

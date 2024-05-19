@@ -1,0 +1,17 @@
+
+.container {
+    padding-top: 150px;
+}
+
+.scrollarea {
+    min-height: 500px;
+    overflow-y: auto; /* Agregado para habilitar el desplazamiento vertical */
+}
+
+.list-group-item {
+    border: none; /* Eliminado el borde de los elementos de la lista */
+}
+
+.list-group-item:hover {
+    background-color: #f5f5f5; /* Cambiar el color de fondo al pasar el ratón */
+}

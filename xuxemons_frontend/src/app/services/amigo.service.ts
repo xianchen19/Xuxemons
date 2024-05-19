@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Amigos } from '../models/amigo/amigo.module';
 import { Usuario } from '../models/usuario/usuario.module';
 
 @Injectable({
@@ -43,6 +42,11 @@ export class AmigoService {
   rechazarSolicitud(userTag: string): Observable<any> {
     const headers = this.httpHeaders();
     return this.http.post<any>(`${this.apiUrl}/amigos/rechazar/${userTag}`, {}, { headers });
+  }
+
+  eliminarAmigo(tag: string): Observable<any> {
+    const headers = this.httpHeaders();
+    return this.http.delete<any>(`${this.apiUrl}/amigos?friend_tag=${tag}`, { headers });
   }
 
   httpHeaders(): HttpHeaders {

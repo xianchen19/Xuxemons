@@ -10,6 +10,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\xuxemonController;
 use App\Http\Controllers\inventarioController;
+use App\Http\Controllers\ChatController;
 
 
 
@@ -46,10 +47,14 @@ Route::middleware(['cors'])->group(function () {
     Route::get('/hospital', [enfermedadesController::class, 'xuxemonsConEnfermedad']);
     Route::get('/amigos', [amigosController::class, 'index']);
     Route::post('/amigos', [amigosController::class, 'store']);
+    Route::delete('/amigos', [amigosController::class, 'destroy']);
     Route::post('/amigos/aceptar/{userTag}', [amigosController::class, 'aceptarSolicitud']);
     Route::post('/amigos/rechazar/{userTag}', [amigosController::class, 'rechazarSolicitud']);
     Route::get('/buscar-usuarios', [amigosController::class, 'buscarUsuarios']);
     Route::get('/amigos/pendientes', [amigosController::class, 'solicitudesPendientes']);
+    Route::get('/chat/{userTag}', [ChatController::class, 'index']);
+    Route::post('/mensaje/{userTag}', [ChatController::class, 'enviarMensaje']);
+    Route::delete('/borrarChat', [ChatController::class, 'destroy']);
 
     // Rutas para el administrador
     Route::middleware(['role'])->group(function () {
