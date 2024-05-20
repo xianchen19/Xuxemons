@@ -26,10 +26,9 @@
     --tipo-hada: #F0B6BC;
 }
 
-
-body {
+body{
     min-height: 100vh;
-    background: url(".//assets/fondo1.jpg")no-repeat;
+    background: url("../src/assets/dashboard_fondo.JPG")no-repeat;
     background-size: cover;
     background-attachment: fixed;
 }

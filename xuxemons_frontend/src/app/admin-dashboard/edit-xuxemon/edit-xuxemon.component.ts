@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Xuxemon } from '../../models/xuxemon/xuxemon.module';
 import { XuxemonService } from '../../services/xuxemon.service';
@@ -8,7 +8,7 @@ import { XuxemonService } from '../../services/xuxemon.service';
   templateUrl: './edit-xuxemon.component.html',
   styleUrls: ['./edit-xuxemon.component.css']
 })
-export class EditXuxemonComponent {
+export class EditXuxemonComponent implements OnChanges {
   @Input() xuxemon: Xuxemon | null = null;
   @Output() cambiosGuardados = new EventEmitter<void>();
   @Output() cancelar = new EventEmitter<void>();
@@ -19,7 +19,7 @@ export class EditXuxemonComponent {
     this.xuxemonForm = this.fb.group({
       nombre: ['', Validators.required],
       tipo: ['', Validators.required],
-      tamano: ['', Validators.required],
+      tamano: [null, Validators.required],
       vida: [null, Validators.required],
       archivo: ['', Validators.required]
     });

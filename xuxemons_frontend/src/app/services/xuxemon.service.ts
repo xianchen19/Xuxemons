@@ -35,7 +35,7 @@ export class XuxemonService {
   
   crearXuxemon(xuxemon: Xuxemon): Observable<Xuxemon> {
     const headers = this.httpHeaders();
-    return this.http.post<Xuxemon>(`${this.apiUrl}/xuxemons`, xuxemon, { headers });
+    return this.http.post<Xuxemon>(`${this.apiUrl}/xuxemons/crearXuxemon`, xuxemon, { headers });
   }
 
   httpHeaders(): HttpHeaders {

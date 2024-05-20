@@ -1,3 +1,11 @@
+body#login{
+    min-height: 100vh;
+    background: url("../../assets/fondo1.jpg")no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+
 .contenedor {
     display: flex;
     justify-content: center;

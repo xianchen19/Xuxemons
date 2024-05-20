@@ -13,10 +13,12 @@ export class Usuario {
   name: string;
   email: string;
   password: string;
+  tag: string;
 
   constructor() {
     this.name = "";
     this.email = "";
     this.password = "";
+    this.tag = '';
   }
  }

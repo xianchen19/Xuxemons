@@ -68,13 +68,34 @@ export class ColeccionComponent implements OnInit {
     this.coleccionService.giveChuche(xuxemonId, candyAmount).subscribe(
       (response: any) => {
         console.log('Chuches entregadas a Xuxemon');
-        if (response.infeccion) {
-          console.log(response.infeccion);
-        }
-        this.obtenerXuxemons();
+        this.checkInfeccion(xuxemonId);
       },
       error => {
         console.error('Error al dar de comer a Xuxemon:', error);
+      }
+    );
+  }
+
+  checkInfeccion(xuxemonId: number): void {
+    this.coleccionService.checkInfeccion(xuxemonId).subscribe(
+      (response: any) => {
+          console.log(response.infeccion);
+          this.checkEvolucion(xuxemonId);
+      },
+      error => {
+        console.error('Error infeccion', error);
+      }
+    );
+  }
+
+  checkEvolucion(xuxemonId: number): void {
+    this.coleccionService.checkEvolucion(xuxemonId).subscribe(
+      (response: any) => {
+          console.log(response.evolucion);
+        this.obtenerXuxemons();
+      },
+      error => {
+        console.error('Error evolucion:', error);
       }
     );
   }

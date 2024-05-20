@@ -29,7 +29,8 @@ export class LoginComponent {
       const userData: Usuario = {
         name: '',
         email: this.formLogin.get('email')?.value,
-        password: this.formLogin.get('password')?.value
+        password: this.formLogin.get('password')?.value,
+        tag: ''
       };
       
       const rememberMe = this.formLogin.get('rememberMe')?.value;

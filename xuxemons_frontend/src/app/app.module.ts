@@ -19,6 +19,8 @@ import { ColeccionComponent } from './coleccion/coleccion.component';
 import { XuxedexComponent } from './xuxedex/xuxedex.component';
 import { HospitalComponent } from './hospital/hospital.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
+import { AmigosComponent } from './amigos/amigos.component';
+import { ChatComponent } from './chat/chat.component';
 import { MatIconModule } from '@angular/material/icon';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
@@ -39,7 +41,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     ColeccionComponent,
     ConfiguracionComponent,
     XuxedexComponent,
-    HospitalComponent
+    HospitalComponent,
+    AmigosComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,10 @@
+body#hospital{
+    min-height: 100vh;
+    background: url("../../assets/hospital_fondo.jpg")no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
 .container, .dialogo {
     display: flex;
     flex-direction: column;

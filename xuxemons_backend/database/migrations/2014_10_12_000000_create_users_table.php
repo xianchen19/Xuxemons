@@ -29,6 +29,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('intercambio_xuxemons');
+        Schema::dropIfExists('amigos');
         Schema::dropIfExists('users');
     }
 };

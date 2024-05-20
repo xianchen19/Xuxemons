@@ -1,5 +1,6 @@
 <app-navbar></app-navbar>
 
+<body id="hospital">
 <div class="container">
   <div class="titulo">
     <h1> Centro Xuxemon </h1>
@@ -41,7 +42,7 @@
   </div>
 
   <!-- Mensaje si no hay Xuxemons Enfermos -->
-  <div *ngIf="xuxemonsEnfermos.length === 0">
+  <div *ngIf="xuxemonsEnfermos.length === undefined">
     <p>No tienes Xuxemons enfermos en tu colección.</p>
   </div>
 </div>
@@ -69,3 +70,4 @@
     <button (click)="mostrarDialogo = false"> Salir </button>
   </table>
 </div>
+</body>

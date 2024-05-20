@@ -24,7 +24,8 @@ export class RegisterComponent {
       const userData = {
         name: this.formRegister.get('name')?.value,
         email: this.formRegister.get('email')?.value,
-        password: this.formRegister.get('password')?.value
+        password: this.formRegister.get('password')?.value,
+        tag: ''
       };
       
       this.usuarioService.register(userData).subscribe(

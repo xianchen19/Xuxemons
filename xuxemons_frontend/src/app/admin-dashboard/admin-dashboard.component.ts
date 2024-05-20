@@ -14,7 +14,6 @@ export class AdminDashboardComponent implements OnInit {
   xuxemonEditando: Xuxemon | null = null;
   xuxemonCreacion: boolean = false;
 
-
   constructor(private xuxemonService: XuxemonService) { }
 
   ngOnInit(): void {
@@ -53,6 +52,7 @@ export class AdminDashboardComponent implements OnInit {
 
   guardarCambiosEditXuxemon() {
     this.xuxemonEditando = null;
+    this.obtenerXuxemons();
   }
 
   mostrarCreacionXuxemon() {

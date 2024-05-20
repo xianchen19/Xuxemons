@@ -18,8 +18,7 @@ export class Xuxemon {
   bajon_azucar: number;
   sobredosis_azucar: number;
   atracon: number;
-
-
+  pivot: any;
 
   constructor() {
     this.id = 0;
@@ -32,5 +31,7 @@ export class Xuxemon {
     this.bajon_azucar = 0;
     this.sobredosis_azucar = 0;
     this. atracon = 0;
+    this.pivot = '';
+
   }
 }
