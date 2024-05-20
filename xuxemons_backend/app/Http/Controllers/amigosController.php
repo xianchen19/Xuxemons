@@ -78,6 +78,45 @@ public function store(Request $request)
     }
 }
 
+public function destroy(Request $request)
+{
+    try {
+        // Obtener el email del usuario del encabezado de la solicitud
+        $email = $request->header('email');
+
+        // Buscar al usuario que envía la solicitud por su email
+        $sender = User::where('email', $email)->first();
+        if (!$sender) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+
+        // Obtener el tag del amigo al que se eliminará la amistad
+        $friendTag = $request->input('friend_tag');
+
+        // Buscar la amistad del usuario con el amigo
+        $friendship1 = amigos::where('user_tag', $sender->tag)->where('friend_tag', $friendTag)->first();
+        $friendship2 = amigos::where('user_tag', $friendTag)->where('friend_tag', $sender->tag)->first();
+
+        // Verificar si existe la amistad
+        if (!$friendship1 && !$friendship2) {
+            return response()->json(['error' => 'No existe amistad entre estos usuarios'], 404);
+        }
+
+        // Eliminar la amistad
+        if ($friendship1) {
+            $friendship1->delete();
+        }
+        if ($friendship2) {
+            $friendship2->delete();
+        }
+
+        return response()->json(['message' => 'Amistad eliminada con éxito'], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Ha ocurrido un error al eliminar la amistad: ' . $e->getMessage()], 500);
+    }
+}
+
+
 
 public function solicitudesPendientes(Request $request)
 {
@@ -99,6 +138,7 @@ public function solicitudesPendientes(Request $request)
         return response()->json(['error' => 'Ha ocurrido un error al obtener las solicitudes de amistad pendientes del usuario'], 500);
     }
 }
+
 
 
 public function aceptarSolicitud($userTag)
@@ -142,6 +182,7 @@ public function aceptarSolicitud($userTag)
         return response()->json(['error' => 'Ha ocurrido un error al aceptar la solicitud de amistad: ' . $e->getMessage()], 500);
     }
 }
+
 
 
     public function rechazarSolicitud($userTag)

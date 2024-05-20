@@ -16,53 +16,39 @@ class EvoConfigController extends Controller
         return response()->json($configurations, 200);
     }
 
-    public function update(Request $request)
-    {
-        // Obtener la configuración actual
-        $currentConfig = evo_config::first();
+    public function update(Request $request, $nivel, $chuches)
+{
 
-        // Validar los datos de la solicitud
-        $request->validate([
-            'nivel' => 'nullable|integer',
-            'required_chuches' => 'nullable|integer',
-            'chuches_diarias' => 'nullable|integer',
-        ]);
+    // Obtener la configuración actual basada en el nivel proporcionado en la URL
+    $currentConfig = evo_config::where('nivel', $nivel)->first();
 
-        // Actualizar los campos si están presentes en la solicitud o mantener los valores actuales
-        $updateData = [];
-        if ($request->has('nivel')) {
-            $updateData['nivel'] = $request->nivel;
-        } else {
-            $updateData['nivel'] = $currentConfig->nivel;
-        }
+    $currentConfig->required_chuches = $chuches;
 
-        if ($request->has('required_chuches')) {
-            $updateData['required_chuches'] = $request->required_chuches;
-        } else {
-            $updateData['required_chuches'] = $currentConfig->required_chuches;
-        }
+    // Guardar los cambios en la base de datos
+    $currentConfig->save();
 
+    return response()->json(['message' => 'Configuración de evolución actualizada correctamente'], 200);
+}
 
+public function updateDailyChuches(Request $request)
+{
+    $request->validate([
+        'chuchesDiarias' => 'nullable|integer',
+    ]);
 
-        // Guardar los cambios en la base de datos
-        $currentConfig->update($updateData);
+    $currentConfig = evo_config::first();
 
-        return response()->json(['message' => 'Configuración de evolución actualizada correctamente'], 200);
+    // Obtener la variable del cuerpo de la solicitud
+    $chuchesDiarias = $request->input('chuchesDiarias');
+
+    // Actualizar el campo chuches_diarias si la variable está presente en la solicitud
+    if ($chuchesDiarias !== null) {
+        $currentConfig->chuches_diarias = $chuchesDiarias;
+        $currentConfig->save();
     }
 
+    return response()->json(['message' => 'Configuracion de chuches diarias actualizada correctamente'], 200);
+}
 
-    public function updateDailyChuches(Request $request)
-    {
-        $request->validate([
-            'chuches_diarias' => 'nullable|integer',
-        ]);
-        $currentConfig = evo_config::first();
 
-        if ($request->has('chuches_diarias')) {
-            $updateData['chuches_diarias'] = $request->chuches_diarias;
-        } else {
-            $updateData['chuches_diarias'] = $currentConfig->chuches_diarias;
-        }
-        return response()->json(['message' => 'Configuracion de chuches diarias actualizada correctamente'], 200);
-    }
 }

@@ -99,3 +99,15 @@
     background-size:cover;
     background-position: center;
   }
+  
+  #Xuxedex {
+    background: url(../../assets/xuxedex.jpg)no-repeat;
+    background-size:cover;
+    background-position: center;
+  }
+
+  #Amigos {
+    background: url(../../assets/amigos.jpg)no-repeat;
+    background-size:cover;
+    background-position: center;
+  }

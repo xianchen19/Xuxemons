@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { XuxedexService } from '../services/xuxedex.service';
 import { Xuxemon } from '../models/xuxemon/xuxemon.module';
+import xuxemonJson from '../../assets/json/xuxemons.json';
+
+interface XuxemonJSON {
+  id: number;
+  nombre: string;
+  tipo: string;
+  tamano: number;
+  archivo: string;
+}
 
 @Component({
   selector: 'app-xuxedex',
@@ -9,16 +17,26 @@ import { Xuxemon } from '../models/xuxemon/xuxemon.module';
 })
 export class XuxedexComponent implements OnInit {
 
-  xuxemonsfiltrar: Xuxemon[] = [];
-  listaXuxemons: Xuxemon[] = [];
+  listaXuxemons: XuxemonJSON[] = xuxemonJson as XuxemonJSON[];
+  xuxemons: XuxemonJSON[] = xuxemonJson as XuxemonJSON[];
 
-  constructor(private xuxedexService: XuxedexService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.mostrarTodos();
+    console.log(this.xuxemons);
   }
 
-  mostrarXuxemon(xuxemon: Xuxemon): void {
+  mostrarTodos(): void{
+    this.xuxemons = xuxemonJson as XuxemonJSON[];
+  }
+
+  filtrarPorTipo(tipo: string): void {
+    this.xuxemons = this.listaXuxemons.filter((xuxemon: XuxemonJSON) => xuxemon.tipo.includes(tipo));
+  }
+
+}
+
+/* mostrarXuxemon(xuxemon: Xuxemon): void {
     this.listaXuxemons.push(xuxemon);
   }
 
@@ -49,6 +67,4 @@ export class XuxedexComponent implements OnInit {
       }
     );
   }
-  
-
-}
+  */

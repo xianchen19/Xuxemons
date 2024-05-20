@@ -73,11 +73,27 @@ class User extends Authenticatable
             ->withPivot('status')
             ->withTimestamps();
     }
+
     public function solicitudesAmistad()
 {
     return $this->belongsToMany(User::class, 'amigos', 'friend_tag', 'user_tag')
         ->withPivot('status')
         ->wherePivot('status', 'pendiente');
 }
+
+    public function solicitudesIntercambio()
+    {
+        return $this->belongsToMany(User::class, 'intercambio_xuxemons', 'friend_tag', 'user_tag')
+            ->withPivot('xuxemon_id', 'status')
+            ->wherePivot('status', 'pendiente');
+    }
+
+    public function intercambios()
+    {
+        return $this->belongsToMany(User::class, 'intercambio_xuxemons', 'user_tag', 'friend_tag')
+            ->withPivot('xuxemon_id', 'status')
+            ->withTimestamps();
+    }
+    
     
 }

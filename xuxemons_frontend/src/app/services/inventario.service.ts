@@ -14,7 +14,7 @@ export class InventarioService {
 
   getRandomChuche(): Observable<Inventario> {
     const headers = this.httpHeaders();
-    return this.http.get<Inventario>(`${this.apiUrl}/randomChuche`, { headers });
+    return this.http.get<Inventario>(`${this.apiUrl}/random_chucheAdmin`, { headers });
   }
 
   getInventarioUser(): Observable<Inventario[]> {

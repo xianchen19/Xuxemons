@@ -29,7 +29,17 @@ export class ColeccionService {
 
   giveChuche(xuxemonId: number, candyAmount: number): Observable<any> {
     const headers = this.httpHeaders();
-    return this.http.get<any>(`${this.apiUrl}/give_chuche/${xuxemonId}/${candyAmount}`, { headers });
+    return this.http.post<any>(`${this.apiUrl}/give_chuche/${xuxemonId}/${candyAmount}`, {} , { headers });
+  }
+
+  checkInfeccion(xuxemonId: number): Observable<any> {
+    const headers = this.httpHeaders();
+    return this.http.post<any>(`${this.apiUrl}/infeccion/${xuxemonId}`, {} , { headers });
+  }
+
+  checkEvolucion(xuxemonId: number): Observable<any> {
+    const headers = this.httpHeaders();
+    return this.http.post<any>(`${this.apiUrl}/evolucion/${xuxemonId}`, {} , { headers });
   }
 
   // Agrega un console log para verificar el email aquí

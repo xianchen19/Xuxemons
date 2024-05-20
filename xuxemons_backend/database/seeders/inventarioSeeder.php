@@ -22,7 +22,7 @@ class inventarioSeeder extends Seeder
                 'cantidad' => 100,
                 'descripcion' => 'Una deliciosa chuche de sabor a fresa.',
                 'imagen' => 'chuche1.jpg',
-                'user_id'=>'2',
+                'user_id'=>'1',
             ],
             [
                 'nombre' => 'Xocolatina',
@@ -30,7 +30,7 @@ class inventarioSeeder extends Seeder
                 'cantidad' => 10,
                 'descripcion' => 'Objeto que se almacena en la mochila y al usarlo en un Xuxemon quita “Bajón de azúcar”',
                 'imagen' => 'xocolatina.jpg',
-                'user_id'=> '2',
+                'user_id'=> '1',
             ],
             [
                 'nombre' => 'Inxulina',
@@ -38,7 +38,7 @@ class inventarioSeeder extends Seeder
                 'cantidad' => 10,
                 'descripcion' => 'Objeto que se almacena en la mochila y al usarlo en un Xuxemon quita “Sobredosis de azúcar”',
                 'imagen' => 'xocolatina.jpg',
-                'user_id'=> '2',
+                'user_id'=> '1',
             ],
             [
                 'nombre' => 'Xal_frutas',
@@ -46,7 +46,7 @@ class inventarioSeeder extends Seeder
                 'cantidad' => 10,
                 'descripcion' => 'Objeto que se almacena en la mochila y al usarlo en un Xuxemon quita “Atracón”',
                 'imagen' => 'xocolatina.jpg',
-                'user_id'=> '2',
+                'user_id'=> '1',
             ],
         ];
 

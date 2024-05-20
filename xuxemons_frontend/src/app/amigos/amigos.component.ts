@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Usuario } from '../models/usuario/usuario.module';
 import { Amigos } from '../models/amigo/amigo.module';
 import { AmigoService } from '../services/amigo.service';
+import { ChatService } from '../services/chat.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-amigos',
@@ -16,7 +19,7 @@ export class AmigosComponent implements OnInit {
   terminoBusqueda: string = '';
   mostrarSolicitudes: boolean = false;
 
-  constructor(private amigoService: AmigoService) { }
+  constructor(private amigoService: AmigoService, private chatService: ChatService, private router: Router) { }
 
   ngOnInit(): void {
     this.obtenerAmigos();
@@ -50,6 +53,7 @@ export class AmigosComponent implements OnInit {
     this.amigoService.enviarSolicitudAmistad(tag).subscribe(
       (response: any) => {
         console.log(response.message);
+        this.obtenerSolicitudesPendientes();
       },
       error => {
         console.error('Error al enviar solicitud de amistad:', error);
@@ -98,5 +102,20 @@ export class AmigosComponent implements OnInit {
     );
   }
 
+  eliminarAmigo(tag: string): void {
+      this.amigoService.eliminarAmigo(tag).subscribe(
+        (response: any) => {
+          console.log(response.message);
+          this.obtenerSolicitudesPendientes();
+        },
+        error => {
+          console.error('Error al enviar solicitud de amistad:', error);
+        }
+      );
+    }
 
+    abrirChat(tagUsuario: string, usuario: string): void {
+      this.router.navigate(['/chat', { tagUsuario: tagUsuario, usuario: usuario }]);
+    }
+    
 }

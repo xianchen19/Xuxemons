@@ -29,7 +29,7 @@ export class HospitalComponent implements OnInit {
     this.hospitalService.getListaXuxemonsEnfermos().subscribe(
       (response: any[]) => {
         console.log(response);
-        this.xuxemonsEnfermos = response[0];
+        this.xuxemonsEnfermos = response;
       },
       error => {
         console.error('Error:', error);
@@ -62,8 +62,16 @@ export class HospitalComponent implements OnInit {
   curarXuxemon(xuxemonId: any, objeto: any): void {
     this.hospitalService.curarXuxemon(xuxemonId, objeto).subscribe(
       response => {
-        this.obtenerXuxemonsEnfermos();
-        console.log('Xuxemon curado:', response);
+        console.log(response.message);
+        // Verificar si response es una cadena de texto y comienza con "Se ha tratado la"
+        if (typeof response.message === 'string' && response.message.startsWith('Se ha tratado ')) {
+          // Vaciar completamente la lista de inventario
+          this.inventario = [];
+        // Filtrar la lista para excluir el Xuxemon curado
+        this.xuxemonsEnfermos = this.xuxemonsEnfermos.filter(xuxemon => xuxemon.id !== xuxemonId);
+        // Recargar la página
+        window.location.reload();
+        }
       },
       error => {
         console.error('Error al curar Xuxemon:', error);
@@ -71,7 +79,7 @@ export class HospitalComponent implements OnInit {
     );
   }
   
-
+  
   seleccionarObjeto(objetoNombre: any): void {
     this.objetoSeleccionado = objetoNombre;
     this.curarXuxemon(this.xuxemonSeleccionado, this.objetoSeleccionado);

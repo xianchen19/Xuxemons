@@ -39,7 +39,7 @@ class DailyChuches extends Controller
             $config = evo_Config::first();
 
             if (!$config) {
-                return response()->json(['error' => 'No se encontró la configuración de evolución'], 404);
+                return response()->json(['error' => 'No se encontró la configuración de chuches'], 404);
             }
 
             $chuchesDiarias = $config->chuches_diarias;

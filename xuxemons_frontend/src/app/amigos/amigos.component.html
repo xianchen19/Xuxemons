@@ -44,6 +44,8 @@
   <ul>
     <li *ngFor="let usuario of amigos">
       #{{ usuario.tag }} - {{ usuario.name }} - {{ usuario.email }}
+      <button (click)="abrirChat(usuario.tag, usuario.name)">Abrir Chat</button>
+      <button (click)="eliminarAmigo(usuario.tag)">Eliminar Amigo</button>
     </li>
   </ul>
 </div>
